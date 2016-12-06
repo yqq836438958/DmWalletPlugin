@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_overall_background" >
+
+    <com.tencent.tws.phoneside.walletv2.ui.widget.LoadingBubble
+        android:id="@+id/wallet_loading_bubble"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/wallet_loading_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="436dp"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:lineSpacingExtra="@dimen/wallet_loading_description_line_spacing_extra"
+        android:text="@string/wallet_loading_notice"
+        android:textColor="#80ffffff"
+        android:textSize="@dimen/wallet_loading_description_text_size" />
+
+</RelativeLayout>

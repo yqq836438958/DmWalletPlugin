@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <FrameLayout
+        android:id="@+id/wallet_empty_card_body"
+        android:layout_width="@dimen/wallet_card_width"
+        android:layout_height="@dimen/wallet_card_height"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/wallet_traffic_card_empty" >
+
+        <TextView
+            android:id="@+id/wallet_empty_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="142dp"
+            android:text="@string/wallet_traffic_card_add"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/wallet_empty_add_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/wallet_traffic_card_tip"
+        android:textColor="#80ffffff"
+        android:textSize="12sp" />
+
+</merge>

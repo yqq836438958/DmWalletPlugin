@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_overall_background" >
+
+    <com.tencent.tws.phoneside.walletv2.ui.widget.BottomBar
+        android:id="@+id/wallet_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <RelativeLayout
+        android:id="@+id/wallet_city_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" >
+        <TextView
+            android:id="@+id/wallet_city_label"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#1f1c27"
+            android:gravity="center_vertical|start"
+            android:paddingEnd="0dp"
+            android:paddingStart="20dp"
+            android:text="@string/wallet_city_select"
+            android:textColor="#80ffffff"
+            android:textSize="12sp" />
+        <com.tencent.tws.phoneside.walletv2.ui.widget.SimpleCardListItem
+            android:id="@+id/wallet_city_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wallet_city_label" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/activate_checked_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/wallet_bottom_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:orientation="horizontal" >
+
+        <com.tencent.tws.assistant.widget.CheckBox
+            android:id="@+id/activate_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_wallet_confirm_provision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_confirm_provision"
+            android:textColor="#80ffffff"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/denomination_notice"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/wallet_city_lay"
+        android:background="#1f1c27"
+        android:gravity="center_vertical|start"
+        android:paddingEnd="0dp"
+        android:paddingStart="20dp"
+        android:text="@string/denomination_notice"
+        android:textColor="#80ffffff"
+        android:textSize="12sp" />
+
+    <com.tencent.tws.phoneside.walletv2.ui.widget.PayValueSelect
+        android:id="@+id/pay_value_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/denomination_notice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/pay_channel_notile"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/pay_value_select"
+        android:background="#1f1c27"
+        android:gravity="center_vertical|start"
+        android:paddingEnd="0dp"
+        android:paddingStart="20dp"
+        android:text="@string/pay_channel_notile"
+        android:textColor="#80ffffff"
+        android:textSize="12sp" />
+
+    <com.tencent.tws.assistant.widget.ListView
+        android:id="@+id/pay_channel_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/activate_checked_layout"
+        android:layout_below="@id/pay_channel_notile"
+        android:background="@null"
+        android:cacheColorHint="@null" />
+
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp" >
+
+    <TextView
+        android:id="@+id/wallet_tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/wallet_listview_divider_margin_left"
+        android:layout_marginTop="10dp"
+        android:text="@string/wallet_transact_topup"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/wallet_tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/wallet_tv_type"
+        android:layout_below="@id/wallet_tv_type"
+        android:layout_marginTop="4dp"
+        android:text="2016-10-10    15:12"
+        android:textColor="#7fffffff"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/wallet_tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/wallet_listview_divider_margin_right"
+        android:text="+¥12.00"
+        android:textColor="#ffffff"
+        android:textSize="14sp" />
+
+</RelativeLayout>

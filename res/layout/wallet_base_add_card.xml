@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wallet_card"
+    android:layout_width="@dimen/wallet_card_width"
+    android:layout_height="42dp"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/wallet_add_card_backgroud" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/wallet_add_card_icon" />
+
+</RelativeLayout>

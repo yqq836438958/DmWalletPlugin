@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
+    android:id="@+id/layout_bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="66dp"
+    android:background="@color/wallet_action_bar_background"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp" >
+
+    <com.tencent.tws.assistant.widget.TwsButton
+        android:id="@+id/br_single_bt"
+        android:layout_width="320dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        tws:text="@string/wallet_traffic_card_add"
+        tws:textColor="#ffffff"
+        tws:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/br_couple_bt_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" >
+
+        <com.tencent.tws.assistant.widget.TwsButton
+            android:id="@+id/br_couple_left_bt"
+            android:layout_width="148dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            tws:text="@string/wallet_traffic_card_add"
+            tws:textColor="#ffffff"
+            tws:textSize="16sp" />
+
+        <com.tencent.tws.assistant.widget.TwsButton
+            android:id="@+id/br_couple_right_bt"
+            android:layout_width="148dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            tws:text="@string/wallet_traffic_card_add"
+            tws:textColor="#ffffff"
+            tws:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/br_single_bt_with_des_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <TextView
+            android:id="@+id/br_single_bt_with_des_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="¥130.00"
+            android:textColor="#ffffff"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/br_single_bt_with_des_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/br_single_bt_with_des_main"
+            android:layout_toRightOf="@id/br_single_bt_with_des_main"
+            android:alpha="0.5"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+
+        <com.tencent.tws.assistant.widget.TwsButton
+            android:id="@+id/br_single_bt_with_des_bt"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            tws:text="@string/activate_confirm"
+            tws:textColor="#ffffff"
+            tws:textSize="16sp"
+            tws:twsButtonMode="recommended" />
+    </RelativeLayout>
+
+</FrameLayout>

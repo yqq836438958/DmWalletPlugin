@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="15dp" >
+
+    <ImageView
+        android:id="@+id/wallet_card_imageview_id"
+        android:layout_width="233.3dp"
+        android:layout_height="144dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/wallet_szt_card_bg"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:id="@+id/wallet_input_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:layout_marginTop="184dp"
+        android:alpha="0"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/name_tv_id"
+            android:layout_width="60dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/wallet_support_name"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/wallet_tel_tv_id"
+            android:layout_width="60dp"
+            android:layout_height="22dp"
+            android:layout_below="@id/name_tv_id"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="38dp"
+            android:text="@string/wallet_support_tel"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/name_edt_id"
+            android:layout_width="260dp"
+            android:layout_height="28dp"
+            android:layout_alignBottom="@id/name_tv_id"
+            android:layout_toRightOf="@id/name_tv_id"
+            android:includeFontPadding="false"
+            android:padding="0dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/phone_edt_id"
+            android:layout_width="260dp"
+            android:layout_height="28dp"
+            android:layout_alignBottom="@id/wallet_tel_tv_id"
+            android:layout_toRightOf="@id/wallet_tel_tv_id"
+            android:includeFontPadding="false"
+            android:inputType="phone"
+            android:padding="0dp"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="16dp"
+            android:layout_alignLeft="@id/wallet_tel_tv_id"
+            android:layout_below="@id/wallet_tel_tv_id"
+            android:layout_marginTop="26dp"
+            android:includeFontPadding="false"
+            android:text="@string/wallet_support_notice"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/wallet_summary_tv_id"
+        android:layout_width="240dp"
+        android:layout_height="42dp"
+        android:layout_below="@id/wallet_card_imageview_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:gravity="center_horizontal"
+        android:includeFontPadding="false"
+        android:text="@string/wallet_support_summary"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <com.tencent.tws.assistant.widget.TwsButton
+        android:id="@+id/wallet_start_filling_button_id"
+        android:layout_width="320dp"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        tws:text="@string/wallet_support_start_filling"
+        tws:textColor="#ffffff"
+        tws:textSize="14sp" />
+
+    <!--
+         <TextView
+        android:id="@+id/wallet_title_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/wallet_support_title"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/wallet_summary_tv_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_title_id"
+        android:text="@string/wallet_support_summary" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/wallet_name_tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_summary_tv_id"
+        android:layout_marginStart="25dp"
+        android:text="@string/wallet_support_name" />
+
+    <EditText
+        android:id="@+id/wallet_name_edt_id"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/wallet_name_tv_id"
+        android:layout_toRightOf="@id/wallet_name_tv_id"
+        android:background="@drawable/wallet_edittext_bg" />
+
+    <TextView
+        android:id="@+id/wallet_tel_tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wallet_name_tv_id"
+        android:layout_below="@id/wallet_name_tv_id"
+        android:text="@string/wallet_support_tel" />
+
+    <EditText
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/wallet_tel_tv_id"
+        android:layout_alignLeft="@id/wallet_name_edt_id"
+        android:layout_toRightOf="@id/wallet_tel_tv_id"
+        android:background="@drawable/wallet_edittext_bg"
+        android:digits="0123456789"
+        android:inputType="phone" />
+
+    <TextView
+        android:id="@+id/wallet_data_tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wallet_name_tv_id"
+        android:layout_below="@id/wallet_tel_tv_id"
+        android:text="@string/wallet_support_data" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/wallet_data_tv_id"
+        android:layout_alignLeft="@id/wallet_name_edt_id"
+        android:layout_toRightOf="@id/wallet_data_tv_id"
+        android:text="@string/walllet_support_data_size" />
+
+    <Button
+        android:id="@+id/wallet_start_upload_btn_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/wallet_name_edt_id"
+        android:layout_below="@id/wallet_data_tv_id"
+        android:text="@string/wallet_support_start_upload" />
+
+    <TextView
+        android:id="@+id/wallet_upload_sumamry_tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/wallet_start_upload_btn_id"
+        android:layout_toRightOf="@id/wallet_start_upload_btn_id"
+        android:text="@string/wallet_support_last_upload_time" />
+    -->
+
+</RelativeLayout>

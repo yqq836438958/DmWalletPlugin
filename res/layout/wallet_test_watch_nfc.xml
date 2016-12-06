@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_sync_cplc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sync CPLC"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_sync_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sync cards"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_sync_traffic_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sync traffic config"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_sync_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sync order"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_topup_szt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="topup for SZT"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_topup_bjt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="topup for BJT"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</ScrollView>

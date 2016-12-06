@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_overall_background" >
+
+    <com.tencent.tws.assistant.widget.ListView
+        android:id="@+id/wallet_lv_transact"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:cacheColorHint="@null" />
+
+    <TextView
+        android:id="@+id/wallet_tv_transact_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/wallet_transact_empty"
+        android:textColor="#7fffffff"
+        android:textSize="14sp" />
+
+    <ProgressBar
+        android:id="@+id/wallet_transact_loading"
+        style="@style/twsProgressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDuration="700" />
+
+</RelativeLayout>

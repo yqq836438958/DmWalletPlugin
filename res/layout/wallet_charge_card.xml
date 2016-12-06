@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_overall_background" >
+
+    <com.tencent.tws.assistant.widget.TwsButton
+        android:id="@+id/wallet_charge_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        tws:text="@string/charge_confirm"
+        tws:textColor="#46dc5f"
+        tws:textSize="16sp"
+        tws:twsButtonMode="recommended" />
+
+    <TextView
+        android:id="@+id/denomination_notice"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:background="#1f1c27"
+        android:gravity="center_vertical|start"
+        android:paddingEnd="0dp"
+        android:paddingStart="20dp"
+        android:text="@string/denomination_notice"
+        android:textColor="#80ffffff"
+        android:textSize="12sp" />
+
+    <com.tencent.tws.phoneside.walletv2.ui.widget.PayValueSelect
+        android:id="@+id/pay_value_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/denomination_notice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/pay_channel_notile"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/pay_value_select"
+        android:background="#1f1c27"
+        android:gravity="center_vertical|start"
+        android:paddingEnd="0dp"
+        android:paddingStart="20dp"
+        android:text="@string/pay_channel_notile"
+        android:textColor="#80ffffff"
+        android:textSize="12sp" />
+
+    <com.tencent.tws.assistant.widget.ListView
+        android:id="@+id/pay_channel_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/wallet_charge_confirm"
+        android:layout_below="@id/pay_channel_notile"
+        android:background="@null"
+        android:cacheColorHint="@null" />
+
+</RelativeLayout>
