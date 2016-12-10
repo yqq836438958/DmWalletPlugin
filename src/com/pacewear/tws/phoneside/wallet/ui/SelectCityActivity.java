@@ -13,14 +13,14 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
+import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem.SimpleViewCache;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.AdapterView;
 import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
 import com.tencent.tws.assistant.widget.ListView;
-import com.tencent.tws.gdevicemanager.R;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.ui.widget.SimpleCardListItem;
-import com.tencent.tws.phoneside.walletv2.ui.widget.SimpleCardListItem.SimpleViewCache;
 
 import java.util.ArrayList;
 import java.util.List;

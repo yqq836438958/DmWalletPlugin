@@ -13,11 +13,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:gravity="center"
-        tws:text="@string/charge_confirm"
-        tws:textColor="#46dc5f"
-        tws:textSize="16sp"
-        tws:twsButtonMode="recommended" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/denomination_notice"

@@ -3,4 +3,18 @@
     <color name="light_btn_normal_color">#eeeeee</color>
     <color name="light_btn_press_color">#dadada</color>
     <color name="light_btn_disable_color">#dddddd</color>
+    <color name="white">#ffffff</color>
+    <color name="white2">#FFFFFFFF</color>
+    <color name="blue">#00BFFF</color>
+    <color name="black">#000000</color>
+    <color name="green">#008000</color>
+    <color name="red">#FF0000</color>
+    <color name="logout_text_color">#FFFF3C55</color>
+    <color name="transparent">#00000000</color>
+    <color name="half_transparent">#80000000</color>
+
+    <!-- 进度按钮配色 -->
+    <color name="action_dark_blue_bg">#2469a1</color>
+    <color name="action_light_blue_bg">#24A0FE</color>
+    <color name="action_light_green_bg">#3EB745</color>
 </resources>

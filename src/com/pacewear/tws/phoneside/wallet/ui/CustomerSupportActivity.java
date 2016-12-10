@@ -21,6 +21,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.tosservice.CustomService;
+import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
@@ -163,7 +171,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.wallet_push_down);
+//        overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override

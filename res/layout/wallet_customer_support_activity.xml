@@ -98,10 +98,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:gravity="center"
-        tws:text="@string/wallet_support_start_filling"
-        tws:textColor="#ffffff"
-        tws:textSize="14sp" />
+        android:gravity="center" />
 
     <!--
          <TextView
@@ -184,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/wallet_start_upload_btn_id"
         android:layout_toRightOf="@id/wallet_start_upload_btn_id"
-        android:text="@string/wallet_support_last_upload_time" />
+        android:text="@string/wallet_support_last_upload_time" />
     -->
 
 </RelativeLayout>

@@ -17,33 +17,33 @@ import android.view.WindowManager;
 
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.framework.global.GlobalObj;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.walletv2.card.CardManager;
-import com.tencent.tws.phoneside.walletv2.card.ICard;
-import com.tencent.tws.phoneside.walletv2.card.ICard.CARD_TYPE;
-import com.tencent.tws.phoneside.walletv2.card.ICard.INSTALL_STATUS;
-import com.tencent.tws.phoneside.walletv2.card.ICardInner.CONFIG;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.card.ITrafficCard;
-import com.tencent.tws.phoneside.walletv2.order.IOrder;
-import com.tencent.tws.phoneside.walletv2.order.IOrderManager;
-import com.tencent.tws.phoneside.walletv2.order.IOrderManager.ORDER_STEP;
-import com.tencent.tws.phoneside.walletv2.order.OrderManager;
-import com.tencent.tws.phoneside.walletv2.pay.PayManager;
-import com.tencent.tws.phoneside.walletv2.step.IStep.COMMON_STEP;
-import com.tencent.tws.phoneside.walletv2.step.IStep.STATUS;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletHandlerManager;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.OnWalletUICallback;
-import com.tencent.tws.phoneside.walletv2.ui.widget.LoadingBubble;
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.IOrderManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrderManager.ORDER_STEP;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.pay.PayManager;
+import com.pacewear.tws.phoneside.wallet.step.IStep.COMMON_STEP;
+import com.pacewear.tws.phoneside.wallet.step.IStep.STATUS;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
+import com.pacewear.tws.phoneside.wallet.ui.widget.LoadingBubble;
 import com.tencent.tws.proto.pay.nfc.PayRC;
 
 import qrom.component.log.QRomLog;
 
 public class ShowLoadingActivity extends TwsActivity
-        implements OnWalletUICallback{
+        implements OnWalletUICallback {
 
     public static final String TAG = PayNFCConstants.TAG + "."
             + ShowLoadingActivity.class.getSimpleName();
@@ -79,6 +79,7 @@ public class ShowLoadingActivity extends TwsActivity
     private LoadingBubble mLoadingBubble = null;
     private Handler mMainUIHandler = null;
     private boolean mIsFirstIn = true;
+
     public static void setLoadingType(Intent intent, int loadingType) {
         if (intent != null) {
             intent.putExtra(LOADING_TYPE, loadingType);
@@ -127,13 +128,13 @@ public class ShowLoadingActivity extends TwsActivity
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.wallet_push_down);
+        // overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        overridePendingTransition(R.anim.wallet_push_up, 0);
+        // overridePendingTransition(R.anim.wallet_push_up, 0);
 
         super.onCreate(savedInstanceState);
 
@@ -202,7 +203,8 @@ public class ShowLoadingActivity extends TwsActivity
         }
 
         getTwsActionBar().hide();
-        WalletHandlerManager.getInstance().register(mCard.getAID(),ACTVITY_SCENE.SCENE_ISSE_TOPUP,this);
+        WalletHandlerManager.getInstance().register(mCard.getAID(), ACTVITY_SCENE.SCENE_ISSE_TOPUP,
+                this);
     }
 
     @Override
@@ -359,24 +361,25 @@ public class ShowLoadingActivity extends TwsActivity
                 finishAndToast(R.string.wallet_no_order);
                 return;
             }
-            if(order.isInValidOrder()){
+            if (order.isInValidOrder()) {
                 finishAndToast(R.string.wallet_invalid_order);
             }
-            OrderManager.getInstance().setOrderLocalPaidStatus(order.getOrderRspParam().sTradeNo, true);
+            OrderManager.getInstance().setOrderLocalPaidStatus(order.getOrderRspParam().sTradeNo,
+                    true);
         }
     }
 
     private boolean resumeOpenOrTopupCard(boolean retry) {
         long ret = 0;
         switch (mLoadingType) {
-        case LOADING_TYPE_ACTIVATE_CARD:
-            ret = OrderManager.getInstance().placeIssueOrder(mInstanceId,
-                    mPayType, mActiveMoney, mTotalMoney - mActiveMoney, retry);
-            break;
-        case LOADING_TYPE_CHARGE_CARD:
-            ret = OrderManager.getInstance().placeTopupOrder(mInstanceId,
-                    mPayType, mTotalMoney - mActiveMoney, retry);
-            break;
+            case LOADING_TYPE_ACTIVATE_CARD:
+                ret = OrderManager.getInstance().placeIssueOrder(mInstanceId,
+                        mPayType, mActiveMoney, mTotalMoney - mActiveMoney, retry);
+                break;
+            case LOADING_TYPE_CHARGE_CARD:
+                ret = OrderManager.getInstance().placeTopupOrder(mInstanceId,
+                        mPayType, mTotalMoney - mActiveMoney, retry);
+                break;
         }
         return (ret >= 0);
     }
@@ -396,12 +399,12 @@ public class ShowLoadingActivity extends TwsActivity
         return showErrCode ? sErrDesc : getString(R.string.wallet_operation_failed_tip);
     }
 
-    private String getChargeBalanceTips(){
+    private String getChargeBalanceTips() {
         long iCurBalance = getCurCardBalance();
         String newbalance = Utils.getDisplayBalance(iCurBalance);
         return String.format(getString(R.string.wallet_traffic_card_balance_charge), newbalance);
     }
-    
+
     public long getCurCardBalance() {
         String strBalance = ((ITrafficCard) mCard).getBalance();
         if (TextUtils.isEmpty(strBalance)) {
@@ -411,7 +414,7 @@ public class ShowLoadingActivity extends TwsActivity
     }
 
     @Override
-    public void onUIUpdate(MODULE_CALLBACK module,final int ret, boolean forUpdateUI) {
+    public void onUIUpdate(MODULE_CALLBACK module, final int ret, boolean forUpdateUI) {
         mMainUIHandler.removeCallbacks(mHandleResumeEvent);
         mMainUIHandler.post(new Runnable() {
             @Override

@@ -35,10 +35,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:focusable="false"
-            android:gravity="center"
-            tws:text="@string/charge_card_button"
-            tws:textColor="#ffffff"
-            tws:textSize="14sp" />
+            android:gravity="center" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -49,10 +46,12 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:visibility="visible" >
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/wallet_listview_divider_height"
             android:background="@color/wallet_listview_divider_color" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +60,7 @@
             android:text="@string/wallet_num_label"
             android:textColor="#ffffff"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/wallet_traffic_card_num_val"
             android:layout_width="wrap_content"
@@ -70,12 +70,14 @@
             android:text=""
             android:textColor="#7fffffff"
             android:textSize="14sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/wallet_listview_divider_height"
             android:layout_alignParentBottom="true"
             android:background="@color/wallet_listview_divider_color" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/wallet_traffic_card_validity_layout"
         android:layout_width="match_parent"
@@ -161,9 +163,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        tws:text="@string/wallet_set_default_card"
-        tws:textColor="#ffffff"
-        tws:textSize="14sp" />
+         />
 
     <TextView
         android:id="@+id/wallet_jump_url"
@@ -187,7 +187,6 @@
         <!-- style="@style/WalletProgressBarTheme" -->
 
         <ProgressBar
-            style="@style/twsProgressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

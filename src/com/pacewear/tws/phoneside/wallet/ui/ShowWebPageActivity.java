@@ -14,9 +14,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import com.example.plugindemo.R;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.utils.DensityUtil;
 
@@ -70,13 +70,13 @@ public class ShowWebPageActivity extends TwsActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.wallet_push_down);
+        // overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        overridePendingTransition(R.anim.wallet_push_up, 0);
+        // overridePendingTransition(R.anim.wallet_push_up, 0);
 
         super.onCreate(savedInstanceState);
 

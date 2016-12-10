@@ -19,6 +19,24 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
+import com.pacewear.tws.phoneside.wallet.tosservice.PullUserInfo;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.app.AlertDialog;
@@ -27,26 +45,8 @@ import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.utils.DensityUtil;
-import com.tencent.tws.phoneside.walletv2.card.CardManager;
-import com.tencent.tws.phoneside.walletv2.card.ICard;
-import com.tencent.tws.phoneside.walletv2.card.ICard.ACTIVATION_STATUS;
-import com.tencent.tws.phoneside.walletv2.card.ICard.CARD_TYPE;
-import com.tencent.tws.phoneside.walletv2.card.ICardInner.CONFIG;
-import com.tencent.tws.phoneside.walletv2.card.ITrafficCard;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.env.EnvManager;
-import com.tencent.tws.phoneside.walletv2.order.IOrder;
-import com.tencent.tws.phoneside.walletv2.order.OrderManager;
-import com.tencent.tws.phoneside.walletv2.tosservice.IResponseObserver;
-import com.tencent.tws.phoneside.walletv2.tosservice.PullUserInfo;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.OnWalletUICallback;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletHandlerManager;
-import com.tencent.tws.phoneside.walletv2.ui.widget.BaseCard;
 
 import qrom.component.log.QRomLog;
 
@@ -171,7 +171,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                 btn.setOnClickListener(this);
                 break;
             case BANK_CARD:
-                setContentView(R.layout.wallet_bank_card_details);
+                // setContentView(R.layout.wallet_bank_card_details);
                 break;
             default:
                 return;
@@ -361,10 +361,10 @@ public class ShowCardDetailsActivity extends TwsActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        if (mCard.getCardType() == CARD_TYPE.BANK_CARD) {
-            getMenuInflater().inflate(
-                    R.menu.wallet_card_detail_action_bar_menu, menu);
-        }
+        // if (mCard.getCardType() == CARD_TYPE.BANK_CARD) {
+        // getMenuInflater().inflate(
+        // R.menu.wallet_card_detail_action_bar_menu, menu);
+        // }
 
         return true;
     }
@@ -394,7 +394,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                                 new int[] {
                                         AlertDialog.BOTTOM_BUTTON_COLOR_RED,
                                         Color.WHITE
-                }).create(true);
+                                }).create(true);
                 dialog.setTitleTextSize(getResources().getDimension(
                         R.dimen.wallet_dialog_title_text_size)
                         / getResources().getDisplayMetrics().density);
@@ -445,7 +445,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                                 new int[] {
                                         AlertDialog.BOTTOM_BUTTON_COLOR_RED,
                                         Color.WHITE
-                }).create(true);
+                                }).create(true);
 
                 dialog.setTitleTextSize(getResources().getDimension(
                         R.dimen.wallet_dialog_title_text_size)
@@ -490,10 +490,10 @@ public class ShowCardDetailsActivity extends TwsActivity
 
     @Override
     public void onClick(View arg0) {
-        boolean hasClicked = Utils.getWorkerHandler().hasCallbacks(mClickRunable);
-        if (!hasClicked) {
-            Utils.getWorkerHandler().post(mClickRunable);
-        }
+        // boolean hasClicked = Utils.getWorkerHandler().hasCallbacks(mClickRunable);
+        // if (!hasClicked) {
+        // Utils.getWorkerHandler().post(mClickRunable);
+        // }
 
     }
 

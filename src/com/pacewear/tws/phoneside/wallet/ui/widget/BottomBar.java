@@ -9,8 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.plugindemo.R;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.gdevicemanager.R;
 
 public class BottomBar extends FrameLayout implements OnClickListener {
 

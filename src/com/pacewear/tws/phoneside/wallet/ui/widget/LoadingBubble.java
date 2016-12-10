@@ -16,6 +16,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.plugindemo.R;
+
 import qrom.component.log.QRomLog;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class LoadingBubble extends SurfaceView implements SurfaceHolder.Callback
 
     private DrawThread mDrawThread = null;
 
+    private Context mContext = null;
     /**
      * 帧率
      */
@@ -68,6 +71,7 @@ public class LoadingBubble extends SurfaceView implements SurfaceHolder.Callback
 
     public LoadingBubble(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         getHolder().addCallback(this);
         // 支持surface透明设置
         setZOrderOnTop(true);

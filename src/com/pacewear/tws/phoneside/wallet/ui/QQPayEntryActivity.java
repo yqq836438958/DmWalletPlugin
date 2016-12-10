@@ -9,13 +9,9 @@ import com.tencent.mobileqq.openpay.api.IOpenApiListener;
 import com.tencent.mobileqq.openpay.api.OpenApiFactory;
 import com.tencent.mobileqq.openpay.data.base.BaseResponse;
 import com.tencent.mobileqq.openpay.data.pay.PayResponse;
-import com.tencent.tws.gdevicemanager.wxapi.WXPayEntryActivity;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.business.WeChatOAuthHelper;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;

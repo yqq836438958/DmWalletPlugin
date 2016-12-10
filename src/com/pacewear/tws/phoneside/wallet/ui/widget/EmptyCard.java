@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.plugindemo.R;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 
 public class EmptyCard extends LinearLayout {

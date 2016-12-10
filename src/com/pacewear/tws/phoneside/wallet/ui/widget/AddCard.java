@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tencent.tws.gdevicemanager.R;
+import com.example.plugindemo.R;
 
 public class AddCard extends BaseCard {
 

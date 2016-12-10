@@ -1,3 +1,4 @@
+
 package com.pacewear.tws.phoneside.wallet.ui;
 
 import TRom.ApplyRefundRsp;
@@ -18,49 +19,49 @@ import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.walletv2.card.CardManager;
-import com.tencent.tws.phoneside.walletv2.card.ICard;
-import com.tencent.tws.phoneside.walletv2.card.ICard.CARD_TYPE;
-import com.tencent.tws.phoneside.walletv2.card.ICardInner.CONFIG;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.env.EnvManager;
-import com.tencent.tws.phoneside.walletv2.order.IOrder;
-import com.tencent.tws.phoneside.walletv2.order.OrderManager;
-import com.tencent.tws.phoneside.walletv2.order.IOrderManager.ORDER_STEP;
-import com.tencent.tws.phoneside.walletv2.tosservice.ApplyRefund;
-import com.tencent.tws.phoneside.walletv2.tosservice.IResponseObserver;
-import com.tencent.tws.phoneside.walletv2.wupserver.ServerHandler;
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrderManager.ORDER_STEP;
+import com.pacewear.tws.phoneside.wallet.tosservice.ApplyRefund;
+import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
+import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 
 import qrom.component.log.QRomLog;
 
 public class ShowOperationResultActivity extends TwsActivity {
 
-	public static final String TAG = ShowOperationResultActivity.class
-			.getSimpleName();
+    public static final String TAG = ShowOperationResultActivity.class
+            .getSimpleName();
 
-	public static final String EXTRA_RESULT_TYPE = "EXTRA_RESULT_TYPE";
+    public static final String EXTRA_RESULT_TYPE = "EXTRA_RESULT_TYPE";
 
-	public static final int RESULT_SUCCESS = 100;
+    public static final int RESULT_SUCCESS = 100;
 
-	public static final int RESULT_FAILED = RESULT_SUCCESS + 1;
+    public static final int RESULT_FAILED = RESULT_SUCCESS + 1;
 
-	public static final String EXTRA_RESULT_CAPTION = "EXTRA_RESULT_CAPTION";
+    public static final String EXTRA_RESULT_CAPTION = "EXTRA_RESULT_CAPTION";
 
-	public static final String EXTRA_RESULT_DESCRIPTION = "EXTRA_RESULT_DESCRIPTION";
+    public static final String EXTRA_RESULT_DESCRIPTION = "EXTRA_RESULT_DESCRIPTION";
 
-	private int mLoadingType = ShowLoadingActivity.LOADING_TYPE_NULL;
+    private int mLoadingType = ShowLoadingActivity.LOADING_TYPE_NULL;
 
-	private CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
+    private CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
-	private ICard mCard = null;
+    private ICard mCard = null;
 
-	private String mInstanceId;
+    private String mInstanceId;
 
-	private long mTotalFee = 0;
+    private long mTotalFee = 0;
 
-	private int mPayType = E_PAY_TYPE._E_PT_WEIXIN_PAY;
+    private int mPayType = E_PAY_TYPE._E_PT_WEIXIN_PAY;
 
     private Context mContext = null;
 
@@ -68,75 +69,76 @@ public class ShowOperationResultActivity extends TwsActivity {
 
     private static final int ICON_CLICK_COUNT = 15;
 
-	@Override
-	public void finish() {
-		super.finish();
-		overridePendingTransition(0, R.anim.wallet_push_down);
-	}
+    @Override
+    public void finish() {
+        super.finish();
+        // overridePendingTransition(0, R.anim.wallet_push_down);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		overridePendingTransition(R.anim.wallet_push_up, 0);
+        // overridePendingTransition(R.anim.wallet_push_up, 0);
 
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
         mContext = this;
 
-		int resultType = RESULT_SUCCESS;
-		String caption = null;
-		String description = null;
+        int resultType = RESULT_SUCCESS;
+        String caption = null;
+        String description = null;
 
-		Intent intent = getIntent();
-		if (intent != null) {
-		    mType = (CARD_TYPE) intent.getSerializableExtra(
+        Intent intent = getIntent();
+        if (intent != null) {
+            mType = (CARD_TYPE) intent.getSerializableExtra(
                     PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE);
-			resultType = intent.getIntExtra(EXTRA_RESULT_TYPE, RESULT_SUCCESS);
-			caption = intent.getStringExtra(EXTRA_RESULT_CAPTION);
-			description = intent.getStringExtra(EXTRA_RESULT_DESCRIPTION);
-			mInstanceId = intent
-					.getStringExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID);
-			mLoadingType = ShowLoadingActivity.getLoadingType(intent);
-			mTotalFee = intent.getLongExtra(
-					PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE, 0L);
-			mPayType = intent.getIntExtra(
-					PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
-					E_PAY_TYPE._E_PT_WEIXIN_PAY);
-		} else {
-			finish();
-			return;
-		}
+            resultType = intent.getIntExtra(EXTRA_RESULT_TYPE, RESULT_SUCCESS);
+            caption = intent.getStringExtra(EXTRA_RESULT_CAPTION);
+            description = intent.getStringExtra(EXTRA_RESULT_DESCRIPTION);
+            mInstanceId = intent
+                    .getStringExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID);
+            mLoadingType = ShowLoadingActivity.getLoadingType(intent);
+            mTotalFee = intent.getLongExtra(
+                    PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE, 0L);
+            mPayType = intent.getIntExtra(
+                    PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
+                    E_PAY_TYPE._E_PT_WEIXIN_PAY);
+        } else {
+            finish();
+            return;
+        }
 
-		setContentView(R.layout.wallet_show_operation_result);
+        setContentView(R.layout.wallet_show_operation_result);
 
-		mCard = CardManager.getInstance().getCard(mInstanceId);
-		if (mCard == null) {
-			finish();
-			QRomLog.e(TAG, "onCreate|cardType=" + mType + ", instanceId="
-					+ mInstanceId);
-			return;
-		}
+        mCard = CardManager.getInstance().getCard(mInstanceId);
+        if (mCard == null) {
+            finish();
+            QRomLog.e(TAG, "onCreate|cardType=" + mType + ", instanceId="
+                    + mInstanceId);
+            return;
+        }
 
         final ImageView icon = (ImageView) findViewById(R.id.wallet_result_ic);
-		TextView captionTv = (TextView) findViewById(R.id.wallet_result_caption);
-		TextView descriptionTv = (TextView) findViewById(R.id.wallet_result_description);
-		TextView retry = (TextView) findViewById(R.id.wallet_result_retry);
-		TwsButton button = (TwsButton) findViewById(R.id.wallet_operation_result_close);
+        TextView captionTv = (TextView) findViewById(R.id.wallet_result_caption);
+        TextView descriptionTv = (TextView) findViewById(R.id.wallet_result_description);
+        TextView retry = (TextView) findViewById(R.id.wallet_result_retry);
+        TwsButton button = (TwsButton) findViewById(R.id.wallet_operation_result_close);
 
         if (!ServerHandler.getInstance().isTestEnv()) {
             captionTv.setEnabled(false);
         }
-		captionTv.setOnClickListener(new OnClickListener() {
+        captionTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 mIconClickCount++;
                 if (mIconClickCount == ICON_CLICK_COUNT) {
-                    Toast.makeText(mContext, "ApplyRefund already turnned on", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "ApplyRefund already turnned on", Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });
 
-		captionTv.setOnLongClickListener(new OnLongClickListener() {
+        captionTv.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
                 QRomLog.d(TAG, "onLongClick");
@@ -223,73 +225,75 @@ public class ShowOperationResultActivity extends TwsActivity {
             }
         });
 
-		captionTv.setText(caption);
-		descriptionTv.setText(Html.fromHtml(description));
-		descriptionTv.setMovementMethod(LinkMovementMethod.getInstance());
+        captionTv.setText(caption);
+        descriptionTv.setText(Html.fromHtml(description));
+        descriptionTv.setMovementMethod(LinkMovementMethod.getInstance());
 
-		switch (resultType) {
-		case RESULT_SUCCESS:
-			icon.setImageResource(R.drawable.wallet_operate_success);
-			button.setText(getString(R.string.wallet_payment_result_finish));
-			break;
-		case RESULT_FAILED:
-			icon.setImageResource(R.drawable.wallet_operate_failed);
-			button.setText(getString(R.string.wallet_operation_result_close));
-			retry.setVisibility(View.VISIBLE);
-			break;
-		default:
-			finish();
-			return;
-		}
+        switch (resultType) {
+            case RESULT_SUCCESS:
+                icon.setImageResource(R.drawable.wallet_operate_success);
+                button.setText(getString(R.string.wallet_payment_result_finish));
+                break;
+            case RESULT_FAILED:
+                icon.setImageResource(R.drawable.wallet_operate_failed);
+                button.setText(getString(R.string.wallet_operation_result_close));
+                retry.setVisibility(View.VISIBLE);
+                break;
+            default:
+                finish();
+                return;
+        }
 
-		getTwsActionBar().hide();
+        getTwsActionBar().hide();
 
-		button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-		retry.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-			    if(!EnvManager.getInstance().isWatchConnected()){
-			        Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips, Toast.LENGTH_LONG).show();
-			        return;
-			    }
+        retry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if (!EnvManager.getInstance().isWatchConnected()) {
+                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!CardManager.getInstance().isReady()) {
                     Toast.makeText(mContext, R.string.wallet_sync_err_watch,
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-			    IOrder order= OrderManager.getInstance().getLastOrder(mCard.getAID());
-                if(order == null || order.isInValidOrder()){
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_invalid_order, Toast.LENGTH_LONG).show();
+                IOrder order = OrderManager.getInstance().getLastOrder(mCard.getAID());
+                if (order == null || order.isInValidOrder()) {
+                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_invalid_order,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
-				onRetryClick();
-			}
-		});
-	}
+                onRetryClick();
+            }
+        });
+    }
 
-	private void onRetryClick() {
-		QRomLog.d(TAG, "onRetryClick");
+    private void onRetryClick() {
+        QRomLog.d(TAG, "onRetryClick");
 
-		switch (mLoadingType) {
-		case ShowLoadingActivity.LOADING_TYPE_ACTIVATE_CARD:
-		case ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD:
+        switch (mLoadingType) {
+            case ShowLoadingActivity.LOADING_TYPE_ACTIVATE_CARD:
+            case ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD:
 
-			ShowLoadingActivity.launchLoading(this, mCard.getCardType(),
-					mCard.getAID(), mPayType, mTotalFee, mLoadingType,
-					true);
-			finish();
-			break;
-		}
-	}
+                ShowLoadingActivity.launchLoading(this, mCard.getCardType(),
+                        mCard.getAID(), mPayType, mTotalFee, mLoadingType,
+                        true);
+                finish();
+                break;
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		// super.onBackPressed();
-	}
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+    }
 }

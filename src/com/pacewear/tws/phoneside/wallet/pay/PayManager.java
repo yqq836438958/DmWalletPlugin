@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.IOrderInner;
 import com.pacewear.tws.phoneside.wallet.order.IOrderManagerInner;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;

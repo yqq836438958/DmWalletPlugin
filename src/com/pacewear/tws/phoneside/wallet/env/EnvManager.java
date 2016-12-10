@@ -105,8 +105,8 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
     private final void monitorWathPair() {
         QRomLog.d(TAG, "monitorWathPair");
         IntentFilter intent = new IntentFilter();
-        intent.addAction(UnpairOrLogoutMgr.ACTION_FIRST_CONNECT_BY_SCAN);
-        intent.addAction(UnpairOrLogoutMgr.ACTION_UNPAIR_DEVICE);
+        intent.addAction("action_first_connect_by_scan");
+        intent.addAction("action_unpair_device");
         GlobalObj.g_appContext.registerReceiver(new BroadcastReceiver() {
 
             @Override
@@ -119,9 +119,9 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
                 String action = intent.getAction();
                 QRomLog.d(TAG, "monitorWathPair onReceive action:" + action);
 
-                if (action.equalsIgnoreCase(UnpairOrLogoutMgr.ACTION_FIRST_CONNECT_BY_SCAN)) {
+                if (action.equalsIgnoreCase("action_first_connect_by_scan")) {
                     mHandler.sendEmptyMessage(MSG_WATCH_PAIRED);
-                } else if (action.equalsIgnoreCase(UnpairOrLogoutMgr.ACTION_UNPAIR_DEVICE)) {
+                } else if (action.equalsIgnoreCase("action_unpair_device")) {
                     mHandler.sendEmptyMessage(MSG_WATCH_UNPAIRED);
                 }
             }
@@ -546,7 +546,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         if (!TextUtils.isEmpty(mUserPhoneNum)) {
             return;
         }
-        String tmpPhone = SmsModel.get().getPhoneNum();
+        String tmpPhone = null;// SmsModel.get().getPhoneNum();
         if (!TextUtils.isEmpty(tmpPhone)) {
             setUserPhoneNum(tmpPhone);
             return;
@@ -555,14 +555,14 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
 
             @Override
             public void run() {
-                SmsModel.get().getPhoneNum(new OnSmsCallback() {
-                    @Override
-                    public void OnResult(int ret, String result) {
-                        if (ret == 0 && !TextUtils.isEmpty(result)) {
-                            setUserPhoneNum(result);
-                        }
-                    }
-                });
+                // SmsModel.get().getPhoneNum(new OnSmsCallback() {
+                // @Override
+                // public void OnResult(int ret, String result) {
+                // if (ret == 0 && !TextUtils.isEmpty(result)) {
+                // setUserPhoneNum(result);
+                // }
+                // }
+                // });
             }
         });
     }

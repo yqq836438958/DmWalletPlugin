@@ -64,8 +64,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        tws:text="@string/wallet_operation_result_close"
-        tws:textColor="#ffffff"
-        tws:textSize="14sp" />
+ />
 
 </RelativeLayout>

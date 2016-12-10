@@ -1,5 +1,5 @@
 
-package com.tencent.tws.phoneside.walletv2.ui;
+package com.pacewear.tws.phoneside.wallet.ui;
 
 import android.app.TwsActivity;
 import android.content.Intent;
@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tencent.tws.gdevicemanager.R;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.transaction.CardTransactItem;
+import com.pacewear.tws.phoneside.wallet.transaction.CardTransaction;
+import com.pacewear.tws.phoneside.wallet.transaction.ITransactionCallback;
+import com.pacewear.tws.phoneside.wallet.ui.widget.TransactionView;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.transaction.CardTransactItem;
-import com.tencent.tws.phoneside.walletv2.transaction.CardTransaction;
-import com.tencent.tws.phoneside.walletv2.transaction.ITransactionCallback;
-import com.tencent.tws.phoneside.walletv2.ui.widget.TransactionView;
 
 import java.util.ArrayList;
 

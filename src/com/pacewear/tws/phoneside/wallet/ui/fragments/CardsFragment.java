@@ -20,11 +20,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
+import com.pacewear.tws.phoneside.wallet.common.ButtonTouchStateListener;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.ui.ErrorCardActivity;
+import com.pacewear.tws.phoneside.wallet.ui.SelectAddCardActivity;
+import com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity;
+import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
+import com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity;
+import com.pacewear.tws.phoneside.wallet.ui.widget.AddCard;
+import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
+import com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard;
+import com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView;
 import com.tencent.tws.assistant.widget.AdapterView;
 import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
 import com.tencent.tws.assistant.widget.ListView;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
 
 public class CardsFragment extends Fragment {
@@ -136,7 +154,6 @@ public class CardsFragment extends Fragment {
                                 convertView = new TrafficCardView(mContext);
                                 break;
                             case BANK_CARD:
-                                convertView = new BankCardView(mContext);
                                 break;
                         }
                     } else {
@@ -253,8 +270,8 @@ public class CardsFragment extends Fragment {
                             mListCard.size() == 1 ? false : true);
                     break;
                 case BANK_CARD:
-                    BankCardView.setShowDefaultTag(
-                            mListCard.size() == 1 ? false : true);
+                    // BankCardView.setShowDefaultTag(
+                    // mListCard.size() == 1 ? false : true);
                     break;
             }
         }

@@ -1,7 +1,7 @@
 
 package com.pacewear.tws.phoneside.wallet.card;
 
-import com.tencent.tws.gdevicemanager.R;
+import com.example.plugindemo.R;
 
 import qrom.component.log.QRomLog;
 
@@ -84,7 +84,7 @@ public interface ICardInner extends ICard {
                 "city_code=01",
                 // class
                 TrafficCard.class),
-        ;
+                ;
 
         private static final String TAG = "ICard.CONFIG";
 
@@ -104,19 +104,20 @@ public interface ICardInner extends ICard {
         public CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
         public int mCardNameRes = 0;
-        
+
         public int mCardIconRes = 0;
-        
+
         public int mCardBgRes = 0;
-        
+
         public String mCardExtra_Info = "";
 
         public int mBalanceTxtColor = 0;
 
         public int mBalanceIcon = 0;
 
-        private CONFIG(String aid, CARD_TYPE type, int cardNameRes,int cardIconRes,
-                int cardBgRes,int balanceTxtColor,int balanceIcon,String ext_info,Class<? extends Card> cls) {
+        private CONFIG(String aid, CARD_TYPE type, int cardNameRes, int cardIconRes,
+                int cardBgRes, int balanceTxtColor, int balanceIcon, String ext_info,
+                Class<? extends Card> cls) {
             mAID = aid;
             mType = type;
             mCardNameRes = cardNameRes;

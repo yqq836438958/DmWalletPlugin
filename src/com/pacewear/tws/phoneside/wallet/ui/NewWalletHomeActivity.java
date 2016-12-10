@@ -7,23 +7,23 @@ import com.tencent.tws.assistant.support.v4.view.ViewPager.OnPageChangeListener;
 import com.tencent.tws.assistant.widget.TabIndicator;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.framework.global.GlobalObj;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.utils.BranchUtil;
-import com.tencent.tws.phoneside.walletv2.card.CardManager;
-import com.tencent.tws.phoneside.walletv2.card.ICard;
-import com.tencent.tws.phoneside.walletv2.card.ICard.CARD_TYPE;
-import com.tencent.tws.phoneside.walletv2.card.ICard.INSTALL_STATUS;
-import com.tencent.tws.phoneside.walletv2.card.ICardInner.CONFIG;
-import com.tencent.tws.phoneside.walletv2.common.Constants;
-import com.tencent.tws.phoneside.walletv2.common.Utils;
-import com.tencent.tws.phoneside.walletv2.env.EnvManager;
-import com.tencent.tws.phoneside.walletv2.order.OrderManager;
-import com.tencent.tws.phoneside.walletv2.ui.fragments.CardsFragment;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletHandlerManager;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
-import com.tencent.tws.phoneside.walletv2.ui.handler.WalletBaseHandler.OnWalletUICallback;
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.Constants;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.ui.fragments.CardsFragment;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 
 import android.app.Activity;
 import android.app.LocalActivityManager;
@@ -74,10 +74,10 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         TAB_FIRST = getString(R.string.nfc_traffic_card);
         TAB_SECOND = getString(R.string.nfc_bank_card);
 
-        TwsTabWidget tabWidget = (TwsTabWidget) findViewById(R.id.tabs);
+        TwsTabWidget tabWidget = null;// (TwsTabWidget) findViewById(R.id.tabs);
         tabWidget.setBackgroundResource(R.color.wallet_action_bar_background);
 
-        mTabHost = (TwsTabHost) findViewById(R.id.tabhost);
+        mTabHost = null;// (TwsTabHost) findViewById(R.id.tabhost);
         prepareTabViewAndActionBar();
         mWaiting = findViewById(R.id.wallet_main_wait);
         if (!isModuleAvailable()) {
@@ -85,7 +85,7 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
             return;
         }
         mTabHost.setCurrentTab(mCurrentTabIndex);
-        mPager = (ViewPager) findViewById(R.id.tabviewpager);
+        mPager = null;// (ViewPager) findViewById(R.id.tabviewpager);
         mIndicator = (TabIndicator) findViewById(R.id.tab_indicator);
         ViewPager.OnPageChangeListener mChangeListener = new OnPageChangeListener() {
 
@@ -143,14 +143,14 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.wallet_action_bar_background)));
         if (mTabHost != null) {
-            mTabHost.setup(mLocalActivityManager, getFragmentManager(),
-                    mCurrentTabIndex);
+            // mTabHost.setup(mLocalActivityManager, getFragmentManager(),
+            // mCurrentTabIndex);
 
             String tabTitle = TAB_FIRST;
             mTrafficCardsFragment = new CardsFragment(
                     CARD_TYPE.TRAFFIC_CARD);
-            mTabHost.addTab(mTabHost.newTabSpec(TAB_FIRST)
-                    .setIndicator(tabTitle).setContent(mTrafficCardsFragment));
+//            mTabHost.addTab(mTabHost.newTabSpec(TAB_FIRST)
+//                    .setIndicator(tabTitle).setContent(mTrafficCardsFragment));
 
             // tabTitle = TAB_SECOND;
             // mBankCardsFragment = new CardsFragment(

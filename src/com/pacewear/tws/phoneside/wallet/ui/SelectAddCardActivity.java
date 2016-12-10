@@ -19,8 +19,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.AdapterView;
 import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
@@ -46,13 +54,13 @@ public class SelectAddCardActivity extends TwsActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.wallet_push_down);
+        // overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        overridePendingTransition(R.anim.wallet_push_up, 0);
+        // overridePendingTransition(R.anim.wallet_push_up, 0);
 
         super.onCreate(savedInstanceState);
 
@@ -207,8 +215,8 @@ public class SelectAddCardActivity extends TwsActivity {
         }
         if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(aid)
                 && TextUtils.isEmpty(EnvManager.getInstanceInner().getUserPhoneNum())) {// todo
-            Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
-            startActivityForResult(intent, PEKINGREQUEST);
+            // Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
+            // startActivityForResult(intent, PEKINGREQUEST);
             // finish();
             return true;
         }
@@ -219,7 +227,7 @@ public class SelectAddCardActivity extends TwsActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case Activity.RESULT_OK:
-                String num = data.getStringExtra(PhoneVerifyActivity.PHONENUM);
+                String num = null;// data.getStringExtra(PhoneVerifyActivity.PHONENUM);
                 EnvManager.getInstanceInner().setUserPhoneNum(num);
                 if (requestCode == PEKINGREQUEST) {
                     Intent intent = new Intent();

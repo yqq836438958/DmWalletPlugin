@@ -14,10 +14,7 @@
         android:layout_height="36dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:visibility="gone"
-        tws:text="@string/wallet_traffic_card_add"
-        tws:textColor="#ffffff"
-        tws:textSize="16sp" />
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/br_couple_bt_ly"
@@ -32,10 +29,7 @@
             android:layout_height="36dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            tws:text="@string/wallet_traffic_card_add"
-            tws:textColor="#ffffff"
-            tws:textSize="16sp" />
+            android:gravity="center" />
 
         <com.tencent.tws.assistant.widget.TwsButton
             android:id="@+id/br_couple_right_bt"
@@ -43,10 +37,7 @@
             android:layout_height="36dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            tws:text="@string/wallet_traffic_card_add"
-            tws:textColor="#ffffff"
-            tws:textSize="16sp" />
+            android:gravity="center" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,11 +73,7 @@
             android:layout_height="36dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            tws:text="@string/activate_confirm"
-            tws:textColor="#ffffff"
-            tws:textSize="16sp"
-            tws:twsButtonMode="recommended" />
+            android:gravity="center" />
     </RelativeLayout>
 
 </FrameLayout>

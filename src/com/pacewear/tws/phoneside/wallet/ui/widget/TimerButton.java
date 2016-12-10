@@ -14,8 +14,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.example.plugindemo.R;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.gdevicemanager.R;
 
 public class TimerButton extends TwsButton implements OnClickListener {
     private long lenght = 60 * 1000;
@@ -39,7 +39,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
         textInit = context.getString(R.string.wallet_get_verify);
         textbefore = context.getString(R.string.wallet_reget_verify_reset);
         textafter = context.getString(R.string.wallet_reget_verify);
-        setTextNoPadding();
+        // setTextNoPadding();
         setText(textInit);
         setOnClickListener(this);
     }

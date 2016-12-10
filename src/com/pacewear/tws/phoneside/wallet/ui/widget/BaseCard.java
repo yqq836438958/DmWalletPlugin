@@ -12,16 +12,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tencent.tws.gdevicemanager.R;
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICardManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.IOrderManager;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.ui.fragments.CardsFragment;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.walletv2.card.CardManager;
-import com.tencent.tws.phoneside.walletv2.card.ICard;
-import com.tencent.tws.phoneside.walletv2.card.ICard.ACTIVATION_STATUS;
-import com.tencent.tws.phoneside.walletv2.card.ICardManager;
-import com.tencent.tws.phoneside.walletv2.order.IOrder;
-import com.tencent.tws.phoneside.walletv2.order.IOrderManager;
-import com.tencent.tws.phoneside.walletv2.order.OrderManager;
-import com.tencent.tws.phoneside.walletv2.ui.fragments.CardsFragment;
 
 public abstract class BaseCard extends FrameLayout {
 

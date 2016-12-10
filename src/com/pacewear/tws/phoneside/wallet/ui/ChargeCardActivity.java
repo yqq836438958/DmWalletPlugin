@@ -18,6 +18,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
+import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
+import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.pay.PayManager;
+import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect;
+import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect.OnSelectChangeListener;
+import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.AdapterView;
@@ -26,7 +38,6 @@ import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.assistant.widget.ListView;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.gdevicemanager.R;
 import com.tencent.tws.pay.PayNFCConstants;
 import java.util.ArrayList;
 
@@ -57,13 +68,13 @@ public class ChargeCardActivity extends TwsActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.wallet_push_down);
+        // overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        overridePendingTransition(R.anim.wallet_push_up, 0);
+        // overridePendingTransition(R.anim.wallet_push_up, 0);
 
         super.onCreate(savedInstanceState);
 
@@ -138,10 +149,10 @@ public class ChargeCardActivity extends TwsActivity {
                 int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
                         : E_PAY_TYPE._E_PT_WEIXIN_PAY;
                 if (!PayManager.isPayChannelSupport(payType)) {
-                    Toast.makeText(GlobalObj.g_appContext,
-                            (payType == PAY_CHANNEL_QQ) ? R.string.login_download_qq
-                                    : R.string.login_download_mm,
-                            Toast.LENGTH_LONG).show();
+                    // Toast.makeText(GlobalObj.g_appContext,
+                    // (payType == PAY_CHANNEL_QQ) ? R.string.login_download_qq
+                    // : R.string.login_download_mm,
+                    // Toast.LENGTH_LONG).show();
                     return;
                 }
                 long chargeValue = 0;
