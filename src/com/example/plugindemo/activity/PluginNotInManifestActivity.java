@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.plugindemo.PluginTestApplication;
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.example.plugindemo.receiver.PluginTestReceiver;
 import com.example.plugindemo.vo.ParamVO;
 import com.tencent.tws.sharelib.util.HostProxy;

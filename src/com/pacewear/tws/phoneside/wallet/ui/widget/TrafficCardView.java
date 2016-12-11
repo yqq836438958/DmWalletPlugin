@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import qrom.component.log.QRomLog;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.tencent.tws.pay.PayNFCConstants;

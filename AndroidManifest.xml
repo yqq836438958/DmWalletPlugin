@@ -4,7 +4,7 @@
 如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.plugindemo"
+    package="com.pacewear.tws.phoneside.wallet"
     android:sharedUserId="com.tencent.tws.gdevicemanager"
     android:versionCode="1"
     android:versionName="1.0.1" >
@@ -62,21 +62,21 @@
             android:label="com.tencent.tws.sharelib.ShareService"
             android:value="com.example.plugindemo.PluginSharedService" />
 
-        <activity android:name=".activity.LauncherActivity" >
+        <activity android:name="com.example.plugindemo.activity.LauncherActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SideBarActivity" >
+        <activity android:name="com.example.plugindemo.activity.SideBarActivity" >
             <intent-filter>
                 <action android:name="test.ajc" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.TwsActivityDemo" >
+        <activity android:name="com.example.plugindemo.activity.TwsActivityDemo" >
             <intent-filter>
                 <action android:name="test.ajc" />
 

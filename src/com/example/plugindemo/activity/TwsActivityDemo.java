@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 public class TwsActivityDemo extends TwsActivity implements View.OnClickListener {
 

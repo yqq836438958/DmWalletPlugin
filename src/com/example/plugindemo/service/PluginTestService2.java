@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 /**
  * @author yongchen

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 @SuppressWarnings("ALL")
 public class PluginTestTabActivity extends TabActivity {

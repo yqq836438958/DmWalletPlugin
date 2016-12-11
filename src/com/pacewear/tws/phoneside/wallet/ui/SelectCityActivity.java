@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem.SimpleViewCache;

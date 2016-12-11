@@ -14,7 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.pay.PayNFCConstants;

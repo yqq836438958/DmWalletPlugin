@@ -16,7 +16,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 import qrom.component.log.QRomLog;
 

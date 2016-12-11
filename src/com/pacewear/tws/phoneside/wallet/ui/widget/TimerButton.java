@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.tencent.tws.assistant.widget.TwsButton;
 
 public class TimerButton extends TwsButton implements OnClickListener {

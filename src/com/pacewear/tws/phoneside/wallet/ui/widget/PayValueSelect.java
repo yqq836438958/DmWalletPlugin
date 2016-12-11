@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 import java.util.ArrayList;
 

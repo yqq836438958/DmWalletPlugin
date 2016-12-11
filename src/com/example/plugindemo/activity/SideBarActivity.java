@@ -8,7 +8,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.tencent.tws.assistant.widget.SideBar;
 import com.tencent.tws.assistant.widget.SideBar.OnTouchingLetterChangedListener;
 

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 /**
  * 测试插件程序找中是否可以使用自定义控件自定义属性

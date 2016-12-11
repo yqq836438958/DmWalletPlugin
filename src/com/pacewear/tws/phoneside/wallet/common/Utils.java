@@ -11,7 +11,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.qq.taf.jce.JceInputStream;
 import com.qq.taf.jce.JceUtil;

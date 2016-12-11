@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.tencent.tws.sharelib.util.HostProxy;
 
 public class PluginForOppoAndVivoActivity extends Activity implements OnClickListener {

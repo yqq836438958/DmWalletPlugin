@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.pluginbase.ILoginService;
 import com.example.pluginbase.LoginVO;
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 @SuppressWarnings("ALL")
 public class PluginWebViewActivity extends Activity implements OnClickListener {

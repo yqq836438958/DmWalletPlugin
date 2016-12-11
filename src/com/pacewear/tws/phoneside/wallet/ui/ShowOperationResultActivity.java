@@ -20,7 +20,7 @@ import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;

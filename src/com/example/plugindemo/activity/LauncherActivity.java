@@ -33,7 +33,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.example.plugindemo.provider.PluginDbTables;
 import com.example.plugindemo.receiver.PluginTestReceiver2;
 import com.example.plugindemo.service.PluginTestService;

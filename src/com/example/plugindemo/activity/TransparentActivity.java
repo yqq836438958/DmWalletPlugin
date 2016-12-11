@@ -3,7 +3,7 @@ package com.example.plugindemo.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 /**
  * 测试透明Activity

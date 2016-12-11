@@ -1,7 +1,7 @@
 
 package com.pacewear.tws.phoneside.wallet.card;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 
 import qrom.component.log.QRomLog;
 

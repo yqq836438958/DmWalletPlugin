@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.plugindemo.R;
+import com.pacewear.tws.phoneside.wallet.R;
 import com.tencent.tws.assistant.widget.TwsButton;
 
 public class BottomBar extends FrameLayout implements OnClickListener {
