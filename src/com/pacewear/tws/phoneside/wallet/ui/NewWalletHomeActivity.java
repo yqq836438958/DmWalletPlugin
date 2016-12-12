@@ -74,10 +74,10 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         TAB_FIRST = getString(R.string.nfc_traffic_card);
         TAB_SECOND = getString(R.string.nfc_bank_card);
 
-        TwsTabWidget tabWidget = null;// (TwsTabWidget) findViewById(R.id.tabs);
+        TwsTabWidget tabWidget = (TwsTabWidget) findViewById(R.id.tabs);
         tabWidget.setBackgroundResource(R.color.wallet_action_bar_background);
 
-        mTabHost = null;// (TwsTabHost) findViewById(R.id.tabhost);
+        mTabHost = (TwsTabHost) findViewById(R.id.tabhost);
         prepareTabViewAndActionBar();
         mWaiting = findViewById(R.id.wallet_main_wait);
         if (!isModuleAvailable()) {
@@ -85,7 +85,7 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
             return;
         }
         mTabHost.setCurrentTab(mCurrentTabIndex);
-        mPager = null;// (ViewPager) findViewById(R.id.tabviewpager);
+        mPager = (ViewPager) findViewById(R.id.tabviewpager);
         mIndicator = (TabIndicator) findViewById(R.id.tab_indicator);
         ViewPager.OnPageChangeListener mChangeListener = new OnPageChangeListener() {
 
@@ -143,14 +143,14 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.wallet_action_bar_background)));
         if (mTabHost != null) {
-            // mTabHost.setup(mLocalActivityManager, getFragmentManager(),
-            // mCurrentTabIndex);
+//            FragmentManager
+            mTabHost.setup(mCurrentTabIndex);
 
             String tabTitle = TAB_FIRST;
             mTrafficCardsFragment = new CardsFragment(
                     CARD_TYPE.TRAFFIC_CARD);
-//            mTabHost.addTab(mTabHost.newTabSpec(TAB_FIRST)
-//                    .setIndicator(tabTitle).setContent(mTrafficCardsFragment));
+            mTabHost.addTab(mTabHost.newTabSpec(TAB_FIRST)
+                    .setIndicator(tabTitle).setContent(mTrafficCardsFragment));
 
             // tabTitle = TAB_SECOND;
             // mBankCardsFragment = new CardsFragment(

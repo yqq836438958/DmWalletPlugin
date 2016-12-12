@@ -6,7 +6,6 @@ import java.util.List;
 
 import qrom.component.log.QRomLog;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -39,6 +38,7 @@ import com.pacewear.tws.phoneside.wallet.ui.widget.AddCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView;
+import com.tencent.tws.assistant.support.v4.app.Fragment;
 import com.tencent.tws.assistant.widget.AdapterView;
 import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
 import com.tencent.tws.assistant.widget.ListView;
