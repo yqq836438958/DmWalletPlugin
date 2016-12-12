@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.tencent.tws.assistant.widget.TwsButton;
 
 public class BottomBar extends FrameLayout implements OnClickListener {
@@ -68,6 +69,10 @@ public class BottomBar extends FrameLayout implements OnClickListener {
 
         mSingleButtonWithDesButton = (TwsButton) findViewById(R.id.br_single_bt_with_des_bt);
         mSingleButtonWithDesButton.setOnClickListener(this);
+        UIHelper.setTwsButton(mSingleButton, R.string.wallet_traffic_card_add);
+        UIHelper.setTwsButton(mCoupleLeftButton, R.string.wallet_traffic_card_add);
+        UIHelper.setTwsButton(mCoupleRightButton, R.string.wallet_traffic_card_add);
+        UIHelper.setTwsButton(mSingleButtonWithDesButton, R.string.activate_confirm);
         mSingleMainDes = (TextView) findViewById(R.id.br_single_bt_with_des_main);
         mSingleSubDes = (TextView) findViewById(R.id.br_single_bt_with_des_sub);
 

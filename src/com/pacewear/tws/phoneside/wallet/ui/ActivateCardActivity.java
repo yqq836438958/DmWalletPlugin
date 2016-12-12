@@ -183,10 +183,10 @@ public class ActivateCardActivity extends TwsActivity {
                 int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
                         : E_PAY_TYPE._E_PT_WEIXIN_PAY;
                 if (!PayManager.isPayChannelSupport(payType)) {
-                    // Toast.makeText(GlobalObj.g_appContext,
-                    // (payType == PAY_CHANNEL_QQ) ? R.string.login_download_qq
-                    // : R.string.login_download_mm,
-                    // Toast.LENGTH_LONG).show();
+                    Toast.makeText(GlobalObj.g_appContext,
+                            (payType == PAY_CHANNEL_QQ) ? R.string.wallet_login_download_qq
+                                    : R.string.wallet_login_download_mm,
+                            Toast.LENGTH_LONG).show();
                     return false;
                 }
                 ShowLoadingActivity.launchLoading(

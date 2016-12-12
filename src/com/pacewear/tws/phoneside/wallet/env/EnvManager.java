@@ -32,6 +32,8 @@ import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.phoneside.business.AccountManager;
 import com.tencent.tws.phoneside.device.wup.DeviceInfoWupDataFactory;
 import com.tencent.tws.phoneside.framework.RomBaseInfoHelper;
+import com.tencent.tws.phoneside.phoneverify.SmsModel;
+import com.tencent.tws.phoneside.phoneverify.SmsModel.OnSmsCallback;
 import com.tencent.tws.proto.wallet.WatchNFCManager.MSG_STATE;
 
 import java.util.ArrayList;
@@ -546,7 +548,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         if (!TextUtils.isEmpty(mUserPhoneNum)) {
             return;
         }
-        String tmpPhone = null;// SmsModel.get().getPhoneNum();
+        String tmpPhone = SmsModel.get().getPhoneNum();
         if (!TextUtils.isEmpty(tmpPhone)) {
             setUserPhoneNum(tmpPhone);
             return;
@@ -555,14 +557,14 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
 
             @Override
             public void run() {
-                // SmsModel.get().getPhoneNum(new OnSmsCallback() {
-                // @Override
-                // public void OnResult(int ret, String result) {
-                // if (ret == 0 && !TextUtils.isEmpty(result)) {
-                // setUserPhoneNum(result);
-                // }
-                // }
-                // });
+                SmsModel.get().getPhoneNum(new OnSmsCallback() {
+                    @Override
+                    public void OnResult(int ret, String result) {
+                        if (ret == 0 && !TextUtils.isEmpty(result)) {
+                            setUserPhoneNum(result);
+                        }
+                    }
+                });
             }
         });
     }

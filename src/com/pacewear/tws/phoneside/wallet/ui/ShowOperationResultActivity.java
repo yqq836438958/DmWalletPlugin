@@ -25,6 +25,7 @@ import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
@@ -123,7 +124,7 @@ public class ShowOperationResultActivity extends TwsActivity {
         TextView descriptionTv = (TextView) findViewById(R.id.wallet_result_description);
         TextView retry = (TextView) findViewById(R.id.wallet_result_retry);
         TwsButton button = (TwsButton) findViewById(R.id.wallet_operation_result_close);
-
+        UIHelper.setTwsButton(button, R.string.wallet_operation_result_close, 14);
         if (!ServerHandler.getInstance().isTestEnv()) {
             captionTv.setEnabled(false);
         }

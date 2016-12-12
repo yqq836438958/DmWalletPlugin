@@ -408,7 +408,8 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
                         PayBusCardConfigRsp config = (PayBusCardConfigRsp) response;
 
                         // 后台的返回规律...
-                        if (config != null && config.iRet == 0 && config.sMd5 != null) {
+                        if (config != null && (config.iRet == 1 || config.iRet == 0)
+                                && config.sMd5 != null) {
                             if (mPayBusCardConfigRsp != null) {
                                 if (mPayBusCardConfigRsp.sMd5 != null
                                         && mPayBusCardConfigRsp.sMd5

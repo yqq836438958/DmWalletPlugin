@@ -154,6 +154,7 @@ public class CardsFragment extends Fragment {
                                 convertView = new TrafficCardView(mContext);
                                 break;
                             case BANK_CARD:
+                            //convertView = new BankCardView(mContext);
                                 break;
                         }
                     } else {

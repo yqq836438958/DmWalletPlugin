@@ -81,7 +81,7 @@
     <string name="wallet_set_default_dev_not_connected">无法设为默认卡，请稍后重试。</string>
     <string name="wallet_validity_label">有效期</string>
     <string name="wallet_num_label">卡号</string>
-	<string name="wallet_jump_url"><u>你还可以使用 北京一卡通APP 进行充值</u></string>
+    <string name="wallet_jump_url"><u>你还可以使用 北京一卡通APP 进行充值</u></string>
     <!-- Select Default Card -->
     <string name="wallet_select_default_traffic_card_titile">选择默认交通卡</string>
     <string name="wallet_select_default_bank_card_titile">选择默认银行卡</string>
@@ -161,21 +161,24 @@
     <string name="wallet_transact_consume">消费</string>
     <string name="wallet_transact_empty">无法查询到交易记录</string>
 
-    <!--  开卡协议 -->
+    <!-- 开卡协议 -->
     <string name="wallet_agreement_title">服务协议</string>
     <string name="wallet_cancel">取消</string>
     <string name="wallet_confirm">同意</string>
     <string name="wallet_lnt_agreement_rl">"http://3gimg.qq.com/trom_s/tosWatch/lingnantong_buscard.html"</string>
 
-	<!-- 手机验证 -->
-	<string name="wallet_infoverify">信息验证</string>
-	<string name="wallet_next">下一步</string>
-	<string name="wallet_phonenum">手机号</string>
-	<string name="wallet_verifycode">验证码</string>
-	<string name="wallet_reget_verify">重新获取(#S)</string>
-	<string name="wallet_get_verify">获取验证码</string>
-	<string name="wallet_get_verify_fail">获取验证码失败</string>
-	<string name="wallet_phone_error">请输入正确的手机号码</string>
-	<string name="wallet_verify_confirm_fail">验证失败</string>
-	<string name="wallet_reget_verify_reset">重新获取</string>
+    <!-- 手机验证 -->
+    <string name="wallet_infoverify">信息验证</string>
+    <string name="wallet_next">下一步</string>
+    <string name="wallet_phonenum">手机号</string>
+    <string name="wallet_verifycode">验证码</string>
+    <string name="wallet_reget_verify">重新获取(#S)</string>
+    <string name="wallet_get_verify">获取验证码</string>
+    <string name="wallet_get_verify_fail">获取验证码失败</string>
+    <string name="wallet_phone_error">请输入正确的手机号码</string>
+    <string name="wallet_verify_confirm_fail">验证失败</string>
+    <string name="wallet_reget_verify_reset">重新获取</string>
+    <string name="wallet_login_download_qq">你还没有安装QQ，请安装后再试</string>
+    <string name="wallet_login_download_mm">你还没有安装微信，请安装后再试</string>
+
 </resources>

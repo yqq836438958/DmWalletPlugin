@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 这里配置sharedUserId的作用，是为了告诉宿主程序，这个插件需要依赖宿主程序的class和资源
-如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
+如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pacewear.tws.phoneside.wallet"
@@ -14,200 +14,107 @@
         android:targetSdkVersion="22" />
 
     <application
-        android:name="com.example.plugindemo.PluginTestApplication"
-        android:label="@string/app_name"
+        android:name="com.pacewear.tws.phoneside.wallet.WalletApp"
+        android:label="@string/nfc_wallet"
         android:theme="@android:style/Theme.Holo.Light" >
 
-        <!-- uses-library作用是用来通知插件框架此插件依赖哪些其他插件 -->
-        <uses-library
-            android:name="com.example.pluginbase"
-            android:required="true" />
-
-        <!-- 测试插件Meta-Data -->
-        <meta-data
-            android:name="abcdef"
-            android:value="654321" />
-
-        <!-- 显示位置pos： 1 Hotseat； 2 MyWatchFragment； 3 ActionBarMenu； 4 其他-->
+        <!-- 显示位置pos： 1 Hotseat； 2 MyWatchFragment； 3 ActionBarMenu； 4 其他 -->
         <!-- 分隔符： # 分割DisplayConfig； @ 分割DisplayConfig的属性； = 属性赋值； / 分割属性值 -->
         <!-- 图标资源icon：统一使用 模块名_[hotseat or watch_fragment or menu]_描述信息.png 配置在AndroidManifest.xml不需要带后缀。 -->
         <!-- 标题title：中文/英文 也可以只配置一个 -->
         <!-- 显示内容content：如果是fragment 直接配置name,其他的配置类名信息 -->
         <!-- 内容类型ctyle：1 fragment； 2 activity； 3 service； 4 application； 5 view -->
-        <plugin-display
-            android:name="displayInHostConfig"
-            android:value="pos=1/1@title=示例Fragment/demoFragement@content=some_id_for_fragment3@ctyle=1@icon=demo_hotseat_default/demo_hotseat_pressed#pos=2/0@title=demoActivity@content=com.example.plugindemo.activity.LauncherActivity@ctyle=2@icon=demo_watch_fragment_des" />
+        <!-- home_item_watch_wallet -->
+        <plugin-display android:value="pos=2/3@title=公交卡@content=com.pacewear.tws.phoneside.wallet.NewWalletHomeActivity@ctyle=2@icon=wallet_watch_fragment_launcher" />
 
-        <!-- 通知插件框架哪些fragment是可以嵌入宿主Activity的，如果fragment只是插件内使用，无需对外暴露则无需配置 -->
-        <exported-fragment
-            android:name="some_id_for_fragment1"
-            android:value="com.example.plugindemo.fragment.PluginNormalFragment" />
-        <!-- 通知插件框架哪些fragment是可以嵌入宿主Activity的，如果fragment只是插件内使用，无需对外暴露则无需配置 -->
-        <exported-fragment
-            android:name="some_id_for_fragment2"
-            android:value="com.example.plugindemo.fragment.PluginSpecFragment" />
-        <!-- 通知插件框架哪些fragment是可以嵌入宿主Activity的，如果fragment只是插件内使用，无需对外暴露则无需配置 -->
-        <exported-fragment
-            android:name="some_id_for_fragment3"
-            android:value="com.example.plugindemo.fragment.PluginSpecTwsFragment" />
-
-        <!-- 通知插件框架本插件向外提供的业务服务接口 android:value为实现,android:label为接口 -->
-        <exported-service
-            android:name="login_service"
-            android:label="com.example.pluginbase.ILoginService"
-            android:value="com.example.plugindemo.PluginLoginService" />
-        <!-- 如果服务需要支持跨进程调用，例如被宿主进程调用，则需要配置android:label为服务所实现的接口className -->
-        <exported-service
-            android:name="share_service"
-            android:label="com.tencent.tws.sharelib.ShareService"
-            android:value="com.example.plugindemo.PluginSharedService" />
-
-        <activity android:name="com.example.plugindemo.activity.LauncherActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.SideBarActivity" >
-            <intent-filter>
-                <action android:name="test.ajc" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.TwsActivityDemo" >
-            <intent-filter>
-                <action android:name="test.ajc" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-                <activity android:name="com.example.plugindemo.tab.TabViewpagerActivity" >
-            <intent-filter>
-                <action android:name="test.ajc" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
-            android:name="com.example.plugindemo.activity.PluginTestActivity"
-            android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="test.abc" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.plugindemo.activity.PluginFragmentTestActivity"
-            android:windowSoftInputMode="stateAlwaysVisible" >
-            <intent-filter>
-                <action android:name="test.def" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.plugindemo.activity.PluginNotInManifestActivity"
-            android:hardwareAccelerated="true"
-            android:immersive="true"
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:uiOptions="splitActionBarWhenNarrow" >
-            <intent-filter>
-                <action android:name="test.xyz1" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.QQPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoDisplay" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="testhost"
-                    android:scheme="testscheme" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.PluginForOppoAndVivoActivity" >
-            <intent-filter>
-                <action android:name="test.ijk" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.PluginTestOpenPluginActivity" >
-            <intent-filter>
-                <action android:name="test.zxc" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.PluginWebViewActivity" >
-            <intent-filter>
-                <action android:name="test.webXX" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.PluginForDialogActivity" >
-            <intent-filter>
-                <action android:name="test.dialogXX" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="qwallet1800001531" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.plugindemo.activity.PluginSingleTaskActivity"
-            android:launchMode="singleTask" >
-        </activity>
-        <activity android:name="com.example.plugindemo.activity.PluginTestTabActivity" >
+            android:name="com.pacewear.tws.phoneside.wallet.ui.NewWalletHomeActivity"
+            android:label="@string/nfc_wallet"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="tsmclient" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.example.plugindemo.activity.TransparentActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ActivateCardActivity"
+            android:screenOrientation="portrait" >
         </activity>
-
-        <service android:name="com.example.plugindemo.service.PluginTestService" >
-            <intent-filter>
-                <action android:name="test.lmn" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-        <service android:name="com.example.plugindemo.service.PluginTestService2" >
-            <intent-filter>
-                <action android:name="test.lmn2" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-
-        <receiver android:name="com.example.plugindemo.receiver.PluginTestReceiver" >
-            <intent-filter>
-                <action android:name="test.rst" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="test.rst2" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.example.plugindemo.receiver.PluginTestReceiver2" >
-            <intent-filter>
-                <action android:name="test.rst2" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <provider
-            android:name="com.example.plugindemo.provider.PluginContentProvider"
-            android:authorities="com.example.plugindemo.provider"
-            android:exported="true" />
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ChargeCardActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.RegisterCMBCardInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.SelectAddCardActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowOperationResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.CustomerSupportActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity"
+            android:label="@string/wallet_city_select"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.CardTransactActivity"
+            android:label="@string/wallet_transact_label"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui.ErrorCardActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity"
+            android:label="@string/wallet_infoverify"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

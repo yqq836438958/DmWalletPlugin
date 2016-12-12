@@ -26,6 +26,7 @@ import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.tosservice.CustomService;
 import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
@@ -144,6 +145,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     private void initViews() {
         mCardImageView = (ImageView) findViewById(R.id.wallet_card_imageview_id);
         mConfirmButton = (TwsButton) findViewById(R.id.wallet_start_filling_button_id);
+        UIHelper.setTwsButton(mConfirmButton, R.string.wallet_support_start_filling, 14);
         mConfirmButton.setOnClickListener(this);
         mSummaryTextView = (TextView) findViewById(R.id.wallet_summary_tv_id);
         mInPutLayout = (RelativeLayout) findViewById(R.id.wallet_input_layout_id);
@@ -171,7 +173,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     @Override
     public void finish() {
         super.finish();
-//        overridePendingTransition(0, R.anim.wallet_push_down);
+        // overridePendingTransition(0, R.anim.wallet_push_down);
     }
 
     @Override

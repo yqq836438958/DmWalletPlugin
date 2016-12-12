@@ -34,6 +34,7 @@ import com.tencent.tws.assistant.widget.AdapterView;
 import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
 import com.tencent.tws.assistant.widget.ListView;
 import com.tencent.tws.pay.PayNFCConstants;
+import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 
 public class SelectAddCardActivity extends TwsActivity {
 
@@ -215,8 +216,8 @@ public class SelectAddCardActivity extends TwsActivity {
         }
         if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(aid)
                 && TextUtils.isEmpty(EnvManager.getInstanceInner().getUserPhoneNum())) {// todo
-            // Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
-            // startActivityForResult(intent, PEKINGREQUEST);
+            Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
+            startActivityForResult(intent, PEKINGREQUEST);
             // finish();
             return true;
         }
@@ -227,7 +228,7 @@ public class SelectAddCardActivity extends TwsActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case Activity.RESULT_OK:
-                String num = null;// data.getStringExtra(PhoneVerifyActivity.PHONENUM);
+                String num = data.getStringExtra(PhoneVerifyActivity.PHONENUM);
                 EnvManager.getInstanceInner().setUserPhoneNum(num);
                 if (requestCode == PEKINGREQUEST) {
                     Intent intent = new Intent();

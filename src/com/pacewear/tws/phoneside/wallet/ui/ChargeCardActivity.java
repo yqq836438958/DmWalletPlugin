@@ -23,6 +23,7 @@ import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
@@ -132,6 +133,7 @@ public class ChargeCardActivity extends TwsActivity {
         setContentView(R.layout.wallet_charge_card);
 
         TwsButton confirm = (TwsButton) findViewById(R.id.wallet_charge_confirm);
+        UIHelper.setTwsButton(confirm, R.string.charge_confirm, "#46dc5f");
         confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

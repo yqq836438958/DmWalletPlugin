@@ -26,6 +26,8 @@ import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
@@ -193,6 +195,7 @@ public class ShowCardDetailsActivity extends TwsActivity
             }
         });
         mSetDefaultButton = (TwsButton) findViewById(R.id.wallet_set_default_button);
+        UIHelper.setTwsButton(mSetDefaultButton, R.string.wallet_set_default_card, 14);
         mSetDefaultButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,6 +215,7 @@ public class ShowCardDetailsActivity extends TwsActivity
 
         if (mCard.getCardType() == CARD_TYPE.TRAFFIC_CARD) {
             mChargeButton = (TwsButton) findViewById(R.id.wallet_traffic_card_charge);
+            UIHelper.setTwsButton(mChargeButton, R.string.charge_card_button, 14);
             mChargeButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -394,7 +398,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                                 new int[] {
                                         AlertDialog.BOTTOM_BUTTON_COLOR_RED,
                                         Color.WHITE
-                                }).create(true);
+                }).create(true);
                 dialog.setTitleTextSize(getResources().getDimension(
                         R.dimen.wallet_dialog_title_text_size)
                         / getResources().getDisplayMetrics().density);
@@ -445,7 +449,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                                 new int[] {
                                         AlertDialog.BOTTOM_BUTTON_COLOR_RED,
                                         Color.WHITE
-                                }).create(true);
+                }).create(true);
 
                 dialog.setTitleTextSize(getResources().getDimension(
                         R.dimen.wallet_dialog_title_text_size)
@@ -490,11 +494,11 @@ public class ShowCardDetailsActivity extends TwsActivity
 
     @Override
     public void onClick(View arg0) {
-        // boolean hasClicked = Utils.getWorkerHandler().hasCallbacks(mClickRunable);
-        // if (!hasClicked) {
-        // Utils.getWorkerHandler().post(mClickRunable);
-        // }
-
+        if (ClickFilter.isMultiClick()) {
+            return;
+        }
+        Utils.getWorkerHandler().removeCallbacks(mClickRunable);
+        Utils.getWorkerHandler().post(mClickRunable);
     }
 
     private void startCustomerSupportActivity(int resid) {
