@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -138,20 +139,22 @@ public class ChargeCardActivity extends TwsActivity {
             @Override
             public void onClick(View v) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()
                         || !mCard.isReady()) {
-                    Toast.makeText(mContext, R.string.wallet_sync_err_watch,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
                         : E_PAY_TYPE._E_PT_WEIXIN_PAY;
                 if (!PayManager.isPayChannelSupport(payType)) {
-                    // Toast.makeText(GlobalObj.g_appContext,
+                    // Toast.makeText(WalletApp.sGlobalCtx,
                     // (payType == PAY_CHANNEL_QQ) ? R.string.login_download_qq
                     // : R.string.login_download_mm,
                     // Toast.LENGTH_LONG).show();
@@ -176,7 +179,7 @@ public class ChargeCardActivity extends TwsActivity {
                     String strBalance = ((ITrafficCard) mCard).getBalance();
                     if (TextUtils.isEmpty(strBalance)) {
                         Toast.makeText(GlobalObj.g_appContext,
-                                R.string.wallet_sync_err_watch,
+                                getString(R.string.wallet_sync_err_watch),
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -184,7 +187,8 @@ public class ChargeCardActivity extends TwsActivity {
                     if (iMaxRechargeAmount > chargeValue && (chargeValue
                             + iCurBalance) > iMaxRechargeAmount) {
                         Toast.makeText(GlobalObj.g_appContext,
-                                String.format(getString(R.string.wallet_flow_charge_amount),
+                                String.format(
+                                        getString(R.string.wallet_flow_charge_amount),
                                         Utils.getDisplayBalance(iMaxRechargeAmount)),
                                 Toast.LENGTH_LONG).show();
                         return;
@@ -192,7 +196,7 @@ public class ChargeCardActivity extends TwsActivity {
                     if ((chargeValue + iCurBalance) <= 0) {
                         // 透支判断
                         Toast.makeText(GlobalObj.g_appContext,
-                                R.string.wallet_amount_nozero,
+                                getString(R.string.wallet_amount_nozero),
                                 Toast.LENGTH_LONG).show();
                         return;
                     }

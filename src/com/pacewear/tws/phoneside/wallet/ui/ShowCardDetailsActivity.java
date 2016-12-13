@@ -122,8 +122,8 @@ public class ShowCardDetailsActivity extends TwsActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.wallet_support_submit_fail,
+                            Toast.makeText(GlobalObj.g_appContext,
+                                    getString(R.string.wallet_support_submit_fail),
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -200,12 +200,14 @@ public class ShowCardDetailsActivity extends TwsActivity
             @Override
             public void onClick(View v) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_sync_err_watch,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -220,7 +222,8 @@ public class ShowCardDetailsActivity extends TwsActivity
                 @Override
                 public void onClick(View v) {
                     if (!EnvManager.getInstance().isWatchConnected()) {
-                        Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                        Toast.makeText(GlobalObj.g_appContext,
+                                getString(R.string.wallet_disconnect_tips),
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -305,13 +308,14 @@ public class ShowCardDetailsActivity extends TwsActivity
     private void charge() {
         if (OrderManager.getInstanceInner().getPayConfig(mCard.getAID()) == null
                 || !OrderManager.getInstance().isOrderReady()) {
-            Toast.makeText(mContext, R.string.select_add_traffic_card_config_no_ready,
+            Toast.makeText(GlobalObj.g_appContext,
+                    getString(R.string.select_add_traffic_card_config_no_ready),
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!CardManager.getInstance().isReady()
                 || !mCard.isReady()) {
-            Toast.makeText(mContext, R.string.wallet_sync_err_watch,
+            Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_watch),
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -335,14 +339,14 @@ public class ShowCardDetailsActivity extends TwsActivity
         if (!TextUtils.isEmpty(validity) && Utils.compareDate(today, validity) > 0) {
             // 超过有效期
             Toast.makeText(GlobalObj.g_appContext,
-                    R.string.wallet_validity_tips,
+                    getString(R.string.wallet_validity_tips),
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!TextUtils.isEmpty(startdate) && Utils.compareDate(today, startdate) < 0) {
             // 未到启用日期
             Toast.makeText(GlobalObj.g_appContext,
-                    R.string.wallet_startdate_tips,
+                    getString(R.string.wallet_startdate_tips),
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -482,7 +486,8 @@ public class ShowCardDetailsActivity extends TwsActivity
             @Override
             public void run() {
                 if (mLoading.getVisibility() == View.VISIBLE && ret != 0) {
-                    Toast.makeText(mContext, R.string.wallet_set_default_dev_not_connected,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_set_default_dev_not_connected),
                             Toast.LENGTH_LONG).show();
                 }
                 reloadCard();

@@ -12,10 +12,10 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.qq.taf.jce.JceInputStream;
 import com.qq.taf.jce.JceUtil;
-import com.tencent.tws.framework.global.GlobalObj;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -118,7 +118,7 @@ public class Utils {
         curCity = curCity.substring(0, 4);
         WalletCity walletCity = new WalletCity();
         WalletCity defaultCity = new WalletCity();
-        String[] citys = GlobalObj.g_appContext.getResources().getStringArray(R.array.wallet_city);
+        String[] citys = WalletApp.sGlobalCtx.getResources().getStringArray(R.array.wallet_city);
         for (String city : citys) {
             if (city != null && city.startsWith(curCity)) {
                 String[] tmp = city.split("#");
@@ -131,19 +131,19 @@ public class Utils {
         }
         if (TextUtils.isEmpty(walletCity.code)) {
             walletCity.code = Constants.WALLET_DEFAULT_CITYCODE_GZ;
-            walletCity.name = GlobalObj.g_appContext.getString(R.string.wallet_default_cardcity);
+            walletCity.name = WalletApp.sGlobalCtx.getString(R.string.wallet_default_cardcity);
         }
         return walletCity;
     }
 
     public static String getUserCityCode() {
-        SharedPreferences oPreference = GlobalObj.g_appContext
+        SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("city", 0);
         return oPreference.getString("city_code", "");
     }
 
     public static List<String> getCityList() {
-        String[] citys = GlobalObj.g_appContext.getResources().getStringArray(R.array.wallet_city);
+        String[] citys = WalletApp.sGlobalCtx.getResources().getStringArray(R.array.wallet_city);
         if (citys == null || citys.length <= 0) {
             return null;
         }
@@ -184,7 +184,7 @@ public class Utils {
             return errDesc;
         }
         if (CONFIG.BEIJINGTONG.mAID.equals(aid)) {
-            errlist = GlobalObj.g_appContext.getResources()
+            errlist = WalletApp.sGlobalCtx.getResources()
                     .getStringArray(R.array.beijingtong_cardinfo_errlist);
             for (String err : errlist) {
                 if (!TextUtils.isEmpty(err) && err.startsWith(code + "")) {
@@ -200,13 +200,13 @@ public class Utils {
     }
 
     public static String getCacheWhiteList() {
-        SharedPreferences oPreference = GlobalObj.g_appContext
+        SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         return oPreference.getString("trafficcard_aid", "");
     }
 
     public static void clearPayConfigs() {
-        SharedPreferences oPreference = GlobalObj.g_appContext
+        SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         Editor oEditor = oPreference.edit();
         oEditor.clear();
@@ -214,7 +214,7 @@ public class Utils {
     }
 
     public static void saveWhiteList2Cache(String aid) {
-        SharedPreferences oPreference = GlobalObj.g_appContext
+        SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         Editor oEditor = oPreference.edit();
         String val = TextUtils.isEmpty(aid) ? "empty" : aid;
@@ -223,7 +223,7 @@ public class Utils {
     }
 
     public static void enableWalletMoudle(boolean enable) {
-        SharedPreferences sharedPreferences = GlobalObj.g_appContext
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         Editor editor = sharedPreferences.edit();
         editor.putBoolean("wallet_enable", enable);
@@ -231,7 +231,7 @@ public class Utils {
     }
 
     public static boolean isWalletMoubleEnable() {
-        SharedPreferences sharedPreferences = GlobalObj.g_appContext
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         return sharedPreferences.getBoolean("wallet_enable", true);
     }

@@ -34,6 +34,7 @@ import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.assistant.widget.TwsButton;
+import com.tencent.tws.framework.global.GlobalObj;
 
 import qrom.component.log.QRomLog;
 
@@ -88,8 +89,9 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                             @Override
                             public void run() {
                                 // TODO Auto-generated method stub
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.wallet_support_submit_personal_info_complete,
+                                Toast.makeText(GlobalObj.g_appContext,
+                                        getString(
+                                                R.string.wallet_support_submit_personal_info_complete),
                                         Toast.LENGTH_LONG)
                                         .show();
                             }
@@ -106,8 +108,8 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.wallet_support_submit_fail,
+                            Toast.makeText(GlobalObj.g_appContext,
+                                    getString(R.string.wallet_support_submit_fail),
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -278,8 +280,8 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                 QRomLog.d(TAG, "name:" + mUserName + "   phone:" + mUserPhone);
                 if ((mUserName != null && mUserName.equals(""))
                         || (mUserPhone != null && mUserPhone.equals(""))) {
-                    Toast.makeText(getApplicationContext(),
-                            R.string.wallet_support_improve_personal_info,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_support_improve_personal_info),
                             Toast.LENGTH_LONG).show();
                     return;
                 }

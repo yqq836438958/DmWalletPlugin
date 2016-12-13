@@ -74,10 +74,10 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         TAB_FIRST = getString(R.string.nfc_traffic_card);
         TAB_SECOND = getString(R.string.nfc_bank_card);
 
-        TwsTabWidget tabWidget = (TwsTabWidget) findViewById(R.id.tabs);
+        TwsTabWidget tabWidget = (TwsTabWidget) findViewById(android.R.id.tabs);
         tabWidget.setBackgroundResource(R.color.wallet_action_bar_background);
 
-        mTabHost = (TwsTabHost) findViewById(R.id.tabhost);
+        mTabHost = (TwsTabHost) findViewById(android.R.id.tabhost);
         prepareTabViewAndActionBar();
         mWaiting = findViewById(R.id.wallet_main_wait);
         if (!isModuleAvailable()) {
@@ -137,7 +137,7 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         super.onDestroy();
     }
 
-    private void prepareTabViewAndActionBar() {
+    private void prepareTabViewAndActionBar() {/*
 
         ActionBar actionBar = getTwsActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
@@ -145,7 +145,7 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
         if (mTabHost != null) {
 //            FragmentManager
             mTabHost.setup(mCurrentTabIndex);
-
+//            this.getfr
             String tabTitle = TAB_FIRST;
             mTrafficCardsFragment = new CardsFragment(
                     CARD_TYPE.TRAFFIC_CARD);
@@ -160,7 +160,7 @@ public class NewWalletHomeActivity extends TwsActivity implements OnWalletUICall
             //
             // mTabHost.setOnTabChangedListener(mTabChangeListener);
         }
-    }
+    */}
 
     private class TabChangeListener implements OnTabChangeListener {
 

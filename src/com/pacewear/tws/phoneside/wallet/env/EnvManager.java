@@ -16,11 +16,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.step.IStep;
 import com.pacewear.tws.phoneside.wallet.step.IStep.COMMON_STEP;
-import com.pacewear.tws.phoneside.wallet.step.IStep.STATUS;
 import com.pacewear.tws.phoneside.wallet.step.Step;
 import com.pacewear.tws.phoneside.wallet.tosservice.ITosService;
 import com.pacewear.tws.phoneside.wallet.walletservice.GetCPLC;
@@ -28,7 +28,6 @@ import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.tencent.tws.api.BroadcastDef;
 import com.tencent.tws.framework.common.DevMgr;
 import com.tencent.tws.framework.common.Device;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.phoneside.business.AccountManager;
 import com.tencent.tws.phoneside.device.wup.DeviceInfoWupDataFactory;
 import com.tencent.tws.phoneside.framework.RomBaseInfoHelper;
@@ -109,7 +108,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         IntentFilter intent = new IntentFilter();
         intent.addAction("action_first_connect_by_scan");
         intent.addAction("action_unpair_device");
-        GlobalObj.g_appContext.registerReceiver(new BroadcastReceiver() {
+        WalletApp.sGlobalCtx.registerReceiver(new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -136,7 +135,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         intent.addAction(BroadcastDef.DEVICE_CONNECTED);
         intent.addAction(BroadcastDef.DEVICE_ACTIVE_DISCONNECTED);
         intent.addAction(BroadcastDef.DEVICE_PASSIVE_DISCONNECTED);
-        GlobalObj.g_appContext.registerReceiver(new BroadcastReceiver() {
+        WalletApp.sGlobalCtx.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 

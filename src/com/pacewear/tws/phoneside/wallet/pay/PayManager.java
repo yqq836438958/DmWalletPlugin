@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
@@ -23,7 +24,6 @@ import com.tencent.mobileqq.openpay.api.OpenApiFactory;
 import com.tencent.mobileqq.openpay.data.pay.PayApi;
 import com.tencent.mobileqq.openpay.data.pay.PayResponse;
 import com.tencent.tws.devicemanager.AppInfoProvider;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.phoneside.business.AccountManager;
 import com.tencent.utils.DeviceUtils;
 
@@ -60,7 +60,7 @@ public class PayManager implements IPayManagerInner {
     private PayManager() {
         initPayResultReceiver();
 
-        openApi = OpenApiFactory.getInstance(GlobalObj.g_appContext, Constants.APP_ID_FOR_QQPAY);
+        openApi = OpenApiFactory.getInstance(WalletApp.sGlobalCtx, Constants.APP_ID_FOR_QQPAY);
         miwxApi = AccountManager.getInstance().getWXApi();
     }
 
@@ -248,7 +248,7 @@ public class PayManager implements IPayManagerInner {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION_QQPAY_RESULT_NOTIFY);
         filter.addAction(Constants.ACTION_WXPAY_RESULT_NOTIFY);
-        LocalBroadcastManager.getInstance(GlobalObj.g_appContext).registerReceiver(
+        LocalBroadcastManager.getInstance(WalletApp.sGlobalCtx).registerReceiver(
                 mBroadcastReceiver, filter);
     }
 
@@ -267,7 +267,7 @@ public class PayManager implements IPayManagerInner {
         if ("".equals(packagename)) {
             return false;
         }
-        return DeviceUtils.checkAppInstalled(GlobalObj.g_appContext, packagename);
+        return DeviceUtils.checkAppInstalled(WalletApp.sGlobalCtx, packagename);
     }
 
     @Override

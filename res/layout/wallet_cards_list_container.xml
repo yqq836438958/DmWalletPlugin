@@ -47,7 +47,7 @@
             android:drawSelectorOnTop="false" />
     </LinearLayout>
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.EmptyCard
+    <com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard
         android:id="@+id/wallet_empty_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

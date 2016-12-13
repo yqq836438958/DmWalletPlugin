@@ -20,6 +20,7 @@ import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TimerButton;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
+import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.phoneside.phoneverify.SmsModel.OnSmsCallback;
 import com.tencent.tws.phoneside.utils.DensityUtil;
 
@@ -144,7 +145,7 @@ public class PhoneVerifyActivity extends TwsActivity implements View.OnClickList
         }
         String phone = mPhoneEdit.getText().toString();
         if (!PhoneFormatCheckUtils.isPhoneLegal(phone)) {
-            Toast.makeText(PhoneVerifyActivity.this, R.string.wallet_phone_error,
+            Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_phone_error),
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -160,10 +161,12 @@ public class PhoneVerifyActivity extends TwsActivity implements View.OnClickList
             @Override
             public void run() {
                 if (mStep == STEP_GETVERIFY) {
-                    Toast.makeText(PhoneVerifyActivity.this, R.string.wallet_get_verify_fail,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_get_verify_fail),
                             Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(PhoneVerifyActivity.this, R.string.wallet_verify_confirm_fail,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_verify_confirm_fail),
                             Toast.LENGTH_LONG).show();
                 }
             }

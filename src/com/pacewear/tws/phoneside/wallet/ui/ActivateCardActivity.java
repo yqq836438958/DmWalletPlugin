@@ -171,22 +171,25 @@ public class ActivateCardActivity extends TwsActivity {
             public boolean onSingleButtonWithDecClick() {
                 // add by yuanqingqing
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return false;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(mContext, R.string.wallet_sync_err_watch,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return false;
                 }
                 int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
                         : E_PAY_TYPE._E_PT_WEIXIN_PAY;
                 if (!PayManager.isPayChannelSupport(payType)) {
+                    String qqTip = getString(R.string.wallet_login_download_qq);
+                    String weixinTip = getString(R.string.wallet_login_download_mm);
                     Toast.makeText(GlobalObj.g_appContext,
-                            (payType == PAY_CHANNEL_QQ) ? R.string.wallet_login_download_qq
-                                    : R.string.wallet_login_download_mm,
-                            Toast.LENGTH_LONG).show();
+                            (payType == PAY_CHANNEL_QQ) ? qqTip : weixinTip, Toast.LENGTH_LONG)
+                            .show();
                     return false;
                 }
                 ShowLoadingActivity.launchLoading(

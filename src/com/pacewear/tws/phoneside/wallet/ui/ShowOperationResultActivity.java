@@ -133,7 +133,8 @@ public class ShowOperationResultActivity extends TwsActivity {
             public void onClick(View arg0) {
                 mIconClickCount++;
                 if (mIconClickCount == ICON_CLICK_COUNT) {
-                    Toast.makeText(mContext, "ApplyRefund already turnned on", Toast.LENGTH_LONG)
+                    Toast.makeText(GlobalObj.g_appContext, "ApplyRefund already turnned on",
+                            Toast.LENGTH_LONG)
                             .show();
                 }
             }
@@ -164,7 +165,7 @@ public class ShowOperationResultActivity extends TwsActivity {
                             icon.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(mContext, toast, Toast.LENGTH_LONG)
+                                    Toast.makeText(GlobalObj.g_appContext, toast, Toast.LENGTH_LONG)
                                             .show();
                                 }
                             });
@@ -258,18 +259,20 @@ public class ShowOperationResultActivity extends TwsActivity {
             @Override
             public void onClick(View arg0) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_disconnect_tips,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(mContext, R.string.wallet_sync_err_watch,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 IOrder order = OrderManager.getInstance().getLastOrder(mCard.getAID());
                 if (order == null || order.isInValidOrder()) {
-                    Toast.makeText(GlobalObj.g_appContext, R.string.wallet_invalid_order,
+                    Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_invalid_order),
                             Toast.LENGTH_LONG).show();
                     return;
                 }

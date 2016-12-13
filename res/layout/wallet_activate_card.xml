@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.BottomBar
+    <com.pacewear.tws.phoneside.wallet.ui.widget.BottomBar
         android:id="@+id/wallet_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:text="@string/wallet_city_select"
             android:textColor="#80ffffff"
             android:textSize="12sp" />
-        <com.tencent.tws.phoneside.walletv2.ui.widget.SimpleCardListItem
+        <com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem
             android:id="@+id/wallet_city_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         android:textColor="#80ffffff"
         android:textSize="12sp" />
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.PayValueSelect
+    <com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect
         android:id="@+id/pay_value_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

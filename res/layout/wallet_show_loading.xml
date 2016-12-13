@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.LoadingBubble
+    <com.pacewear.tws.phoneside.wallet.ui.widget.LoadingBubble
         android:id="@+id/wallet_loading_bubble"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

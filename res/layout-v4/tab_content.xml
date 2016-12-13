@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.TwsTabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabhost"
+    android:id="@android:id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -17,7 +17,7 @@
             android:visibility="gone" >
 
             <android.widget.TwsTabWidget
-                android:id="@+id/tabs"
+                android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tws_tabhost_h"
                 android:background="@color/tws_view_bg"
@@ -39,7 +39,7 @@
             android:layout_below="@id/scrolltabs" />
 
         <FrameLayout
-            android:id="@+id/tabcontent"
+            android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/scrolltabs" />

@@ -4,6 +4,7 @@ package com.pacewear.tws.phoneside.wallet.card;
 import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.step.IStep;
 import com.pacewear.tws.phoneside.wallet.step.IStep.COMMON_STEP;
@@ -12,7 +13,6 @@ import com.pacewear.tws.phoneside.wallet.step.Step;
 import com.pacewear.tws.phoneside.wallet.walletservice.CardQuery;
 import com.pacewear.tws.phoneside.wallet.walletservice.CardSwitch;
 import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.proto.wallet.WatchNFCManager.MSG_STATE;
 
 import qrom.component.log.QRomLog;
@@ -48,7 +48,7 @@ public abstract class Card implements ICard, ICardInner {
         if (mConfig == null) {
             mConfig = config;
 
-            mCardName = GlobalObj.g_appContext.getString(mConfig.mCardNameRes);
+            mCardName = WalletApp.sGlobalCtx.getString(mConfig.mCardNameRes);
 
             // Final
             mCurrentCardStep = mCardUnavaiable;

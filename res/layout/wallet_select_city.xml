@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.SimpleCardListItem
+    <com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem
         android:id="@+id/lay_default_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

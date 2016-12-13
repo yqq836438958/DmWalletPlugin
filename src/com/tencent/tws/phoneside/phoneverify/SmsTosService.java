@@ -48,7 +48,7 @@ public abstract class SmsTosService extends TosService {
 
     protected final UserAuthInfo getUsrInf() {
         RomAccountInfo accountInfo = AccountManager.getInstance().getLoginAccountIdInfo();
-        return new UserAuthInfo(accountInfo, "test");
+        return new UserAuthInfo(accountInfo);
     }
 
     protected abstract JceStruct getSmsReq();

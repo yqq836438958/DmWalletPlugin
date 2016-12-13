@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.qq.taf.jce.JceStruct;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.phoneside.business.AccountManager;
 
 import java.util.HashMap;
@@ -141,7 +141,7 @@ public class SmsModel {
         if (!TextUtils.isEmpty(tmpVal)) {
             return tmpVal;
         }
-        SharedPreferences sharedPreferences = GlobalObj.g_appContext.getSharedPreferences(CACHEFILE,
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(CACHEFILE,
                 0);
         String phone = sharedPreferences.getString(key, "");
         if (TextUtils.isEmpty(phone)) {
@@ -160,7 +160,7 @@ public class SmsModel {
                 .append(account.getERomAccountType()).toString();
 
         mPhoneNumMap.put(key, phone);
-        SharedPreferences sharedPreferences = GlobalObj.g_appContext.getSharedPreferences(CACHEFILE,
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(CACHEFILE,
                 0);
         Editor editor = sharedPreferences.edit();
         editor.putString(key, phone);

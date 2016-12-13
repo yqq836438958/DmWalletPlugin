@@ -11,6 +11,7 @@ import TRom.PayConfig;
 
 import android.text.TextUtils;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICardManager;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
@@ -32,7 +33,6 @@ import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.pacewear.tws.phoneside.wallet.walletservice.PassData;
 import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 import com.qq.taf.jce.JceStruct;
-import com.tencent.tws.framework.global.GlobalObj;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -847,7 +847,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.WALLET_WHITELIST_KEY, data);
-            if (Utils.isAppInstalled(GlobalObj.g_appContext, Constants.WALLET_BMAC_PACKAGE)) {
+            if (Utils.isAppInstalled(WalletApp.sGlobalCtx, Constants.WALLET_BMAC_PACKAGE)) {
                 object.put(Constants.WALLET_BMAC_KEY, Constants.WALLET_BMAC_INSTALLED);
             }
             PassData passdata = new PassData();

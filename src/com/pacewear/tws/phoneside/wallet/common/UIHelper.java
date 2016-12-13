@@ -3,8 +3,8 @@ package com.pacewear.tws.phoneside.wallet.common;
 
 import android.graphics.Color;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.framework.global.GlobalObj;
 
 public class UIHelper {
     private static float DEFAULT_TWSBTN_SIZE = 16;
@@ -24,7 +24,7 @@ public class UIHelper {
 
     public static void setTwsButtonStyle(TwsButton button, int textResId, String color,
             float textSize) {
-        button.setText(GlobalObj.g_appContext.getString(textResId));
+        button.setText(WalletApp.sGlobalCtx.getString(textResId));
         button.setTextColor(Color.parseColor(color));
         button.setTextSize(textSize);
     }

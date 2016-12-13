@@ -4,8 +4,7 @@ package com.pacewear.tws.phoneside.wallet.ui.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import qrom.component.log.QRomLog;
-
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -38,11 +37,9 @@ import com.pacewear.tws.phoneside.wallet.ui.widget.AddCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView;
-import com.tencent.tws.assistant.support.v4.app.Fragment;
-import com.tencent.tws.assistant.widget.AdapterView;
-import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
 import com.tencent.tws.assistant.widget.ListView;
 import com.tencent.tws.assistant.widget.Toast;
+import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 
 public class CardsFragment extends Fragment {
@@ -72,17 +69,19 @@ public class CardsFragment extends Fragment {
     public boolean addCard() {
         Log.d(TAG, "addCard mType:" + mType);
         if (!CardManager.getInstance().isReady()) {
-            Toast.makeText(mContext, R.string.wallet_sync_err_watch,
+            Toast.makeText(GlobalObj.g_appContext,
+                    getString(R.string.wallet_sync_err_watch),
                     Toast.LENGTH_LONG).show();
             return false;
         }
         if (!OrderManager.getInstance().isOrderReady()) {
-            Toast.makeText(mContext, R.string.wallet_sync_err_network,
+            Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_network),
                     Toast.LENGTH_LONG).show();
             return false;
         }
         if (!OrderManager.getInstance().isTrafficConfigReady()) {
-            Toast.makeText(mContext, R.string.select_add_traffic_card_config_no_ready,
+            Toast.makeText(GlobalObj.g_appContext,
+                    getString(R.string.select_add_traffic_card_config_no_ready),
                     Toast.LENGTH_LONG).show();
             return false;
         }
@@ -154,7 +153,7 @@ public class CardsFragment extends Fragment {
                                 convertView = new TrafficCardView(mContext);
                                 break;
                             case BANK_CARD:
-                            //convertView = new BankCardView(mContext);
+                                // convertView = new BankCardView(mContext);
                                 break;
                         }
                     } else {
@@ -287,18 +286,21 @@ public class CardsFragment extends Fragment {
                 return;
             }
             if (!EnvManager.getInstance().isWatchConnected()) {
-                Toast.makeText(mContext, R.string.wallet_disconnect_tips, Toast.LENGTH_LONG).show();
+                Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_disconnect_tips),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             if (!CardManager.getInstance().isReady()) {
-                Toast.makeText(mContext, R.string.wallet_sync_err_watch, Toast.LENGTH_LONG).show();
+                Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_watch),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             IOrder order = OrderManager.getInstance()
                     .getLastOrder(card.getAID());
             if (order != null && order.isIssueFail()) {
                 if (!isPayCardConfigOk(card)) {
-                    Toast.makeText(mContext, R.string.select_add_traffic_card_config_no_ready,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.select_add_traffic_card_config_no_ready),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -311,7 +313,8 @@ public class CardsFragment extends Fragment {
                         true);
             } else if (order != null && order.isCardTopFail()) {
                 if (!isPayCardConfigOk(card)) {
-                    Toast.makeText(mContext, R.string.select_add_traffic_card_config_no_ready,
+                    Toast.makeText(GlobalObj.g_appContext,
+                            getString(R.string.select_add_traffic_card_config_no_ready),
                             Toast.LENGTH_LONG).show();
                     return;
                 }

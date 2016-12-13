@@ -1,8 +1,8 @@
 
 package com.pacewear.tws.phoneside.wallet.wupserver;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.qq.jce.wup.UniPacket;
-import com.tencent.tws.framework.global.GlobalObj;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,6 +11,7 @@ import qrom.component.log.QRomLog;
 import qrom.component.wup.QRomComponentWupManager;
 import qrom.component.wup.QRomWupReqExtraData;
 import qrom.component.wup.QRomWupRspExtraData;
+
 /**
  * @author baodingzhou
  */
@@ -30,7 +31,7 @@ public class ServerHandler extends QRomComponentWupManager implements IServerHan
 
     public ServerHandler() {
         QRomLog.d(TAG, "ServerHandler");
-        startup(GlobalObj.g_appContext);
+        startup(WalletApp.sGlobalCtx);
     }
 
     public static IServerHandler getInstance() {
@@ -76,7 +77,7 @@ public class ServerHandler extends QRomComponentWupManager implements IServerHan
     @Override
     public int reqServer(int operType, UniPacket uniPacket) {
         QRomLog.d(TAG, "reqServer operType:" + operType);
-        return requestWupNoRetry(WUP_MOUDLE_ID, operType, uniPacket,null,0,mRequestEncrypt);
+        return requestWupNoRetry(WUP_MOUDLE_ID, operType, uniPacket, null, 0, mRequestEncrypt);
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.tencent.tws.phoneside.walletv2.ui.widget.CustomListView
+    <com.pacewear.tws.phoneside.wallet.ui.widget.CustomListView
         android:id="@+id/card_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

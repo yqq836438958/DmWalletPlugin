@@ -385,7 +385,7 @@ public class ShowLoadingActivity extends TwsActivity
     }
 
     private void finishAndToast(int strRes) {
-        Toast.makeText(GlobalObj.g_appContext, strRes, Toast.LENGTH_LONG)
+        Toast.makeText(GlobalObj.g_appContext, getString(strRes), Toast.LENGTH_LONG)
                 .show();
         finish();
     }
