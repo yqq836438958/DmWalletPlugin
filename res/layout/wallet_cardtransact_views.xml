@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.tencent.tws.assistant.widget.ListView
+    <ListView
         android:id="@+id/wallet_lv_transact"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:cacheColorHint="@null" />
+        android:cacheColorHint="@null"
+        android:divider="@color/wallet_listview_divider_color"
+        android:dividerHeight="@dimen/wallet_listview_divider_height" />
 
     <TextView
         android:id="@+id/wallet_tv_transact_empty"
@@ -22,10 +24,14 @@
 
     <ProgressBar
         android:id="@+id/wallet_transact_loading"
-        style="@style/twsProgressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:indeterminateDuration="700" />
+        android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
+        android:indeterminateDuration="700"
+        android:maxHeight="48dp"
+        android:maxWidth="48dp"
+        android:minHeight="12dp"
+        android:minWidth="12dp" />
 
 </RelativeLayout>

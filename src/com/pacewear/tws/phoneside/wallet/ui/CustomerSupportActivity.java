@@ -11,6 +11,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.TwsActivity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -158,7 +159,8 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     private void initActionBar() {
         mTwsActionBar = getTwsActionBar();
         mTwsActionBar.setTitle(getString(R.string.wallet_support_actionbar_title));
-
+        mTwsActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(
+                R.color.wallet_action_bar_background)));
     }
 
     @Override

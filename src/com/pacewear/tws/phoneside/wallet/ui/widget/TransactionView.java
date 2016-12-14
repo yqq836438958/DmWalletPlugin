@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.transaction.CardTransactItem;
-import com.tencent.tws.assistant.widget.ListView;
 
 import java.util.ArrayList;
 

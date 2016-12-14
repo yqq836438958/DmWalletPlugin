@@ -36,14 +36,14 @@
             android:textSize="12sp"
             android:visibility="gone" />
 
-        <com.tencent.tws.assistant.widget.ListView
+        <ListView
             android:id="@+id/card_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:cacheColorHint="@null"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:cacheColorHint="@null"
-            android:background="@null"
             android:drawSelectorOnTop="false" />
     </LinearLayout>
 

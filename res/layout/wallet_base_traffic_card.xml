@@ -61,11 +61,15 @@
 
         <ProgressBar
             android:id="@+id/face_shade_spinner"
-            style="@style/twsProgressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
             android:indeterminateDuration="700"
+            android:maxHeight="48dp"
+            android:maxWidth="48dp"
+            android:minHeight="12dp"
+            android:minWidth="12dp"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -84,7 +88,7 @@
         android:focusable="false"
         android:text="@string/charge_card_button"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="16sp" />
     -->
 
 </RelativeLayout>

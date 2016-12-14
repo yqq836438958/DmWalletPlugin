@@ -5,20 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/wallet_overall_background" >
 
-    <com.pacewear.tws.phoneside.wallet.ui.widget.CustomListView
+    <ListView
         android:id="@+id/card_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:background="@null"
         android:cacheColorHint="@null"
-        android:background="@null" />
+        android:divider="@color/wallet_listview_divider_color"
+        android:dividerHeight="@dimen/wallet_listview_divider_height" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/wallet_listview_divider_height"
         android:layout_below="@+id/card_list"
         android:layout_marginStart="@dimen/wallet_listview_divider_margin_left"
-        android:background="@color/wallet_listview_divider_color"/>
+        android:background="@color/wallet_listview_divider_color" />
 
     <TextView
         android:id="@+id/wallet_select_add_card_tip"

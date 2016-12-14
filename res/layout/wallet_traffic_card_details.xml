@@ -162,8 +162,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:gravity="center"
-         />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/wallet_jump_url"
@@ -187,11 +186,15 @@
         <!-- style="@style/WalletProgressBarTheme" -->
 
         <ProgressBar
-            style="@style/twsProgressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminateDuration="700" />
+            android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
+            android:indeterminateDuration="700"
+            android:maxHeight="48dp"
+            android:maxWidth="48dp"
+            android:minHeight="12dp"
+            android:minWidth="12dp" />
     </RelativeLayout>
 
 </RelativeLayout>

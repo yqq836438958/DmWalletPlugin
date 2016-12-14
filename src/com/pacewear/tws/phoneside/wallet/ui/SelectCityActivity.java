@@ -10,17 +10,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem.SimpleViewCache;
 import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.assistant.widget.AdapterView;
-import com.tencent.tws.assistant.widget.AdapterView.OnItemClickListener;
-import com.tencent.tws.assistant.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;

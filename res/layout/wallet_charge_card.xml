@@ -52,13 +52,15 @@
         android:textColor="#80ffffff"
         android:textSize="12sp" />
 
-    <com.tencent.tws.assistant.widget.ListView
+    <ListView
         android:id="@+id/pay_channel_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/wallet_charge_confirm"
         android:layout_below="@id/pay_channel_notile"
         android:background="@null"
-        android:cacheColorHint="@null" />
+        android:cacheColorHint="@null"
+        android:divider="@color/wallet_listview_divider_color"
+        android:dividerHeight="@dimen/wallet_listview_divider_height" />
 
 </RelativeLayout>

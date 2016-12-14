@@ -82,6 +82,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
         ActionBar actionBar = getTwsActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.wallet_action_bar_background)));
+        actionBar.setTitle(R.string.nfc_wallet);
     }
 
     private void onPostCreate() {

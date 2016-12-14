@@ -26,7 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminateDuration="700" />
+            android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
+            android:indeterminateDuration="700"
+            android:maxHeight="48dp"
+            android:maxWidth="48dp"
+            android:minHeight="12dp"
+            android:minWidth="12dp" />
 
         <TextView
             android:layout_width="wrap_content"

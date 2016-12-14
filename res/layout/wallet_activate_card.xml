@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:visibility="gone" >
+
         <TextView
             android:id="@+id/wallet_city_label"
             android:layout_width="match_parent"
@@ -27,12 +28,14 @@
             android:text="@string/wallet_city_select"
             android:textColor="#80ffffff"
             android:textSize="12sp" />
+
         <com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem
             android:id="@+id/wallet_city_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/wallet_city_label" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/activate_checked_layout"
         android:layout_width="wrap_content"
@@ -97,7 +100,7 @@
         android:textColor="#80ffffff"
         android:textSize="12sp" />
 
-    <com.tencent.tws.assistant.widget.ListView
+    <ListView
         android:id="@+id/pay_channel_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

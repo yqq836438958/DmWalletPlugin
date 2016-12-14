@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
@@ -37,7 +38,6 @@ import com.pacewear.tws.phoneside.wallet.ui.widget.AddCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView;
-import com.tencent.tws.assistant.widget.ListView;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
