@@ -831,12 +831,14 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         ArrayList<PayConfig> list = rsp.vConfigList;
         Utils.enableWalletMoudle(list != null && !list.isEmpty());
         StringBuilder builder = new StringBuilder();
+        int count = 0;
         for (PayConfig payConfig : list) {
             if (!TextUtils.isEmpty(payConfig.sInstanceAId)) {
                 builder.append(payConfig.sInstanceAId).append(",");
+                count++;
             }
         }
-        Utils.saveWhiteList2Cache(builder.toString());
+        Utils.saveWhiteList2Cache(count, builder.toString());
         sendCacheListToWatch(builder.toString());
     }
 

@@ -34,8 +34,6 @@ public interface ICardInner extends ICard {
                 R.color.wallet_szt_balance,
                 // Card Balance Unit Icon
                 R.drawable.wallet_ic_balance_gray,
-                // Extra Info
-                "",
                 // class
                 TrafficCard.class),
 
@@ -57,8 +55,6 @@ public interface ICardInner extends ICard {
                 R.color.wallet_bjt_balance,
                 // Card Balance Unit Icon
                 R.drawable.wallet_ic_balance,
-                // Extra Info
-                "",
                 // class
                 TrafficCard.class),
 
@@ -80,11 +76,9 @@ public interface ICardInner extends ICard {
                 R.color.wallet_lnt_balance,
                 // Card Balance Unit Icon
                 R.drawable.wallet_ic_balance,
-                // Extra Info
-                "city_code=01",
                 // class
                 TrafficCard.class),
-                ;
+        ;
 
         private static final String TAG = "ICard.CONFIG";
 
@@ -104,20 +98,17 @@ public interface ICardInner extends ICard {
         public CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
         public int mCardNameRes = 0;
-
+        
         public int mCardIconRes = 0;
-
+        
         public int mCardBgRes = 0;
-
-        public String mCardExtra_Info = "";
-
+        
         public int mBalanceTxtColor = 0;
 
         public int mBalanceIcon = 0;
 
-        private CONFIG(String aid, CARD_TYPE type, int cardNameRes, int cardIconRes,
-                int cardBgRes, int balanceTxtColor, int balanceIcon, String ext_info,
-                Class<? extends Card> cls) {
+        private CONFIG(String aid, CARD_TYPE type, int cardNameRes,int cardIconRes,
+                int cardBgRes,int balanceTxtColor,int balanceIcon,Class<? extends Card> cls) {
             mAID = aid;
             mType = type;
             mCardNameRes = cardNameRes;
@@ -125,7 +116,6 @@ public interface ICardInner extends ICard {
             mCardBgRes = cardBgRes;
             mBalanceTxtColor = balanceTxtColor;
             mBalanceIcon = balanceIcon;
-            mCardExtra_Info = ext_info;
             mClass = cls;
         }
 

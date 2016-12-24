@@ -203,11 +203,11 @@ public class CardsFragment extends Fragment {
             public int getCount() {
 
                 int count = mListCard.size();
-
+                int whitelistsize = Utils.getWhiteListSize();
                 // TODO
                 // 视觉变来边去
                 if (count != 0
-                        && count < CardManager.getInstance().getCard(mType).size()) {
+                        && whitelistsize >= 0 && count < whitelistsize) {
                     count += 1;
                 }
 

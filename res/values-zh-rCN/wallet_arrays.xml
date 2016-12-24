@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="wallet_card_detail_unbound">
+        <item msgid="0">"解除绑定"</item>
+        <item msgid="1">"取消"</item>
+    </string-array>
+    <string-array name="wallet_card_detail_set_default">
+        <item msgid="0">"确定"</item>
+        <item msgid="1">"取消"</item>
+    </string-array>
+    <string-array name="nfc_traffic_card">
+        <item>北京一卡通</item>
+        <item>上海交通卡</item>
+        <item>广州羊城通</item>
+        <item>深圳通</item>
+        <item>深圳前海通</item>
+    </string-array>
+    <string-array name="wallet_city">
+        <item>4401#01#羊城通</item>
+        <item>4406#11#广佛通</item>
+        <item>4404#25#</item>
+        <item>4415#30#</item>
+        <item>4407#35#五邑通</item>
+        <item>4412#40#肇庆通</item>
+        <item>4420#42#</item>
+        <item>4419#45#</item>
+        <item>4413#48#惠州通</item>
+        <item>4408#50#</item>
+        <item>4405#51#</item>
+        <item>4402#52#韶州通</item>
+        <item>4416#53#</item>
+        <item>4417#54#</item>
+        <item>4418#55#</item>
+        <item>4409#56#茂名通</item>
+        <item>4414#57#</item>
+        <item>4451#58#</item>
+        <item>4452#59#榕江通</item>
+        <item>4453#60#云浮通</item>
+	</string-array>
+
+    <string-array name="beijingtong_cardinfo_errlist">
+        <item>430001#卡片信息错误,请联系客服处理</item>
+        <item>430002#卡片启用日期错误,请联系客服处理</item>
+        <item>430003#钱包格式错误,请联系客服处理</item>
+        <item>430004#非启用状态卡片</item>
+        <item>430005#卡片为黑名单卡,请联系客服处理</item>
+        <item>430006#钱包格式错误,请联系客服处理</item>
+        <item>430007#钱包格式错误,请联系客服处理</item>
+        <item>430008#卡片有效日期错误,请联系客服处理</item>
+        <item>430009#卡片已过期,请联系客服处理</item>
+        <item>430010#卡片未到启用日期,请联系客服处理</item>
+    </string-array>
+</resources>

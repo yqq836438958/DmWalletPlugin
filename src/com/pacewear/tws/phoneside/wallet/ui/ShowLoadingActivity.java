@@ -38,7 +38,6 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SC
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.pacewear.tws.phoneside.wallet.ui.widget.LoadingBubble;
-import com.tencent.tws.proto.pay.nfc.PayRC;
 
 import qrom.component.log.QRomLog;
 
@@ -109,7 +108,7 @@ public class ShowLoadingActivity extends TwsActivity
                     activeFee);
         }
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE,
-                totalFee - activeFee);
+                totalFee);
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_BOOL_IS_RETRY,
                 retry);
 
@@ -242,7 +241,7 @@ public class ShowLoadingActivity extends TwsActivity
             intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                     mCard.getAID());
 
-            if (rc == PayRC._SUC) {
+            if (rc == 0) {
                 orderfinish = 1;
                 caption = getString(R.string.activate_card_succeed);
             } else {
@@ -264,7 +263,7 @@ public class ShowLoadingActivity extends TwsActivity
                     mCard.getCardName() + caption);
             intent.putExtra(
                     ShowOperationResultActivity.EXTRA_RESULT_DESCRIPTION,
-                    rc == PayRC._SUC
+                    rc == 0
                             ? getChargeBalanceTips()
                             : getErrorDesc(caption, order));
             intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
@@ -285,7 +284,7 @@ public class ShowLoadingActivity extends TwsActivity
                     mCard.getCardType());
             intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                     mCard.getAID());
-            if (rc == PayRC._SUC) {
+            if (rc == 0) {
                 orderfinish = 1;
                 caption = getString(R.string.wallet_operation_charge_succeed);
             } else if (localStep == ORDER_STEP.ORDER_FINISH) {
@@ -303,7 +302,7 @@ public class ShowLoadingActivity extends TwsActivity
                     mCard.getCardName() + caption);
             intent.putExtra(
                     ShowOperationResultActivity.EXTRA_RESULT_DESCRIPTION,
-                    rc == PayRC._SUC
+                    rc == 0
                             ? getChargeBalanceTips()
                             : getErrorDesc(caption, order));
             intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,

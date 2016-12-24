@@ -28,4 +28,9 @@ public class UIHelper {
         button.setTextColor(Color.parseColor(color));
         button.setTextSize(textSize);
     }
+
+    public static void setTwsButtonEnable(TwsButton button, boolean enable) {
+        button.setEnabled(enable);
+        button.setTextColor(enable ? Color.WHITE : Color.parseColor("#33FFFFFF"));
+    }
 }

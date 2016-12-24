@@ -15,6 +15,9 @@ import com.pacewear.tws.phoneside.wallet.walletservice.CardSwitch;
 import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.tencent.tws.proto.wallet.WatchNFCManager.MSG_STATE;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import qrom.component.log.QRomLog;
 
 /**
@@ -31,6 +34,8 @@ public abstract class Card implements ICard, ICardInner {
     private String mCardName = null;
 
     protected String mCardInfoErrDesc = null;
+
+    private HashMap<String,String> mExtraInfoMap = new HashMap<String,String>();
 
     private IStep<COMMON_STEP> mCurrentCardStep = null;
 
@@ -392,24 +397,25 @@ public abstract class Card implements ICard, ICardInner {
 
     @Override
     public String getExtra_Info() {
-        return mConfig.mCardExtra_Info;
+        StringBuilder builder = new StringBuilder();
+        boolean isEmpty = true;
+        for (Entry<String, String> entry : mExtraInfoMap.entrySet()) {
+            if(isEmpty){
+                isEmpty = false;
+            } else {
+                builder = builder.append("&");
+            }
+            builder = builder.append(entry.getKey()).append("=").append(entry.getValue());
+        }
+        return builder.toString();
     }
 
     @Override
     public void setExtra_Info(String key, String value) {
-        if (TextUtils.isEmpty(value)) {
+        if (TextUtils.isEmpty(value) || TextUtils.isEmpty(key)) {
             return;
         }
-        String newKeyVal = new StringBuilder(key).append("=").append(value).toString();
-        if (TextUtils.isEmpty(mConfig.mCardExtra_Info)) {
-            mConfig.mCardExtra_Info = newKeyVal;
-            return;
-        }
-        if (mConfig.mCardExtra_Info.contains(newKeyVal)) {
-            return;
-        }
-        mConfig.mCardExtra_Info = new StringBuilder(mConfig.mCardExtra_Info).append("&")
-                .append(newKeyVal).toString();
+        mExtraInfoMap.put(key, value);
     }
 
     /**

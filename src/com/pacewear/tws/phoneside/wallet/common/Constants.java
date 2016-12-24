@@ -27,11 +27,10 @@ public class Constants {
     public static final String WALLET_ERR_PLATFORM_SNOWBALL = "01";
     public static final String WALLET_ERR_PLATFORM_BEIJING = "02";
     public static final String WALLET_DEFAULT_CITYCODE = "4401";
-    public static final String WALLET_DEFAULT_CITYCODE_GZ = "01";
+    public static final String WALLET_DEFAULT_CITYCODE_GZ = "00";
     public static final String WALLET_WHITELIST_KEY = "whitelist";
     public static final String WALLET_BJISSUE_URI = "tsmclient://card?type=BMAC&action=issue";
     public static final String WALLET_BMAC_KEY = "bmac_status";
     public static final String WALLET_BMAC_PACKAGE = "cn.com.bmac.nfc";
     public static final String WALLET_BMAC_INSTALLED = "bmac_installed";
-    public static final String WALLET_BLESRV_ENABLE = "blesrv_enable";
 }

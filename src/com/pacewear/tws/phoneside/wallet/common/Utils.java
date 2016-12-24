@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -15,7 +16,6 @@ import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.qq.taf.jce.JceInputStream;
-import com.qq.taf.jce.JceUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -113,11 +113,10 @@ public class Utils {
     public static WalletCity getUserWalletCity() {
         String curCity = getUserCityCode();
         if (TextUtils.isEmpty(curCity)) {
-            curCity = Constants.WALLET_DEFAULT_CITYCODE;
+            return getDefaultWalletCity();
         }
         curCity = curCity.substring(0, 4);
         WalletCity walletCity = new WalletCity();
-        WalletCity defaultCity = new WalletCity();
         String[] citys = WalletApp.sGlobalCtx.getResources().getStringArray(R.array.wallet_city);
         for (String city : citys) {
             if (city != null && city.startsWith(curCity)) {
@@ -130,9 +129,15 @@ public class Utils {
             }
         }
         if (TextUtils.isEmpty(walletCity.code)) {
-            walletCity.code = Constants.WALLET_DEFAULT_CITYCODE_GZ;
-            walletCity.name = WalletApp.sGlobalCtx.getString(R.string.wallet_default_cardcity);
+            return getDefaultWalletCity();
         }
+        return walletCity;
+    }
+
+    private static WalletCity getDefaultWalletCity() {
+        WalletCity walletCity = new WalletCity();
+        walletCity.code = Constants.WALLET_DEFAULT_CITYCODE_GZ;
+        walletCity.name = "";
         return walletCity;
     }
 
@@ -200,9 +205,18 @@ public class Utils {
     }
 
     public static String getCacheWhiteList() {
+        String list = CONFIG.BEIJINGTONG.mAID + "," + CONFIG.LINGNANTONG.mAID + ","
+                + CONFIG.SHENZHENTONG.mAID;
+        return list;
+//        SharedPreferences oPreference = WalletApp.sGlobalCtx
+//                .getSharedPreferences("trafficcard_config", 0);
+//        return oPreference.getString("trafficcard_aid", "");
+    }
+
+    public static int getWhiteListSize() {
         SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
-        return oPreference.getString("trafficcard_aid", "");
+        return oPreference.getInt("trafficcard_count", -1);
     }
 
     public static void clearPayConfigs() {
@@ -213,12 +227,13 @@ public class Utils {
         oEditor.commit();
     }
 
-    public static void saveWhiteList2Cache(String aid) {
+    public static void saveWhiteList2Cache(int count, String aid) {
         SharedPreferences oPreference = WalletApp.sGlobalCtx
                 .getSharedPreferences("trafficcard_config", 0);
         Editor oEditor = oPreference.edit();
         String val = TextUtils.isEmpty(aid) ? "empty" : aid;
         oEditor.putString("trafficcard_aid", val);
+        oEditor.putInt("trafficcard_count", count);
         oEditor.commit();
     }
 

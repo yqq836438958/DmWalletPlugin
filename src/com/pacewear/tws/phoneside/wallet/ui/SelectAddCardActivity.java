@@ -28,6 +28,7 @@ import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
@@ -112,8 +113,12 @@ public class SelectAddCardActivity extends TwsActivity {
 
         ICard card = null;
         IOrder order = null;
+        String whiteList = Utils.getCacheWhiteList();
         for (int i = 0; i < cards.size(); i++) {
             card = cards.get(i);
+            if (!TextUtils.isEmpty(whiteList) && !whiteList.contains(card.getAID())) {
+                continue;
+            }
             order = OrderManager.getInstance().getLastOrder(card.getAID());
             if (order != null && (order.isIssueFail() || order.isCardTopFail())) {
                 continue;

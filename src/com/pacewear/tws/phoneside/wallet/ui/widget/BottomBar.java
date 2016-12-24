@@ -116,7 +116,7 @@ public class BottomBar extends FrameLayout implements OnClickListener {
     }
 
     public void setSingleButtonWithDesButtonEnable(boolean enabled) {
-        mSingleButtonWithDesButton.setEnabled(enabled);
+        UIHelper.setTwsButtonEnable(mSingleButtonWithDesButton, enabled);
     }
 
     public void setSingleButtonWithDesButtonText(int resId) {

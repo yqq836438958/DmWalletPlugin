@@ -282,9 +282,9 @@ public class ShowCardDetailsActivity extends TwsActivity
         }
         if (mCard.getActivationStatus() == ACTIVATION_STATUS.ACTIVATED
                 || !EnvManager.getInstance().isWatchConnected()) {
-            mSetDefaultButton.setEnabled(false);
+            UIHelper.setTwsButtonEnable(mSetDefaultButton, false);
         } else {
-            mSetDefaultButton.setEnabled(true);
+            UIHelper.setTwsButtonEnable(mSetDefaultButton, true);
         }
 
         if (mCard.getCardType() == CARD_TYPE.TRAFFIC_CARD) {
@@ -434,7 +434,8 @@ public class ShowCardDetailsActivity extends TwsActivity
                                         getString(R.string.wallet_set_default_title),
                                         mCard.getCardName()))
                         .setBottomButtonItems(
-                                R.array.wallet_card_detail_set_default,
+                                getResources()
+                                        .getTextArray(R.array.wallet_card_detail_set_default),
                                 new DialogInterface.OnClickListener() {
 
                                     @Override

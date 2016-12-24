@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.tencent.tws.assistant.widget.TwsButton;
 
 public class TimerButton extends TwsButton implements OnClickListener {
@@ -50,7 +51,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
             TimerButton.this.setText(getAfterBtnText(mLeftTime / 1000));
             mLeftTime -= 1000;
             if (mLeftTime < 0) {
-                TimerButton.this.setEnabled(true);
+                UIHelper.setTwsButtonEnable(TimerButton.this, true);
                 TimerButton.this.setText(textbefore);
                 clearTimer();
             }
@@ -98,7 +99,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
         initTimer();
         this.setText(getAfterBtnText(mLeftTime / 1000));
         mTimer.schedule(mTimerTask, 0, 1000);
-        this.setEnabled(false);
+        UIHelper.setTwsButtonEnable(TimerButton.this, false);
     }
 
     public void onDestroy() {
@@ -120,7 +121,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
             this.mLeftTime = Math.abs(time);
             mTimer.schedule(mTimerTask, 0, 1000);
             this.setText(getAfterBtnText(0));
-            this.setEnabled(false);
+            UIHelper.setTwsButtonEnable(TimerButton.this, false);
         }
     }
 

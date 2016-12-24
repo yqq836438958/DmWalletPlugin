@@ -15,7 +15,7 @@
 
     <application
         android:name="com.pacewear.tws.phoneside.wallet.WalletApp"
-        android:label="@string/nfc_wallet"
+        android:label="TwsPluginWallet"
         android:theme="@android:style/Theme.Holo.Light" >
 
         <!-- 显示位置pos： 1 Hotseat； 2 MyWatchFragment； 3 ActionBarMenu； 4 其他 -->

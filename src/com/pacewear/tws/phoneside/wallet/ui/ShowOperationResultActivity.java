@@ -20,6 +20,7 @@ import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
+import com.tencent.tws.phoneside.utils.BranchUtil;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -125,7 +126,7 @@ public class ShowOperationResultActivity extends TwsActivity {
         TextView retry = (TextView) findViewById(R.id.wallet_result_retry);
         TwsButton button = (TwsButton) findViewById(R.id.wallet_operation_result_close);
         UIHelper.setTwsButton(button, R.string.wallet_operation_result_close, 14);
-        if (!ServerHandler.getInstance().isTestEnv()) {
+        if (!ServerHandler.getInstance().isTestEnv() && BranchUtil.isGA()) {
             captionTv.setEnabled(false);
         }
         captionTv.setOnClickListener(new OnClickListener() {

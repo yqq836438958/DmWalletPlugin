@@ -1,184 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  -->
-    <string name="nfc_traffic_card_beijing">北京一卡通</string>
-    <string name="nfc_traffic_card_shenzhen">深圳通</string>
-    <string name="nfc_traffic_card_lingnan">岭南通</string>
-    <string name="nfc_bank_card_cmb_debit">招行借记卡</string>
-    <string name="nfc_bank_card_cmb_crebit">招行信用卡</string>
-    <string name="nfc_bank_card_cmb_wuxian">招行无限卡</string>
-    <string name="wallet_usinghelp_title">使用帮助</string>
+     <!--  -->
+    <string name="nfc_traffic_card_beijing">Beijing All-purpose Card</string>
+    <string name="nfc_traffic_card_shenzhen">Shenzhen All-purpose Card</string>
+	<string name="nfc_traffic_card_lingnan">Lingnan All-purpose Card</string>
+    <string name="nfc_bank_card_cmb_debit">CMB debit card</string>
+    <string name="nfc_bank_card_cmb_crebit">CMB credit card</string>
+    <string name="nfc_bank_card_cmb_wuxian">CMB Infinite card </string>
+    <string name="wallet_usinghelp_title">Help</string>
     <string name="wallet_trafficcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_traffic_card.html"</string>
     <string name="wallet_bankcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_bank_card.html"</string>
 
     <!-- nfcwallet begin -->
-    <string name="nfc_wallet">交通卡</string>
-    <string name="nfc_traffic_card">交通卡</string>
-    <string name="nfc_bank_card">银行卡</string>
-    <string name="wallet_tuo_wan_check_passwd_tip">为保障您的资金安全，需要激活手表脱腕检测密码才可刷卡，请在手表端激活“脱腕检测密码”功能。</string>
+    <string name="nfc_wallet">Watch card bag</string>
+    <string name="nfc_traffic_card">Traffic card</string>
+    <string name="nfc_bank_card">Bank card</string>
+    <string name="wallet_tuo_wan_check_passwd_tip">To ensure fund safety, wrist-off password test needs to be activated before transaction. Please activate “wrist-off password test” at watch-side. </string>
 
     <!-- 添加卡片选择界面 -->
-    <string name="select_add_traffic_card_title">开通交通卡</string>
-    <string name="select_add_bank_card_title">添加银行卡</string>
-    <string name="select_add_traffic_card_tip">开通交通卡后，手表可用于刷公交、地铁。</string>
-    <string name="select_add_bank_card_tip">添加银行卡后，手表可用于ATM取款及线下支付。</string>
-    <string name="select_add_traffic_card_config_no_ready">网络获取配置失败，请稍后再试</string>
+    <string name="select_add_traffic_card_title">Add traffic card</string>
+    <string name="select_add_bank_card_title">Add bank card</string>
+    <string name="select_add_traffic_card_tip">Watch may be used to take a bus or subway after traffic card has been added. </string>
+    <string name="select_add_bank_card_tip">Watch may be used to ATM withdrawal and off-line payment after bank card has been added.  </string>
+    <string name="select_add_traffic_card_config_no_ready">Failure to obtain network configuration, please try later </string>
 
     <!-- 开卡 -->
-    <string name="activate_card_title">%1$s开卡</string>
-    <string name="activate_card_continue">继续开卡</string>
-    <string name="activate_payment_succeed">交易成功</string>
-    <string name="activate_card_succeed">开卡成功</string>
-    <string name="activate_card_succeed_notice">%1$s开卡成功</string>
-    <string name="activate_card_fee">(含%1$d元开卡费)</string>
-    <string name="activate_confirm">确认开卡</string>
-    <string name="wallet_confirm_provision">确认即表示接受开卡费不退还的条款</string>
-    <string name="wallet_pay_value_bar_yuan">%1$s元</string>
-    <string name="wallet_traffic_provision_title">使用条款</string>
-    <string name="wallet_activate_card_topup_failed">激活卡成功，充值失败</string>
-    <string name="wallet_activate_card_failed">开卡失败</string>
-    <string name="wallet_activate_card_query_failed">开卡成功,卡余额查询失败</string>
-    <string name="wallet_topup_card_query_failed">充值成功,卡余额查询失败</string>
-    <string name="wallet_activate_loading">开卡中...</string>
+    <string name="activate_card_title">%1$s Activate card </string>
+    <string name="activate_card_continue">Continue activating card</string>
+    <string name="activate_payment_succeed">Successful transaction </string>
+    <string name="activate_card_succeed">Successful card activation </string>
+    <string name="activate_card_succeed_notice">%1$s Successful card activation</string>
+    <string name="activate_card_fee">(Including %1$d yuan charged for card activation)</string>
+    <string name="activate_confirm">Confirmation of card activation</string>
+    <string name="wallet_confirm_provision">Confirmation means accepting the term that the fee charged for card activation will not be returned </string>
+    <string name="wallet_pay_value_bar_yuan">%1$s yuan</string>
+    <string name="wallet_traffic_provision_title">Use terms</string>
+    <string name="wallet_activate_card_topup_failed">Successful card activation,failed recharging </string>
+    <string name="wallet_activate_card_failed">Failed card activation</string>
+    <string name="wallet_activate_card_query_failed">Successful card activation, failed to inquire the balance</string>
+    <string name="wallet_topup_card_query_failed">Successful recharging,failed to inquire the balance</string>
+    <string name="wallet_activate_loading">Activating card…</string>
+    
+    
     <!-- 充值 -->
-    <string name="charge_card_title">%1$s充值</string>
-    <string name="charge_card_continue">继续充值</string>
-    <string name="charge_card_button">充值</string>
-    <string name="wallet_pay_channel_wechat">微信支付</string>
-    <string name="wallet_pay_channel_qq">QQ钱包</string>
-    <string name="charge_confirm">确认充值</string>
-    <string name="denomination_notice">选择充值金额</string>
-    <string name="pay_channel_notile">选择支付方式</string>
-    <string name="support">客服支持</string>
-    <string name="wallet_amount_nozero">请选择其他金额，保证充值后卡金额大于0</string>
-    <string name="wallet_validity_tips">该卡已超过有效日期，无法充值</string>
-    <string name="wallet_startdate_tips">该卡未到启用日期，无法充值</string>
-    <string name="wallet_charge_loading">充值中...</string>
+    <string name="charge_card_title">%1$s recharging </string>
+    <string name="charge_card_continue">Continue recharging</string>
+    <string name="charge_card_button">Recharging</string>
+    <string name="wallet_pay_channel_wechat">WeChat payment</string>
+    <string name="wallet_pay_channel_qq">QQ wallet</string>
+    <string name="charge_confirm">Confirm recharging</string>
+    <string name="denomination_notice">Select recharging amount</string>
+    <string name="pay_channel_notile">Select payment method </string>
+    <string name="support">Support</string>
+    <string name="wallet_amount_nozero">Select other recharging amount, ensure the amount of card after the recharge is greater than 0</string>
+    <string name="wallet_validity_tips">The card has exceeded the expiration date, unable to recharge</string>
+    <string name="wallet_startdate_tips">The card is not up to date, unable to recharge</string>
+    <string name="wallet_charge_loading">Recharing…</string>
+    
+    
     <!-- Wallet Home -->
-    <string name="wallet_traffic_card_add">添加交通卡</string>
-    <string name="wallet_traffic_card_tip">添加后手表将支持线下刷卡支付</string>
-    <string name="wallet_bank_card_add">绑定银行卡</string>
-    <string name="wallet_bank_card_tip">绑定后手表支付将支持ATM取款及线下刷卡支付</string>
-    <string name="wallet_set_default_card">设为默认卡</string>
-    <string name="wallet_default_card_setted">已设为默认卡</string>
-    <string name="wallet_card_invalid">卡片不可用，点击查看</string>
+    <string name="wallet_traffic_card_add">Add traffic card</string>
+    <string name="wallet_traffic_card_tip">Off-line payment will be activated after adding watch </string>
+    <string name="wallet_bank_card_add">Bind bank card</string>
+    <string name="wallet_bank_card_tip">ATM withdrawal and off-line payment will be activated after binding bank card</string>
+    <string name="wallet_set_default_card">Set default card </string>
+    <string name="wallet_default_card_setted">Has been set as default card</string>
+    <string name="wallet_card_invalid">Card unavailable, click to view </string>
 
     <!-- Card Detail -->
-    <string name="wallet_bank_card_detail_ubound_menu">解除绑定</string>
-    <string name="wallet_ubound_dialog_title">解除绑定后不能使用该银行卡的手表支付功能。</string>
-    <string name="wallet_ubound_dialog_message">解除绑定后，该卡将无法支持手表端的ATM取款及线下支付。</string>
-    <string name="wallet_ubound_dialog_positive">解除绑定</string>
-    <string name="wallet_ubound_dialog_negative">取消</string>
-    <string name="wallet_bank_card_quota">POS限额</string>
+    <string name="wallet_bank_card_detail_ubound_menu">Unbind</string>
+    <string name="wallet_ubound_dialog_title">Watch payment function of this bank card will become unavailable after unbinding</string>
+    <string name="wallet_ubound_dialog_message">This bank card will not support ATM withdrawal and off-line payment of watch-side after unbinding </string>
+    <string name="wallet_ubound_dialog_positive">Unbind</string>
+    <string name="wallet_ubound_dialog_negative">Cancel</string>
+    <string name="wallet_bank_card_quota">POS limited amount</string>
     <string name="wallet_bank_card_quota_sample">￥20000.00</string>
-    <string name="wallet_bank_card_consumer_hotline">客户电话</string>
-    <string name="wallet_bank_customer_service">如有疑问请咨询 95555</string>
-    <string name="wallet_traffic_card_balance">余额: ¥%1$s</string>
-    <string name="wallet_traffic_card_balance_charge">当前卡内余额%1$s元</string>
-    <string name="wallet_set_default_title">将%1$s设置为默认卡？</string>
-    <string name="wallet_delete_card">删除此卡</string>
-    <string name="wallet_set_default_dev_not_connected">无法设为默认卡，请稍后重试。</string>
-    <string name="wallet_validity_label">有效期</string>
-    <string name="wallet_num_label">卡号</string>
-    <string name="wallet_jump_url"><u>你还可以使用 北京一卡通APP 进行充值</u></string>
+    <string name="wallet_bank_card_consumer_hotline">Customer telephone</string>
+    <string name="wallet_bank_customer_service">For any questions, please dial 95555 </string>
+    <string name="wallet_traffic_card_balance">Balance: ¥%1$.2f</string>
+    <string name="wallet_set_default_title">Set %1$s as default card? </string>
+    <string name="wallet_delete_card">Delete this card</string>
+    <string name="wallet_set_default_dev_not_connected">%1$s cannot be set as default card at the moment, please connect watch before trying again. </string>
+    <string name="wallet_validity_label">Period of validity</string>
+    <string name="wallet_num_label">Card number</string>
+	<string name="wallet_jump_url"><u>You can also use the 北京一卡通 APP to recharge</u></string>
+	
     <!-- Select Default Card -->
-    <string name="wallet_select_default_traffic_card_titile">选择默认交通卡</string>
-    <string name="wallet_select_default_bank_card_titile">选择默认银行卡</string>
-    <string name="wallet_select_default_confirm">完成</string>
-    <string name="wallet_select_default_cancel">取消</string>
-    <string name="wallet_select_default_redo">重试</string>
-    <string name="wallet_select_default_success_prompt">默认卡已变更</string>
-    <string name="wallet_select_default_bank_content">招商银行借记卡(2861)已解除绑定</string>
+    <string name="wallet_select_default_traffic_card_titile">Select default traffic card</string>
+    <string name="wallet_select_default_bank_card_titile">Select default bank card</string>
+    <string name="wallet_select_default_confirm">Finished</string>
+    <string name="wallet_select_default_cancel">Cancel</string>
+    <string name="wallet_select_default_redo">Retry</string>
+    <string name="wallet_select_default_success_prompt">Default card has been changed</string>
+    <string name="wallet_select_default_bank_content">CMB debit card (2861) has been unbound </string>
 
     <!-- Loading -->
-    <string name="wallet_loading_activate_title">%1$s开卡</string>
-    <string name="wallet_loading_charge_title">%1$s充值</string>
-    <string name="wallet_loading_circle_notice">正在传输资料&#8230;</string>
-    <string name="wallet_loading_notice">根据您的网络情况该过程可能需要1&#8211;3分钟，\n请耐心等候并避免使用手机进行其他操作。</string>
+    <string name="wallet_loading_activate_title">%1$s activate card</string>
+    <string name="wallet_loading_charge_title">%1$s recharging</string>
+    <string name="wallet_loading_circle_notice">Transmitting document...</string>
+    <string name="wallet_loading_notice">It may take 1-3 minutes to finish this process under the current network condition, \n please wait patiently and use mobile to conduct other operations </string>
 
     <!-- Payment result -->
-    <string name="wallet_payment_result_finish">完成</string>
-    <string name="wallet_order_number">订单号</string>
-    <string name="wallet_result_retry">重试</string>
-    <string name="wallet_operation_result_close">关闭</string>
-    <string name="wallet_operation_failed_tip">请保持手表与手机的正常连接&lt;br&gt;并确保手机网络通畅</string>
-    <string name="wallet_errcode_desc">(%s)，请联系客服处理</string>
-    <string name="wallet_operation_current_balance">当前余额%1$.2f元</string>
-    <string name="wallet_operation_bind_succeed">绑定成功</string>
-    <string name="wallet_operation_bind_failed">绑定成功</string>
-    <string name="wallet_operation_charge_succeed">充值成功</string>
-    <string name="wallet_operation_charge_failed">充值失败</string>
+    <string name="wallet_payment_result_finish">Finished</string>
+    <string name="wallet_order_number">Order No.</string>
+    <string name="wallet_result_retry">Retry</string>
+    <string name="wallet_operation_result_close">Close</string>
+    <string name="wallet_operation_failed_tip">Please make sure that watch is normally connected to mobile\n and that mobile network is under good condition </string>
+    <string name="wallet_errcode_desc">(%s)，Please contact customer service&lt;a href=&quot;tel:4007058885&quot;&gt;4007058885&lt;/a&gt;</string>
+    <string name="wallet_operation_current_balance">Current balance:%1$.2f yuan </string>
+    <string name="wallet_operation_bind_succeed">Successful binding</string>
+    <string name="wallet_operation_bind_failed">Successful binding</string>
+    <string name="wallet_operation_charge_succeed">Recharging succeeded </string>
+    <string name="wallet_operation_charge_failed">Recharging failed</string>
 
     <!-- CMB -->
-    <string name="wallet_register_action_next_step">下一步</string>
-    <string name="wallet_register_step_title_input_card_info">填写银行卡信息</string>
-    <string name="wallet_register_step_title_authentication">身份验证</string>
-    <string name="wallet_register_step_title_provision_confirm">条款与条件</string>
-    <string name="wallet_register_step_title_codes_authentication">填写验证码</string>
-    <string name="wallet_register_step_confirm">同意</string>
-    <string name="wallet_register_pwd_notice">输入银行卡交易密码完成身份验证</string>
-    <string name="wallet_provision_title">招商银行一卡通 （信用卡）申请须知</string>
-    <string name="wallet_provision_content">一 招商银行一卡通 （信用卡）申请须知 </string>
-    <string name="wallet_codes_authentication">验证码</string>
-    <string name="wallet_codes_authentication_redo">重新获取(59S)</string>
-    <string name="wallet_codes_authentication_notice">已将动态验证码发送至您尾号为3731的手机中。</string>
-    <string name="wallet_invalid_order">订单支付失败，请重新下单</string>
-    <string name="wallet_no_order">下单失败，请重新下单</string>
-    <string name="wallet_flow_trytimes">重试次数太多，请联系客服</string>
-    <string name="wallet_balance_unit">元</string>
-    <string name="wallet_sync_err_network">同步服务器信息失败</string>
-    <string name="wallet_sync_err_watch">同步手表卡片信息失败</string>
-    <string name="wallet_flow_charge_amount">超过卡内最大余额上限%1$s元</string>
-    <string name="wallet_loading_tips">正在加载</string>
-    <string name="wallet_waiting_tips">即将上线，敬请期待。</string>
-    <string name="wallet_disconnect_tips">无法连接手表，请检测连接</string>
-    <string name="wallet_connect_timeout">获取手表信息超时，请稍候再试</string>
+   <string name="wallet_register_action_next_step">Next step</string>
+    <string name="wallet_register_step_title_input_card_info">Fill in bank card information</string>
+    <string name="wallet_register_step_title_authentication">Identity verification</string>
+    <string name="wallet_register_step_title_provision_confirm">Terms and Conditions</string>
+    <string name="wallet_register_step_title_codes_authentication">Fill in verification code</string>
+    <string name="wallet_register_step_confirm">Agree</string>
+    <string name="wallet_register_pwd_notice">Enter transaction password of bank card to complete identity verification </string>
+    <string name="wallet_provision_title">Requirements of Applying for CMB All-purpose Card (Credit Card)</string>
+    <string name="wallet_provision_content">I Requirements of Applying for CMB All-purpose Card (Credit Card) </string>
+    <string name="wallet_codes_authentication">Verification code</string>
+    <string name="wallet_codes_authentication_redo">Retry (59S)</string>
+    <string name="wallet_codes_authentication_notice">Dynamic verification code has been successfully sent to your mobile phone (the last four numbers are 3731)</string>
+    <string name="wallet_invalid_order">Pay failed, please try again</string>
+    <string name="wallet_no_order">Order failed, please order again</string>
+    <string name="wallet_flow_trytimes">Retry too much, please contact service</string>
+    <string name="wallet_balance_unit">yuan</string>
+    <string name="wallet_sync_err_network">Server information failed</string>
+    <string name="wallet_sync_err_watch">Synchronize information failed</string>
+    <string name="wallet_flow_charge_amount">Exceeds the maximum %1$s yuan</string>
+    <string name="wallet_loading_tips">Loading</string>
+    <string name="wallet_waiting_tips">Soon,stay tuned。</string>
+    <string name="wallet_disconnect_tips">Unable to connect,please test</string>
+    <string name="wallet_connect_timeout">Information timeout,try later</string>
 
     <!-- 客服支持界面 -->
-    <string name="wallet_support_title">上报协助处理数据</string>
-    <string name="wallet_support_summary">完善你的个人信息，\n将帮住我们更好的解决您的问题。</string>
-    <string name="wallet_support_name">姓名</string>
-    <string name="wallet_support_tel">电话</string>
-    <string name="wallet_support_data">数据包 :</string>
-    <string name="wallet_support_notice">请确认您的联系方式，以方便后续与您确认信息。</string>
-    <string name="wallet_support_actionbar_title">交通卡客服支持</string>
-    <string name="wallet_support_start_filling">开始填写</string>
-    <string name="wallet_support_submit_string">提交</string>
-    <string name="wallet_support_improve_personal_info">请完善个人信息</string>
-    <string name="wallet_support_submit_personal_info_complete">协助处理数据已提交</string>
-    <string name="wallet_support_submit_fail">请打开手机网络</string>
-    <string name="wallet_support_personal_info_has_submit">您的个人信息已经提交</string>
+    <string name="wallet_support_title">Reported data</string>
+    <string name="wallet_support_summary">Improve your information,will help us solve problem。</string>
+    <string name="wallet_support_name">Name</string>
+    <string name="wallet_support_tel">Phone</string>
+    <string name="wallet_support_data">The packet:</string>
+    <string name="wallet_support_notice">Please make sure information to confirm with you。</string>
+    <string name="wallet_support_actionbar_title">Customer support</string>
+    <string name="wallet_support_start_filling">Start to fill</string>
+    <string name="wallet_support_submit_string">Submit</string>
+    <string name="wallet_support_improve_personal_info">Please complete information</string>
+    <string name="wallet_support_submit_personal_info_complete">Data been submitted</string>
+    <string name="wallet_support_submit_fail">Please open the network</string>
+    <string name="wallet_support_personal_info_has_submit">Information submitted</string>
 
     <!-- 选择城市界面 -->
-    <string name="wallet_city_select">选择开卡城市</string>
-    <string name="wallet_city_other">其他城市</string>
-    <string name="wallet_default_cardcity">羊城通</string>
+    <string name="wallet_city_select">Select city</string>
+    <string name="wallet_city_other">Other cities</string>
+    <string name="wallet_default_cardcity">Yang Cheng Tong</string>
 
     <!-- 交易记录 -->
-    <string name="wallet_transact_label">交易记录</string>
-    <string name="wallet_transact_topup">充值</string>
-    <string name="wallet_transact_consume">消费</string>
-    <string name="wallet_transact_empty">无法查询到交易记录</string>
+    <string name="wallet_transact_label">Records</string>
+    <string name="wallet_transact_topup">Recharge</string>
+    <string name="wallet_transact_consume">Consume</string>
+    <string name="wallet_transact_empty">Unable check records</string>
 
-    <!-- 开卡协议 -->
-    <string name="wallet_agreement_title">服务协议</string>
-    <string name="wallet_cancel">取消</string>
-    <string name="wallet_confirm">同意</string>
+    <!--  开卡协议 -->
+    <string name="wallet_agreement_title">Protocol</string>
+    <string name="wallet_cancel">Cancel</string>
+    <string name="wallet_confirm">Agree</string>
     <string name="wallet_lnt_agreement_rl">"http://3gimg.qq.com/trom_s/tosWatch/lingnantong_buscard.html"</string>
 
-    <!-- 手机验证 -->
-    <string name="wallet_infoverify">信息验证</string>
-    <string name="wallet_next">下一步</string>
-    <string name="wallet_phonenum">手机号</string>
-    <string name="wallet_verifycode">验证码</string>
-    <string name="wallet_reget_verify">重新获取(#S)</string>
-    <string name="wallet_get_verify">获取验证码</string>
-    <string name="wallet_get_verify_fail">获取验证码失败</string>
-    <string name="wallet_phone_error">请输入正确的手机号码</string>
-    <string name="wallet_verify_confirm_fail">验证失败</string>
-    <string name="wallet_reget_verify_reset">重新获取</string>
-    <string name="wallet_login_download_qq">你还没有安装QQ，请安装后再试</string>
-    <string name="wallet_login_download_mm">你还没有安装微信，请安装后再试</string>
+	<!-- 手机验证 -->
+	<string name="wallet_infoverify">Validation</string>
+	<string name="wallet_next">Next</string>
+	<string name="wallet_phonenum">Phone</string>
+	<string name="wallet_verifycode">Code</string>
+	<string name="wallet_reget_verify">To obtain(#S)</string>
+	<string name="wallet_get_verify">Get code</string>
+	<string name="wallet_get_verify_fail">Failed code</string>
+	<string name="wallet_phone_error">Enter correct number</string>
+	<string name="wallet_verify_confirm_fail">Failed</string>
+	<string name="wallet_reget_verify_reset">To obtain</string>
 
+	<string name="wallet_login_download_qq">You have not installed QQ, please install it before trying again</string>
+    <string name="wallet_login_download_mm">You have not installed WeChat, please install it before trying again</string>
 </resources>
