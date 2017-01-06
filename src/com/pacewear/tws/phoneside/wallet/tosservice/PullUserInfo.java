@@ -7,7 +7,7 @@ import TRom.PayReqHead;
 
 import com.qq.taf.jce.JceStruct;
 
-public class PullUserInfo extends TosService {
+public class PullUserInfo extends PayTosService {
 
     private static final String TAG = PullUserInfo.class.getSimpleName();
 
@@ -17,8 +17,8 @@ public class PullUserInfo extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
-
+    public JceStruct getReq(JceStruct _payReqHead) {
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         return new GetCustomServiceReq(payReqHead.getStDeviceBaseInfo(), payReqHead.stUserAuthInfo,
                 payReqHead.getStSEBaseInfo());
     }

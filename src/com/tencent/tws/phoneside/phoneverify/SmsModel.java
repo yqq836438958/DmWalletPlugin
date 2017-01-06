@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
-import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.phoneside.business.AccountManager;
 

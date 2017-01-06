@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.transaction.CardTransactItem;
 import com.pacewear.tws.phoneside.wallet.transaction.CardTransaction;
 import com.pacewear.tws.phoneside.wallet.transaction.ITransactionCallback;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TransactionView;
+import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.pay.PayNFCConstants;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class CardTransactActivity extends TwsActivity {
         super.onCreate(savedInstanceState);
         mTransactionView = new TransactionView(this);
         setContentView(mTransactionView); // TODO
+        ActionBar actionBar = getTwsActionBar();
+        actionBar.setTitle(getString(R.string.wallet_transact_label));
         init();
     }
 

@@ -115,6 +115,10 @@
             android:label="@string/wallet_infoverify"
             android:screenOrientation="portrait" >
         </activity>
+		<activity
+            android:name="com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

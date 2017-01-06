@@ -11,7 +11,7 @@ import com.qq.taf.jce.JceStruct;
  * @author baodingzhou
  */
 
-public class BusCardConfig extends TosService {
+public class BusCardConfig extends PayTosService {
 
     private String mLastMD5 = null;
 
@@ -25,9 +25,9 @@ public class BusCardConfig extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
+    public JceStruct getReq(JceStruct payReqHead) {
 
-        PayBusCardConfigReq req = new PayBusCardConfigReq(payReqHead, null);
+        PayBusCardConfigReq req = new PayBusCardConfigReq((PayReqHead) payReqHead, null);
         if (mLastMD5 != null) {
             req.sMd5 = mLastMD5;
         }

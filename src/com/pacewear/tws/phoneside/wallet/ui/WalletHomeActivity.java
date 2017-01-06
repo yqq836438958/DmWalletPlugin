@@ -7,7 +7,9 @@ import android.app.TwsActivity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
@@ -20,12 +22,17 @@ import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity;
 import com.pacewear.tws.phoneside.wallet.ui.fragments.CardsFragment;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.tencent.tws.assistant.app.ActionBar;
+import com.tencent.tws.phoneside.utils.BranchUtil;
+
+import qrom.component.log.QRomLog;
 
 public class WalletHomeActivity extends TwsActivity implements OnWalletUICallback {
     private View mLoading = null;
@@ -34,6 +41,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
     private TextView mErrorTextView = null;
     private boolean mIs3rdIssueCard = false;
     private CardsFragment mTrafficCardsFragment = null;
+    long[] mTitleViewHits = new long[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +91,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.wallet_action_bar_background)));
         actionBar.setTitle(R.string.nfc_wallet);
+        checkTestFunction(actionBar);
     }
 
     private void onPostCreate() {
@@ -151,5 +160,22 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
             setResult(isBeiJingIssueCardOk() ? RESULT_OK : RESULT_CANCELED);
         }
         super.onBackPressed();
+    }
+
+    private void checkTestFunction(ActionBar actionBar) {
+        if (!ServerHandler.getInstance().isTestEnv() && BranchUtil.isGA()) {
+            return;
+        }
+        actionBar.getTitleView(false).setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                System.arraycopy(mTitleViewHits, 1, mTitleViewHits, 0, mTitleViewHits.length - 1);
+                mTitleViewHits[mTitleViewHits.length - 1] = SystemClock.uptimeMillis();
+                if (mTitleViewHits[0] >= (SystemClock.uptimeMillis() - 1000)) {
+                    startActivity(new Intent(WalletHomeActivity.this, TsmTestActivity.class));
+                }
+            }
+        });
     }
 }

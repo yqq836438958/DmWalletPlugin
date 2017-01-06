@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/issuecard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="133dp"
+        android:text="开卡" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="hello,world" />
+
+    <Button
+        android:id="@+id/shutdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/liststatus"
+        android:layout_below="@+id/liststatus"
+        android:layout_marginTop="32dp"
+        android:text="关闭通道" />
+
+    <Button
+        android:id="@+id/liststatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/issuecard"
+        android:layout_below="@+id/issuecard"
+        android:layout_marginTop="18dp"
+        android:text="卡列表" />
+
+    <Button
+        android:id="@+id/clearapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/issuecard"
+        android:layout_alignBottom="@+id/issuecard"
+        android:layout_alignLeft="@+id/result"
+        android:text="清除App" />
+
+    <Button
+        android:id="@+id/clearssd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/liststatus"
+        android:layout_centerHorizontal="true"
+        android:text="清除SSD" />
+
+    <Button
+        android:id="@+id/resetaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/shutdown"
+        android:layout_centerHorizontal="true"
+        android:text="重置" />
+
+    <Button
+        android:id="@+id/selectaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="选择应用" />
+
+    <Button
+        android:id="@+id/topup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="圈存" />
+
+</RelativeLayout>

@@ -78,13 +78,14 @@
     <string name="wallet_bank_card_quota_sample">￥20000.00</string>
     <string name="wallet_bank_card_consumer_hotline">Customer telephone</string>
     <string name="wallet_bank_customer_service">For any questions, please dial 95555 </string>
-    <string name="wallet_traffic_card_balance">Balance: ¥%1$.2f</string>
+    <string name="wallet_traffic_card_balance">Balance: ¥%1$s</string>
     <string name="wallet_set_default_title">Set %1$s as default card? </string>
     <string name="wallet_delete_card">Delete this card</string>
     <string name="wallet_set_default_dev_not_connected">%1$s cannot be set as default card at the moment, please connect watch before trying again. </string>
     <string name="wallet_validity_label">Period of validity</string>
     <string name="wallet_num_label">Card number</string>
-	<string name="wallet_jump_url"><u>You can also use the 北京一卡通 APP to recharge</u></string>
+    <string name="wallet_jump_url">You can also use the <u>beijing yikatong APP</u> to recharge</string>
+    <string name="wallet_bjt_assist_tips">Also need to download beijing yikatong in the Pacewear market</string>
 	
     <!-- Select Default Card -->
     <string name="wallet_select_default_traffic_card_titile">Select default traffic card</string>

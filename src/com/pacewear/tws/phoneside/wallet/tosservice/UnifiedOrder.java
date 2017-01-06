@@ -12,7 +12,7 @@ import com.qq.taf.jce.JceStruct;
  * @author baodingzhou
  */
 
-public class UnifiedOrder extends TosService {
+public class UnifiedOrder extends PayTosService {
 
     private OrderReqParam mOrderReqParam = null;
 
@@ -31,8 +31,8 @@ public class UnifiedOrder extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
-
+    public JceStruct getReq(JceStruct _payReqHead) {
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         if (mOrderReqParam == null) {
             return null;
         }

@@ -22,13 +22,19 @@ public abstract class WalletService extends RPCMethod<IResult> {
                 new String[0]) : null;
         Integer[] resultCode = result.getVInt() != null ? result.getVInt().toArray(new Integer[0])
                 : null;
+        QRomLog.e(TAG, "from class:" + this.getClass().getSimpleName());
+        if (outputParams != null) {
+            QRomLog.e(TAG, "code:" + result.getIInt() + "," + "_result:" + outputParams[0]);
+        } else {
+            QRomLog.e(TAG, "code:" + result.getIInt() + ",null output");
+        }
         mListener.onResult(getSeqID(), result.getIInt(), outputParams, resultCode,
                 result.getVBytes());
     }
 
     @Override
     public final void onExecptionReal(MSG msg) {
-        QRomLog.d(TAG, "onExecptionReal");
+        QRomLog.e(TAG, "onExecptionReal");
         mListener.onExecption(getSeqID(), msg.stMsgHeader.eState);
     }
 }

@@ -21,6 +21,7 @@ import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.utils.BranchUtil;
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -33,7 +34,6 @@ import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrderManager.ORDER_STEP;
 import com.pacewear.tws.phoneside.wallet.tosservice.ApplyRefund;
-import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 
 import qrom.component.log.QRomLog;
@@ -240,7 +240,9 @@ public class ShowOperationResultActivity extends TwsActivity {
             case RESULT_FAILED:
                 icon.setImageResource(R.drawable.wallet_operate_failed);
                 button.setText(getString(R.string.wallet_operation_result_close));
+		    if (!isOrderInValid()) {
                 retry.setVisibility(View.VISIBLE);
+		    }
                 break;
             default:
                 finish();
@@ -272,7 +274,7 @@ public class ShowOperationResultActivity extends TwsActivity {
                     return;
                 }
                 IOrder order = OrderManager.getInstance().getLastOrder(mCard.getAID());
-                if (order == null || order.isInValidOrder()) {
+                if (isOrderInValid()) {
                     Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_invalid_order),
                             Toast.LENGTH_LONG).show();
                     return;
@@ -300,5 +302,9 @@ public class ShowOperationResultActivity extends TwsActivity {
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
+	}
+    private boolean isOrderInValid() {
+        IOrder order = OrderManager.getInstance().getLastOrder(mCard.getAID());
+        return order == null || order.isInValidOrder();
     }
 }

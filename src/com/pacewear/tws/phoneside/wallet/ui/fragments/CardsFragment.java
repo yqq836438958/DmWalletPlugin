@@ -61,6 +61,11 @@ public class CardsFragment extends Fragment {
 
     private EmptyCard mEmptyCard = null;
 
+    public CardsFragment() {
+        super();
+        mType = CARD_TYPE.TRAFFIC_CARD;
+    }
+
     public CardsFragment(CARD_TYPE type) {
         super();
         mType = type;

@@ -12,7 +12,7 @@ public class PassData extends WalletService {
     @Override
     public boolean invoke(IResult listener) {
         QRomLog.d(TAG, "invoke");
-//        method(MSG_RPC_METHOD._PASS_DATA);
+        method(MSG_RPC_METHOD._PASS_DATA);
         setTimeoutMillis(TIMEOUT_MILLIS);
         return super.invoke(listener);
     }

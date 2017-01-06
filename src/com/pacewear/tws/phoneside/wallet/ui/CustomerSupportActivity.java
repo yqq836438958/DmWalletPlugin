@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -30,7 +31,6 @@ import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
 import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.tosservice.CustomService;
-import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;

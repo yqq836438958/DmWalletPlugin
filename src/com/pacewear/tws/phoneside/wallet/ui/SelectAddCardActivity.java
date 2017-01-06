@@ -176,10 +176,14 @@ public class SelectAddCardActivity extends TwsActivity {
                 Intent intent = null;
                 switch (newCard.getCardType()) {
                     case TRAFFIC_CARD:
-                        if (OrderManager.getInstanceInner().getPayConfig(newCard.getAID()) == null
-                                || !OrderManager.getInstance().isOrderReady()) {
+                        if (OrderManager.getInstanceInner().getPayConfig(newCard.getAID()) == null) {
                             Toast.makeText(GlobalObj.g_appContext,
                                     getString(R.string.select_add_traffic_card_config_no_ready),
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (!OrderManager.getInstance().isOrderReady()) {
+                            Toast.makeText(GlobalObj.g_appContext, R.string.wallet_sync_err_network,
                                     Toast.LENGTH_LONG).show();
                             return;
                         }

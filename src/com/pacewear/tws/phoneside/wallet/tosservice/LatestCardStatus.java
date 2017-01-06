@@ -11,7 +11,7 @@ import com.qq.taf.jce.JceStruct;
  * @author baodingzhou
  */
 
-public class LatestCardStatus extends TosService {
+public class LatestCardStatus extends PayTosService {
 
     @Override
     public int getOperType() {
@@ -19,7 +19,8 @@ public class LatestCardStatus extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
+    public JceStruct getReq(JceStruct _payReqHead) {
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         GetCardStatusReq req = new GetCardStatusReq(payReqHead.stDeviceBaseInfo,
                 payReqHead.stUserAuthInfo, payReqHead.stSEBaseInfo);
 

@@ -1,18 +1,17 @@
 
 package com.tencent.tws.phoneside.phoneverify;
 
-import com.pacewear.tws.phoneside.wallet.tosservice.TosService;
+import com.pacewear.httpserver.BaseTosService;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.phoneside.business.AccountManager;
 import com.tencent.tws.phoneside.device.wup.DeviceInfoWupDataFactory;
 import com.tencent.tws.phoneside.framework.RomBaseInfoHelper;
 
 import TRom.DeviceBaseInfo;
-import TRom.PayReqHead;
 import TRom.RomAccountInfo;
 import TRom.UserAuthInfo;
 
-public abstract class SmsTosService extends TosService {
+public abstract class SmsTosService extends BaseTosService {
     private String mFuncName = "";
     private int mOpertype = OPERTYPE_UNKNOWN;
 
@@ -20,8 +19,8 @@ public abstract class SmsTosService extends TosService {
         super();
         mOpertype = opertype;
         mFuncName = functionName;
-        mFromOutMoudle = true;
-        mMoudleName = "watchsms";
+        mMouduleName = "watchsms";
+        mNeedReqHeader = false;
     }
 
     @Override
@@ -35,7 +34,7 @@ public abstract class SmsTosService extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
+    public JceStruct getReq(JceStruct payReqHead) {
         return getSmsReq();
     }
 
@@ -52,4 +51,8 @@ public abstract class SmsTosService extends TosService {
     }
 
     protected abstract JceStruct getSmsReq();
+
+    protected JceStruct getJceHeader() {
+        return null;
+    }
 }

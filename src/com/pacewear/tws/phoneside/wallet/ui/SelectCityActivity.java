@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.pacewear.tws.phoneside.wallet.R;
@@ -58,7 +57,7 @@ public class SelectCityActivity extends TwsActivity {
                 R.color.wallet_action_bar_background)));
         actionBar.setStackedBackgroundDrawable(
                 getResources().getDrawable(R.drawable.ab_solid_light_holo_opacity));
-
+        actionBar.setTitle(getString(R.string.wallet_city_select));
         mDefaultCityLayout = (SimpleCardListItem) findViewById(
                 R.id.lay_default_city);
         mDefaultCityLayout.setIcon(R.drawable.wallet_ic_postion);

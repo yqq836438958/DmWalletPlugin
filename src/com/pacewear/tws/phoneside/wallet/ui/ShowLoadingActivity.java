@@ -391,11 +391,12 @@ public class ShowLoadingActivity extends TwsActivity
 
     private String getErrorDesc(String caption, IOrder order) {
         String sErrCode = order.getBusinessErr();
-        boolean showErrCode = CONFIG.BEIJINGTONG.mAID.equals(mCard.getAID())
-                && !TextUtils.isEmpty(sErrCode);
+        boolean showErrCode = !TextUtils.isEmpty(sErrCode);
         String sErrDesc = caption
                 + String.format(getString(R.string.wallet_errcode_desc), sErrCode);
-        return showErrCode ? sErrDesc : getString(R.string.wallet_operation_failed_tip);
+        String commonTips = order.isInValidOrder() ? getString(R.string.wallet_invalid_order)
+                : getString(R.string.wallet_operation_failed_tip);
+        return showErrCode ? sErrDesc : commonTips;
     }
 
     private String getChargeBalanceTips() {

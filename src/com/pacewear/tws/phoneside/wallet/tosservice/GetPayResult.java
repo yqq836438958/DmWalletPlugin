@@ -12,7 +12,7 @@ import com.qq.taf.jce.JceStruct;
  * @author baodingzhou
  */
 
-public class GetPayResult extends TosService {
+public class GetPayResult extends PayTosService {
 
     private int mPayType = E_PAY_TYPE._E_PT_WEIXIN_PAY;
 
@@ -34,12 +34,12 @@ public class GetPayResult extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
+    public JceStruct getReq(JceStruct _payReqHead) {
 
         if (mTradeNo == null) {
             return null;
         }
-
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         GetPayResultReq getPayResultReq = new GetPayResultReq(payReqHead.stDeviceBaseInfo,
                 payReqHead.stUserAuthInfo, payReqHead.stSEBaseInfo, mPayType, mTradeNo);
 

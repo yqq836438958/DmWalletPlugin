@@ -81,7 +81,8 @@
     <string name="wallet_set_default_dev_not_connected">无法设为默认卡，请稍后重试。</string>
     <string name="wallet_validity_label">有效期</string>
     <string name="wallet_num_label">卡号</string>
-	<string name="wallet_jump_url"><u>你还可以使用 北京一卡通APP 进行充值</u></string>
+    <string name="wallet_jump_url">你还可以使用 <u>北京一卡通APP</u> 进行充值</string>
+    <string name="wallet_bjt_assist_tips">但还需要在 Pacewear 应用市场下载北京一卡通助手</string>
     <!-- Select Default Card -->
     <string name="wallet_select_default_traffic_card_titile">选择默认交通卡</string>
     <string name="wallet_select_default_bank_card_titile">选择默认银行卡</string>

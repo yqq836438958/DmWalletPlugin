@@ -1,5 +1,5 @@
 
-package com.pacewear.tws.phoneside.wallet.tosservice;
+package com.pacewear.httpserver;
 
 import TRom.PayReqHead;
 import com.qq.jce.wup.UniPacket;
@@ -45,9 +45,9 @@ public interface ITosService {
     public static final int OPERTYPE_BANK_VERIFY_OPT = OPERTYPE_BANK_REQUEST_OPT + 1;
 
     public static final int OPERTYPE_BANK_UNBIND = OPERTYPE_BANK_VERIFY_OPT + 1;
-    
+
     public static final int OPERTYPE_CUSTOMERSUPPORT = OPERTYPE_BANK_UNBIND + 1;
-    
+
     public static final int OPERTYPE_PULL_USER_INFO = OPERTYPE_CUSTOMERSUPPORT + 1;
 
     public static final int OPERTYPE_GET_VERIFYCODE = OPERTYPE_PULL_USER_INFO + 1;
@@ -55,6 +55,7 @@ public interface ITosService {
     public static final int OPERTYPE_SEND_VERIFYCODE = OPERTYPE_GET_VERIFYCODE + 1;
 
     public static final int OPERTYPE_GET_PHONENUM = OPERTYPE_SEND_VERIFYCODE + 1;
+
     /**
      * getFunctionName
      * 
@@ -82,7 +83,7 @@ public interface ITosService {
      * @param payReqHead
      * @return
      */
-    public JceStruct getReq(PayReqHead payReqHead);
+    public JceStruct getReq(JceStruct payReqHead);
 
     /**
      * parse

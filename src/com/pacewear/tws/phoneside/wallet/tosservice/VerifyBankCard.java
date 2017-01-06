@@ -12,7 +12,7 @@ import com.qq.taf.jce.JceStruct;
  * @author baodingzhou
  */
 
-public class VerifyBankCard extends TosService {
+public class VerifyBankCard extends PayTosService {
 
     private IssuerInfo mIssuerInfo = null;
 
@@ -39,7 +39,8 @@ public class VerifyBankCard extends TosService {
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
+    public JceStruct getReq(JceStruct _payReqHead) {
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         PayBankVerifyCardReq req = new PayBankVerifyCardReq();
 
         req.stPayReqHead = payReqHead;

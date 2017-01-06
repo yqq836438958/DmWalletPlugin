@@ -108,4 +108,12 @@ public class TrafficCardView extends BaseCard {
     public static void setShowDefaultTag(boolean show) {
         sShowDefaultTag = show;
     }
+    @Override
+    protected void showCardContent(){
+        if (mHideWhenShowDetail) {
+            mTrafficBalanceLayout.setVisibility(View.GONE);
+        } else {
+            mTrafficBalanceLayout.setVisibility(View.VISIBLE);
+        }
+    }
 }

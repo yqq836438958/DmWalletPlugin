@@ -16,13 +16,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.pacewear.httpserver.ITosService;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.step.IStep;
 import com.pacewear.tws.phoneside.wallet.step.IStep.COMMON_STEP;
 import com.pacewear.tws.phoneside.wallet.step.Step;
-import com.pacewear.tws.phoneside.wallet.tosservice.ITosService;
 import com.pacewear.tws.phoneside.wallet.walletservice.GetCPLC;
 import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.tencent.tws.api.BroadcastDef;
@@ -73,6 +73,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
     private volatile String mCPLC = null;
 
     private String mUserPhoneNum = null;
+    private int mCPLCSyncRetryTimes = 0;
 
     private final void onWatchDisconnected() {
         QRomLog.d(TAG, "onWatchDisconnected");
@@ -185,7 +186,13 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
             }
 
         };
+        String tmpCplc = Utils.getCacheCplc();
+        if(TextUtils.isEmpty(tmpCplc)){
         setCPLCStep(mCPLCUnavailable);
+        } else {
+            mCPLC = tmpCplc;
+            setCPLCStep(mCPLCReady);
+        }
         Device device = DevMgr.getInstance().connectedDev();
         if (device != null) {
             mHandler.sendEmptyMessage(MSG_WATCH_CONNECTED);
@@ -256,6 +263,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
                 }
             }
         }
+        resetCplcRetryTimes();
         getUserNum();
         return true;
     }
@@ -321,6 +329,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
 
     private void syncCPLC(boolean force) {
         QRomLog.d(TAG, "syncCPLC force:" + force);
+        resetCplcRetryTimes();
         if (!mCPLCReady.isCurrentStep()) {
             mCurrentCPLCStep.onStep();
         } else if (force) {
@@ -407,6 +416,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
                             } else {
                                 switchStep(mCPLCReady);
                             }
+                            Utils.saveCacheCplc(cplc);
                         } else {
                             keepStep();
                         }
@@ -416,9 +426,14 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
                 @Override
                 public void onExecption(long seqID, int error) {
                     if (mUniqueSeq == seqID) {
-                        QRomLog.d(TAG, String.format("syncCPLC.onExecption seqID:%d error:%s",
+                        QRomLog.e(TAG, String.format("syncCPLC.onExecption seqID:%d error:%s",
                                 seqID, MSG_STATE.convert(error)));
+                        if(error == MSG_STATE._TIMEOUT && mCPLCSyncRetryTimes < 3){
+                            mCPLCSyncRetryTimes++;
+                            repeatStep();
+                        } else {
                         keepStep();
+                        }
                     }
                 }
             });
@@ -450,6 +465,12 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         return handle;
     }
 
+    private void repeatStep() {
+        if (mCurrentCPLCStep != null) {
+            mCurrentCPLCStep.onQuitStep();
+            mCurrentCPLCStep.onEnterStep();
+        }
+    }
     private final CPLCStep mCPLCUnavailable = new CPLCStep(COMMON_STEP.UNAVAILABLE) {
         @Override
         public void onStepHandle() {
@@ -468,6 +489,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         @Override
         public void onStepHandle() {
             // Do nothing.
+            resetCplcRetryTimes();
         }
     };
 
@@ -486,6 +508,9 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
     @Override
     public final boolean isWatchConnected() {
         return mWatchConnected;
+    }
+    private void resetCplcRetryTimes() {
+        mCPLCSyncRetryTimes = 0;
     }
 
     @Override
@@ -530,7 +555,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
 
     @Override
     public final WalletBaseInfo getWalletBaseInfo() {
-        return new WalletBaseInfo("Tencent", "Taishan001", Constants.WALLET_PACKAGE_NAME);
+        return new WalletBaseInfo("alps", "PW-O116CH", Constants.WALLET_PACKAGE_NAME);
     }
 
     @Override

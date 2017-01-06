@@ -17,6 +17,7 @@ import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
 import com.pacewear.tws.phoneside.wallet.card.ICardManager;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.IOrderManager;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
@@ -109,10 +110,11 @@ public abstract class BaseCard extends FrameLayout {
                 showLoadingSpinner();
             }
         } else if (!orderManager.isOrderReady()) {
-            if (orderManager.isInOrderSyncProcess()) {
+            if (orderManager.isInOrderSyncProcess() || !EnvManager.getInstance().isCPLCReady()) {
                 showLoadingSpinner();
             } else {
                 showShadeText(R.string.wallet_sync_err_network);
+		            showCardContent();
             }
         } else if (order != null && order.isIssueFail()) {
             showShadeText(R.string.activate_card_continue);
@@ -128,7 +130,7 @@ public abstract class BaseCard extends FrameLayout {
         if (!TextUtils.isEmpty(cardinfoErrDesc)) {
             this.setEnabled(true);
         } else if (!CardManager.getInstance().isReady()
-                || !OrderManager.getInstance().isOrderReady()) {
+                /*|| !OrderManager.getInstance().isOrderReady()*/){
             this.setEnabled(false);
         } else {
             this.setEnabled(true);
@@ -171,4 +173,6 @@ public abstract class BaseCard extends FrameLayout {
             hideFaceShade();
         }
     }
+	protected void showCardContent(){
+	}
 }

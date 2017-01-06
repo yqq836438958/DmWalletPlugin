@@ -200,7 +200,7 @@ public class WatchHandler implements IWatchHandler, IWatchHandlerListener, MsgSe
 
         Device device = DevMgr.getInstance().connectedDev();
         if (device == null) {
-            QRomLog.d(TAG, "Device not connected!");
+            QRomLog.e(TAG, "Device not connected!");
             return -1;
         }
 
@@ -225,6 +225,7 @@ public class WatchHandler implements IWatchHandler, IWatchHandlerListener, MsgSe
                 reSendMsgToWatch(msgHolder);
             } else {
                 // Notify send failed.
+                QRomLog.e(TAG, "msg send failed");
                 msgHolder.mMSG.stMsgHeader.eState = MSG_STATE._UNREACH;
                 onMsgReceived(msgHolder.mMSG);
             }

@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -32,7 +33,6 @@ import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.tosservice.PullUserInfo;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
@@ -232,8 +232,10 @@ public class ShowCardDetailsActivity extends TwsActivity
             });
         }
         TextView urlView = (TextView) findViewById(R.id.wallet_jump_url);
+        TextView bjtTipsView = (TextView) findViewById(R.id.wallet_bjt_asssit_tip);
         if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(mCard.getAID())) {
             urlView.setVisibility(View.VISIBLE);
+            bjtTipsView.setVisibility(View.VISIBLE);
             urlView.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -306,10 +308,13 @@ public class ShowCardDetailsActivity extends TwsActivity
     }
 
     private void charge() {
-        if (OrderManager.getInstanceInner().getPayConfig(mCard.getAID()) == null
-                || !OrderManager.getInstance().isOrderReady()) {
-            Toast.makeText(GlobalObj.g_appContext,
-                    getString(R.string.select_add_traffic_card_config_no_ready),
+        if (OrderManager.getInstanceInner().getPayConfig(mCard.getAID()) == null) {
+            Toast.makeText(GlobalObj.g_appContext, R.string.select_add_traffic_card_config_no_ready,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!OrderManager.getInstance().isOrderReady()) {
+            Toast.makeText(GlobalObj.g_appContext, R.string.wallet_sync_err_network,
                     Toast.LENGTH_LONG).show();
             return;
         }

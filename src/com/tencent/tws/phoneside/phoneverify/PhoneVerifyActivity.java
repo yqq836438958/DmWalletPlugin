@@ -86,6 +86,7 @@ public class PhoneVerifyActivity extends TwsActivity implements View.OnClickList
         ActionBar actionBar = getTwsActionBar();
         actionBar.setBackgroundDrawable(
                 new ColorDrawable(getResources().getColor(R.color.wallet_action_bar_background)));
+        actionBar.setTitle(getString(R.string.wallet_infoverify));
         mConfirm = (ToggleButton) actionBar.getMultiChoiceView(false);
         mConfirm.setPadding(0, 0, DensityUtil.dip2px(this, 20), 0);
         mConfirm.setText(next);

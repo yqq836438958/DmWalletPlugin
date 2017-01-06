@@ -76,6 +76,7 @@ public class ActivateCardActivity extends TwsActivity {
     // 充值金额(单位元)
     private long mChargeValue = 3000;
 
+	private long mActivityAmount = 0L;
     private SimpleCardListItem mSelectCityLayout = null;
 
     private final int CODE_REQ_SELECT_CITY = 1;
@@ -127,6 +128,8 @@ public class ActivateCardActivity extends TwsActivity {
         mActivateFee = mPayConfig.getIChargeAmount();
         mPayRechargeAmount = mPayConfig.getVPayRechargeAmountList();
 
+        mActivityAmount = (mPayConfig.getIActivityFlag() == 1) ? mPayConfig.getIActivityAmount()
+                : 0;
         // TODO
         if (mPayRechargeAmount == null || mPayRechargeAmount.size() < 3) {
             finish();
@@ -337,7 +340,7 @@ public class ActivateCardActivity extends TwsActivity {
         }
 
         mBottomBar.setSingleButtonWithDesMainDes("¥"
-                + (mActivateFee + mChargeValue) / 100);
+				+ Utils.getDisplayBalance(mActivateFee + mChargeValue - mActivityAmount));
     }
 
     @Override
@@ -354,6 +357,7 @@ public class ActivateCardActivity extends TwsActivity {
                     }
                     if (!TextUtils.isEmpty(citycode)) {
                         mCard.setExtra_Info("city_code", citycode);
+                        Utils.saveUserCitycode(citycode);
                         mSelectCity.code = citycode;
                     }
                 }
@@ -389,5 +393,6 @@ public class ActivateCardActivity extends TwsActivity {
         mSelectCity.code = mDefaultCity.code;
         mSelectCity.name = mDefaultCity.name;
         mCard.setExtra_Info("city_code", tmpcity.code);
+        Utils.saveUserCitycode(tmpcity.code);
     }
 }

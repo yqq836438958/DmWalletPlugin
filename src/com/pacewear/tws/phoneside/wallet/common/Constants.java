@@ -33,4 +33,6 @@ public class Constants {
     public static final String WALLET_BMAC_KEY = "bmac_status";
     public static final String WALLET_BMAC_PACKAGE = "cn.com.bmac.nfc";
     public static final String WALLET_BMAC_INSTALLED = "bmac_installed";
+    public static final String WALLET_BEIJING_DUPLITE_OPENCARD = "-1134";
+    public static final String WALLET_BEIJING_DUPLITE_TOPUP = "-1135";
 }

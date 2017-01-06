@@ -16,6 +16,8 @@ import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.qq.taf.jce.JceInputStream;
+import com.tencent.tws.framework.common.DevMgr;
+import com.tencent.tws.framework.common.Device;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,6 +47,9 @@ public class Utils {
 
     private volatile static Handler mWorkerHandler = null;
 
+    private static final String COMMON_CACHE_FILE = "common_cache";
+
+    private static final String TRAFFIC_CONFIG_CACHE_FILE = "trafficcard_config";
     /**
      * getWorkerlooper
      * 
@@ -205,23 +210,20 @@ public class Utils {
     }
 
     public static String getCacheWhiteList() {
-        String list = CONFIG.BEIJINGTONG.mAID + "," + CONFIG.LINGNANTONG.mAID + ","
-                + CONFIG.SHENZHENTONG.mAID;
-        return list;
-//        SharedPreferences oPreference = WalletApp.sGlobalCtx
-//                .getSharedPreferences("trafficcard_config", 0);
-//        return oPreference.getString("trafficcard_aid", "");
+        SharedPreferences oPreference = WalletApp.sGlobalCtx
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
+        return oPreference.getString("trafficcard_aid", "");
     }
 
     public static int getWhiteListSize() {
         SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences("trafficcard_config", 0);
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
         return oPreference.getInt("trafficcard_count", -1);
     }
 
     public static void clearPayConfigs() {
         SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences("trafficcard_config", 0);
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
         Editor oEditor = oPreference.edit();
         oEditor.clear();
         oEditor.commit();
@@ -229,7 +231,7 @@ public class Utils {
 
     public static void saveWhiteList2Cache(int count, String aid) {
         SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences("trafficcard_config", 0);
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
         Editor oEditor = oPreference.edit();
         String val = TextUtils.isEmpty(aid) ? "empty" : aid;
         oEditor.putString("trafficcard_aid", val);
@@ -239,7 +241,7 @@ public class Utils {
 
     public static void enableWalletMoudle(boolean enable) {
         SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
-                .getSharedPreferences("trafficcard_config", 0);
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
         Editor editor = sharedPreferences.edit();
         editor.putBoolean("wallet_enable", enable);
         editor.commit();
@@ -247,7 +249,7 @@ public class Utils {
 
     public static boolean isWalletMoubleEnable() {
         SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
-                .getSharedPreferences("trafficcard_config", 0);
+                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
         return sharedPreferences.getBoolean("wallet_enable", true);
     }
 
@@ -260,5 +262,44 @@ public class Utils {
             e.printStackTrace();
         }
         return (packageInfo != null);
+    }
+    public static String getCacheCplc() {
+        Device device = DevMgr.getInstance().connectedDev();
+        if (device == null) {
+            return "";
+        }
+        String key = device.devString();
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
+                COMMON_CACHE_FILE,
+                0);
+        return sharedPreferences.getString(key, "");
+    }
+    public static void saveCacheCplc(String cplc) {
+        Device device = DevMgr.getInstance().connectedDev();
+        if (device == null) {
+            return;
+        }
+        String key = device.devString();
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
+                COMMON_CACHE_FILE,
+                0);
+        Editor editor = sharedPreferences.edit();
+        editor.putString(key, cplc);
+        editor.commit();
+    }
+    public static String getUserCacheCityCode() {
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
+                COMMON_CACHE_FILE,
+                0);
+        return sharedPreferences.getString("user_city_code", "");
+    }
+
+    public static void saveUserCitycode(String citycode) {
+        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
+                COMMON_CACHE_FILE,
+                0);
+        Editor editor = sharedPreferences.edit();
+        editor.putString("user_city_code", citycode);
+        editor.commit();
     }
 }

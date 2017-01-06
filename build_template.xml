@@ -7,38 +7,25 @@
     
     <property name="LibBranchName" value="${env.LibBranchName}"/>
     
-    
-    
-    <!-- 如果是本地，设置else的值 -->
-	<condition property="widgetlib.dir" value="twswidgetlib/" else="../twswidgetlib/">
+    <!-- 依赖工程配置 -->
+<!-- 	<condition property="appcompat_v7_phone.dir" value="appcompat_v7_phone/" else="../appcompat_v7_phone/">
 		<istrue value="${isCI}"/>
-	</condition>
+	</condition> -->
 	
-	<!-- 如果是本地，设置else的值 -->
-	<condition property="twslib.dir" value="TencentWearServiceLibApp/" else="../twslib/">
-		<istrue value="${isCI}"/>
-	</condition>
-	
-
-	<echo>widgetlib.dir = ${widgetlib.dir}</echo>
-	<echo>twslib.dir = ${twslib.dir}</echo>
 		
     <!--
         这个build.xml是整个项目编译的入口，build_common.xml是具体的编译实现
         为了修改和删除代码，所以脚本会让实现的逻辑在temp空间内进行，而不影响正式的代码）
     -->
 
-    <target name="build">
-        <!-- <antcall target="delete_gitlib" />
-        <antcall target="git-clone" />
-         -->
+    <target name="build">         
         <antcall target="-pre-build" />
         <delete dir="bin" />
         <mkdir dir="bin"/>
         <!-- 1. 编译release模式 -->
-		<!-- <exec_build target="build_release_implement"/> -->
+        <!-- <exec_build target="build_release_implement"/> -->
         <!-- 2. 编译debug模式 -->
-		<!-- <exec_build target="build_debug_implement"/> -->
+	<!-- <exec_build target="build_debug_implement"/> -->
         <!-- 3. 编译release(internal)模式-->
         <exec_build target="build_release_implement" internalmode="true"/>
         <!-- 4. 编译debug(internal)模式 -->
@@ -80,32 +67,25 @@
             </ant>
             <copy todir="bin" filtering="true">
                 <fileset dir="temp/bin"/>
-<!--                 <fileset dir="temp/twswidgetlib/twsWearableSupportLib/bin/Sdk"/> -->
-<!--                 <fileset dir="temp/TencentWearServiceLibApp/bin/Sdk"/> -->
             </copy>
             <delete dir="temp"/>
         </sequential>
     </macrodef>
     
+    <!-- clone依赖工程 -->
     <target name="git-clone" if="${isCI}">
-        <echo>LibBranchName = ${LibBranchName}</echo>
-		<echo>git clone http://git.code.oa.com/wear/twswidgetlib.git ${widgetlib.dir} -b ${LibBranchName}</echo>
-        <exec executable="git">
-            <arg line="clone http://git.code.oa.com/wear/twswidgetlib.git ${widgetlib.dir} -b ${LibBranchName}"/>
-        </exec>
-        
-   	    <echo>git clone http://git.code.oa.com/wear/TencentWearServiceLibApp.git ${twslib.dir} -b ${LibBranchName}</echo>
-        <exec executable="git">
-		    <arg line="clone http://git.code.oa.com/wear/TencentWearServiceLibApp.git ${twslib.dir} -b ${LibBranchName}"/>
-		</exec>
+ <!--        <echo>LibBranchName = ${LibBranchName}</echo> -->
+<!--          <echo>git clone http://git.code.oa.com/wear/appcompat_v7_phone.git ${appcompat_v7_phone.dir} -b ${LibBranchName}</echo> -->
+<!--         <exec executable="git"> -->
+<!-- 		    <arg line="clone http://git.code.oa.com/wear/appcompat_v7_phone.git ${appcompat_v7_phone.dir} -b ${LibBranchName}"/> -->
+<!-- 		</exec> -->
 		
     </target>
     
+    <!-- 清理依赖工程 -->
     <target name="delete_gitlib" if="${isCI}">
-        <echo>删除git clone的wdigetlib文件 ...dir : ${widgetlib.dir}</echo>
-		<delete dir="${widgetlib.dir}"/>
-		<echo>删除git clone的twslib文件 ...dir : ${twslib.dir}</echo>
-		<delete dir="${twslib.dir}"/>
+<!-- 		<echo>删除git clone的appcompat_v7_phone文件 ...dir : ${appcompat_v7_phone.dir}</echo> -->
+<!-- 		<delete dir="${appcompat_v7_phone.dir}"/> -->
     </target>
 
     <target name="-pre-build">
@@ -123,13 +103,11 @@
                 <exclude name="**/bin/**"/>
             </fileset>
         </copy>
-		<delete dir="temp/twswidgetlib/twsWearableSupportLib/bin"/>
-        <delete dir="temp/twswidgetlib/twsWearableSupportLib/gen"/>
-        
-        <delete dir="temp/TencentWearServiceLibApp/bin"/>
-		<delete dir="temp/TencentWearServiceLibApp/gen"/>
-		
-        
+<!--         <copy todir="temp/appcompat_v7_phone"> -->
+<!--             <fileset dir="${appcompat_v7_phone.dir}"> -->
+<!--                 <include name="**/**"/> -->
+<!--             </fileset> -->
+<!--         </copy> -->        
         <move file="temp/ant.project.properties" tofile="temp/project.properties">
         </move>
     </target>

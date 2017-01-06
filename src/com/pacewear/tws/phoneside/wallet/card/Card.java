@@ -58,6 +58,9 @@ public abstract class Card implements ICard, ICardInner {
             // Final
             mCurrentCardStep = mCardUnavaiable;
             mCurrentCardSwitchStep = mSwitchStepUnavaiable;
+            if(CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(getAID())){
+                mExtraInfoMap.put("city_code", "00");
+            }
         }
     }
 

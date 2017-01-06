@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CustomService extends TosService {
+public class CustomService extends PayTosService {
 
     private String mName = null;
 
@@ -27,15 +27,16 @@ public class CustomService extends TosService {
         return "customService";
     }
 
-    public void setUserPersonalInfo(final String name, final String phoneNum, ArrayList<BusCardInfo> cardList) {
+    public void setUserPersonalInfo(final String name, final String phoneNum,
+            ArrayList<BusCardInfo> cardList) {
         mName = name;
         mPhoneNum = phoneNum;
         mCardList = cardList;
     }
 
     @Override
-    public JceStruct getReq(PayReqHead payReqHead) {
-
+    public JceStruct getReq(JceStruct _payReqHead) {
+        PayReqHead payReqHead = (PayReqHead) _payReqHead;
         return new CustomServiceReq(payReqHead.getStDeviceBaseInfo(), payReqHead.stUserAuthInfo,
                 payReqHead.getStSEBaseInfo(),
                 mName, mPhoneNum, mCardList, generateTimestamp());

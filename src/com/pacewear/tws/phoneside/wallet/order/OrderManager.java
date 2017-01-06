@@ -8,9 +8,11 @@ import TRom.GetCardStatusRsp;
 import TRom.OrderReqParam;
 import TRom.PayBusCardConfigRsp;
 import TRom.PayConfig;
+import TRom.PayRechargeAmount;
 
 import android.text.TextUtils;
 
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICardManager;
@@ -18,6 +20,7 @@ import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.common.WalletRunEnv;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.env.IEnvManager;
 import com.pacewear.tws.phoneside.wallet.env.IEnvManagerListener;
@@ -27,7 +30,6 @@ import com.pacewear.tws.phoneside.wallet.step.IStep.COMMON_STEP;
 import com.pacewear.tws.phoneside.wallet.step.IStep.STATUS;
 import com.pacewear.tws.phoneside.wallet.step.Step;
 import com.pacewear.tws.phoneside.wallet.tosservice.BusCardConfig;
-import com.pacewear.tws.phoneside.wallet.tosservice.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.tosservice.LatestCardStatus;
 import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.pacewear.tws.phoneside.wallet.walletservice.PassData;
@@ -255,14 +257,15 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
                     if (iterator != null) {
                         while (iterator.hasNext()) {
                             order = iterator.next();
-                            // 为同步失败订单状态，此处需过滤掉本地失败订单
-                            if (order.isCardTopFail() || order.isIssueFail()) {
+                            // 失败订单看远程，成功订单当前只相信本地
+                            if (order.getOrderStep() != ORDER_STEP.ORDER_FINISH) {
                                 continue;
                             }
                             String tradeNo = order.getOrderRspParam().sTradeNo;
                             String aid = order.getOrderReqParam()
                                     .getStBusCardBaseInfo().sInstanceAId;
-                            if (!mTradeNoOrderMap.containsKey(tradeNo)) {
+                            // 对于此处以本地订单信息为准
+//                            if (!mTradeNoOrderMap.containsKey(tradeNo)) {
                                 mTradeNoOrderMap.put(tradeNo, order);
                                 ArrayList<String> tradeNos = mAIDTradeNoMap.get(aid);
                                 if (tradeNos == null) {
@@ -270,7 +273,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
                                     mAIDTradeNoMap.put(aid, tradeNos);
                                 }
                                 tradeNos.add(tradeNo);
-                            }
+//                            }
                         }
                     }
                 }
@@ -655,9 +658,9 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         }
 
         BusCardBaseInfo busCardBaseInfo = card.getBusCardBaseInfo();
-
-        if (busCardBaseInfo == null) {
-            QRomLog.e(TAG, "placeIssueOrderInner can not get BusCardBaseInfo");
+        PayConfig payConfig = getPayConfig(aid);
+        if (busCardBaseInfo == null || payConfig == null) {
+            QRomLog.e(TAG, "placeIssueOrderInner can not get BusCardBaseInfo,or payconfig");
             notifyNewOrder(uniqueID, false, null);
             return;
         }
@@ -682,10 +685,12 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         orderReqParam.setSDetail(card.getCardName());
         orderReqParam.setEPayScene(scene);
         if (scene == E_PAY_SCENE._EPS_OPEN_CARD) {
-            orderReqParam.setITotalFee(getFee(activateFee, chargeValue));
-            orderReqParam.setIOpenCardFee(getFee(activateFee, 0));
+            orderReqParam.setITotalFee(getFee(activateFee, chargeValue, payConfig));
+            orderReqParam.setIOpenCardFee(getFee(activateFee, 0,payConfig));
+            orderReqParam.setIOrderType(WalletRunEnv.getVisitChannel());
         } else {
-            orderReqParam.setITotalFee(getFee(0, chargeValue));// TODO 改成后台配置
+            orderReqParam.setITotalFee(getFee(0, chargeValue, payConfig));// TODO 改成后台配置
+            orderReqParam.setIOrderType(WalletRunEnv.getDefaultChannel());
         }
         orderReqParam.setSTradeType(Constants.TRADE_TYPE);
         orderReqParam.setEPayType(payType);
@@ -694,7 +699,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         orderReqParam.setIRetryPay(0);
         orderReqParam.setStWalletBaseInfo(EnvManager.getInstanceInner().getWalletBaseInfo());
         // 当前不考虑优惠活动
-        orderReqParam.setIActivityFlag(0);
+        orderReqParam.setIActivityFlag((int)payConfig.getIActivityFlag());
 
         new Order(orderReqParam, uniqueID);
     }
@@ -819,9 +824,23 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         return curStatus != STATUS.KEEP && curStatus != STATUS.QUIT;
     }
 
-    private long getFee(long actFee, long charFee) {
-        boolean isTest = ServerHandler.getInstance().isTestEnv();
-        long retFee_release = actFee + charFee;
+    private long getFee(long actFee, long charFee,PayConfig config) {
+        boolean isTest = false;//ServerHandler.getInstance().isTestEnv();
+        long activityAmount = 0;
+        if (actFee > 0) {
+            activityAmount = config.getIActivityFlag() == 1 ? config.iActivityAmount : 0;
+        } else {
+            ArrayList<PayRechargeAmount> vAmount = config.getVPayRechargeAmountList();
+            if (config.getIRechargeActivityFlag() == 1 && vAmount != null) {
+                for (PayRechargeAmount tmAmount : vAmount) {
+                    if (charFee == tmAmount.iTotalFee) {
+                        activityAmount = tmAmount.iActivityAmount;
+                        break;
+                    }
+                }
+            }
+        }
+        long retFee_release = actFee + charFee - activityAmount;
         long retFee_test = (charFee == 0) ? actFee : (retFee_release / 5000);
         return isTest ? retFee_test : retFee_release;
     }
@@ -849,9 +868,6 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.WALLET_WHITELIST_KEY, data);
-            if (Utils.isAppInstalled(WalletApp.sGlobalCtx, Constants.WALLET_BMAC_PACKAGE)) {
-                object.put(Constants.WALLET_BMAC_KEY, Constants.WALLET_BMAC_INSTALLED);
-            }
             PassData passdata = new PassData();
             passdata.putString(object.toString());
             passdata.invoke(new IResult() {

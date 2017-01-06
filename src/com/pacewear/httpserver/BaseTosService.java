@@ -1,7 +1,5 @@
 
-package com.pacewear.tws.phoneside.wallet.tosservice;
-
-import TRom.PayReqHead;
+package com.pacewear.httpserver;
 
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
@@ -23,7 +21,8 @@ import qrom.component.wup.QRomWupDataBuilder;
  * @author baodingzhou
  */
 
-public abstract class TosService implements IServerHandlerListener, ITosService, IResponseObserver {
+public abstract class BaseTosService
+        implements IServerHandlerListener, ITosService, IResponseObserver {
 
     private static final String TAG = "TosService";
 
@@ -35,11 +34,21 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
 
     private IResponseObserver mResponseObserver = null;
 
-    protected String mMoudleName = PayNFCConstants.WUP.MODULE_NAME;
-    protected boolean mFromOutMoudle = false;
+    protected String mMouduleName = PayNFCConstants.WUP.MODULE_NAME;
+    private static int mFreshTokenTimes = 0;
+    private String mReqName = REQ_NAME;
+    private String mRspName = RSP_NAME;
+    protected boolean mNeedReqHeader = true;
 
-    public TosService() {
+    public BaseTosService() {
         mUniqueSeq = sSeqGenerator.uniqueSeq();
+    }
+
+    public BaseTosService(String _module, String _req, String _rsp) {
+        this();
+        mMouduleName = _module;
+        mReqName = _req;
+        mRspName = _rsp;
     }
 
     @Override
@@ -48,48 +57,37 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
     }
 
     @Override
-    public int getOperType() {
-        return OPERTYPE_UNKNOWN;
-    }
 
-    @Override
     public boolean invoke(IResponseObserver observer) {
         boolean handled = false;
 
         // checking
-        if (observer == null) {
-            return handled;
-        }
+        // if (observer == null) {
+        // return handled;
+        // }
         mResponseObserver = observer;
 
         int operType = getOperType();
         if (operType == OPERTYPE_UNKNOWN) {
             return handled;
         }
-
-        PayReqHead payReqHead = null;
-        if (mFromOutMoudle) {
-            //
-        } else {
-            payReqHead = EnvManager.getInstanceInner().getPayReqHead();
-            if (payReqHead == null) {
-                QRomLog.e(TAG, "PayReqHead is null");
-                return handled;
-            }
+        JceStruct header = getJceHeader();
+        if (header == null && mNeedReqHeader) {
+            return handled;
         }
-        JceStruct req = getReq(payReqHead);
+        JceStruct req = getReq(header);
         if (req == null) {
             return handled;
         }
 
         QRomLog.d(
                 TAG,
-                String.format("mUniqueSeq:%d req:%s", mUniqueSeq,
+                String.format("%s,mUniqueSeq:%d req:%s", getClass().getSimpleName(), mUniqueSeq,
                         JceStruct.toDisplaySimpleString(req)));
 
         UniPacket packet = QRomWupDataBuilder.createReqUnipackageV3(
-                mMoudleName, getFunctionName(),
-                PayNFCConstants.WUP.REQ_NAME, req);
+                mMouduleName, getFunctionName(),
+                mReqName, req);
 
         IServerHandler serverHandler = ServerHandler.getInstance();
 
@@ -129,7 +127,7 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
         if (rsp == null) {
             return null;
         }
-        return packet.getByClass(RSP_NAME, rsp);
+        return packet.getByClass(mRspName, rsp);
     }
 
     @Override
@@ -146,7 +144,8 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
             if (rsp != null) {
                 QRomLog.d(
                         TAG,
-                        String.format("mUniqueSeq:%d rsp:%s", mUniqueSeq,
+                        String.format("%s,mUniqueSeq:%d rsp:%s", getClass().getSimpleName(),
+                                mUniqueSeq,
                                 JceStruct.toDisplaySimpleString(rsp)));
                 if (getSubClassRspIRet(rsp) == Constants.WALLET_ACCOUNT_AUTH_FAILED) {
                     AccountManager.getInstance().refreshLoginAccessToken();// 刷新账号的token
@@ -167,7 +166,14 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
             String description) {
         if (mReqID == reqID) {
             if (errorCode == Constants.WALLET_ACCOUNT_AUTH_FAILED) {
+                QRomLog.e(TAG, "token invalid,need refresh invalid");
                 AccountManager.getInstance().refreshLoginAccessToken();// 刷新账号的token
+                if (mFreshTokenTimes < 3) {
+                    mFreshTokenTimes++;
+                    QRomLog.e(TAG, "because token invalid, retry request now...");
+                    invoke(mResponseObserver);
+                    return false;
+                }
             }
             QRomLog.d(TAG, String.format("mUniqueSeq:%d errorCode:%d description:%s", mUniqueSeq,
                     errorCode, description));
@@ -180,6 +186,7 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
 
     @Override
     public final void onResponseSucceed(long uniqueSeq, int operType, JceStruct response) {
+        mFreshTokenTimes = 0;
         if (mResponseObserver != null) {
             mResponseObserver.onResponseSucceed(uniqueSeq, operType, response);
         }
@@ -188,6 +195,7 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
     @Override
     public final void onResponseFailed(long uniqueSeq, int operType, int errorCode,
             String description) {
+        mFreshTokenTimes = 0;
         if (mResponseObserver != null) {
             mResponseObserver.onResponseFailed(uniqueSeq, operType, errorCode, description);
         }
@@ -210,4 +218,6 @@ public abstract class TosService implements IServerHandlerListener, ITosService,
         }
         return iRet;
     }
+
+    protected abstract JceStruct getJceHeader();
 }

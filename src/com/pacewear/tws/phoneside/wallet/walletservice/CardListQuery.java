@@ -12,7 +12,7 @@ import qrom.component.log.QRomLog;
 public class CardListQuery extends WalletService {
     private static final String TAG = "CardQuery";
 
-    private static final long TIMEOUT_MILLIS = 8000;
+    private static final long TIMEOUT_MILLIS = 30000;
 
     @Override
     public boolean invoke(IResult listener) {
