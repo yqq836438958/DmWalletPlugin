@@ -1,5 +1,5 @@
 
-package com.pacewear.tsm.internal;
+package com.pacewear.tsm.internal.core;
 
 public interface ITsmProcess {
     public boolean start();

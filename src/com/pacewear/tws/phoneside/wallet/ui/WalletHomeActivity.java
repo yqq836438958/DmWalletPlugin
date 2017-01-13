@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.pacewear.httpserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -25,7 +26,6 @@ import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity;
 import com.pacewear.tws.phoneside.wallet.ui.fragments.CardsFragment;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
-import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
@@ -163,7 +163,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
     }
 
     private void checkTestFunction(ActionBar actionBar) {
-        if (!ServerHandler.getInstance().isTestEnv() && BranchUtil.isGA()) {
+        if (!ServerHandler.getInstance(this).isTestEnv() && BranchUtil.isGA()) {
             return;
         }
         actionBar.getTitleView(false).setOnClickListener(new OnClickListener() {

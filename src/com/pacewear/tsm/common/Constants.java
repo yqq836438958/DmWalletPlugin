@@ -26,6 +26,9 @@ public class Constants {
     public static final String WALLET_DEFAULT_CITYCODE_GZ = "01";
     public static final String TSM_DEFAULT_CARDMAIN_AID = "A000000151000000";
     public static final String TSM_CRS_AID = "A00000015143525300";
+    public static final int TSM_APP_UNINSTALL = 0;
+    public static final int TSM_APP_INSTALL = 1;
+    public static final int TSM_APP_PERSONAL = 2;
     public static final String TSM_KEY_AID = "instance_id";
     public static final String TSM_KEY_APP_STAT = "instance_install";
     public static final String TSM_KEY_APP_SELECT = "instance_active";

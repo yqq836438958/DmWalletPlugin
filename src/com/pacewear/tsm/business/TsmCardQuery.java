@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.internal.TsmAppInfoQuery;
-import com.pacewear.tsm.internal.TsmSelectAID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +26,6 @@ public class TsmCardQuery extends TsmBaseBusiness {
         if (TextUtils.isEmpty(mInstanceAID)) {
             return false;
         }
-        addProcess(new TsmSelectAID(mContext, mInstanceAID));
         addProcess(new TsmAppInfoQuery(mContext, mInstanceAID, mTagList));
         return true;
     }

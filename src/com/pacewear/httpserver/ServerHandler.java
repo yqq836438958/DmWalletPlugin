@@ -1,83 +1,67 @@
 
 package com.pacewear.httpserver;
 
-import com.pacewear.tws.phoneside.wallet.WalletApp;
-import com.qq.jce.wup.UniPacket;
+import android.content.Context;
+import android.util.Base64;
+import android.util.Log;
+
+import com.pacewear.httpserver.wupserver.WupServerHandler;
+import com.pacewear.tsm.common.RunEnv;
+import com.tencent.tws.api.HttpRequestCommand;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import qrom.component.log.QRomLog;
-import qrom.component.wup.QRomComponentWupManager;
-import qrom.component.wup.QRomWupReqExtraData;
-import qrom.component.wup.QRomWupRspExtraData;
+import qrom.component.wup.base.utils.ZipUtils;
 
 /**
  * @author baodingzhou
  */
 
-public class ServerHandler extends QRomComponentWupManager implements IServerHandler,
+abstract public class ServerHandler implements IServerHandler,
         IServerHandlerListener {
 
     private static final String TAG = "ServerHandler";
 
     private static final int WUP_MOUDLE_ID = 11;
 
-    public static volatile IServerHandler sInstance = null;
+    private static volatile IServerHandler sInstance = null;
 
     private ArrayList<IServerHandlerListener> mListener = new ArrayList<IServerHandlerListener>();
 
-    private boolean mRequestEncrypt = false;
+    protected boolean mRequestEncrypt = false;
 
-    public ServerHandler() {
-        QRomLog.d(TAG, "ServerHandler");
-        startup(WalletApp.sGlobalCtx);
+    private IHttpPost mHttpPost = null;
+
+    public ServerHandler(Context context, IHttpPost _httpPost) {
+        this(context);
+        mHttpPost = _httpPost;
     }
 
-    public static IServerHandler getInstance() {
+    public ServerHandler(Context context) {
+        Log.d(TAG, "ServerHandler");
+    }
+
+    public static IServerHandler getInstance(Context context) {
         if (sInstance == null) {
             synchronized (ServerHandler.class) {
                 if (sInstance == null) {
-                    sInstance = new ServerHandler();
+                    switch (RunEnv.getPlatform()) {
+                        case RunEnv.PLATFORM_DM:
+                            sInstance = new WupServerHandler(context);
+                            break;
+                        case RunEnv.PLATFORM_WATCH:
+                            // sInstance = new DmaServerHandler(context);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
 
         return sInstance;
-    }
-
-    @Override
-    public void onGuidChanged(byte[] arg0) {
-        QRomLog.d(TAG, "ServerHandler");
-    }
-
-    @Override
-    public void onReceiveAllData(int fromModelType, int reqId, int operType,
-            QRomWupReqExtraData wupReqExtraData,
-            QRomWupRspExtraData wupRspExtraData, String serviceName, byte[] response) {
-        QRomLog.d(TAG, String.format(
-                "onReceiveAllData reqId:%d operType:%d serviceName:%s byte count:%d", reqId,
-                operType, serviceName, response.length));
-
-        onResponseSucceed(reqId, operType, response);
-    }
-
-    @Override
-    public void onReceiveError(int fromModelType, int reqId, int operType,
-            QRomWupReqExtraData wupReqExtraData,
-            QRomWupRspExtraData wupRspExtraData, String serviceName, int errorCode,
-            String description) {
-        QRomLog.d(TAG, String.format(
-                "onReceiveError reqId:%d operType:%d serviceName:%s errorCode:%d description:%s",
-                reqId, operType, serviceName, errorCode, description));
-
-        onResponseFailed(reqId, operType, errorCode, description);
-    }
-
-    @Override
-    public int reqServer(int operType, UniPacket uniPacket) {
-        QRomLog.d(TAG, "reqServer operType:" + operType);
-        return requestWupNoRetry(WUP_MOUDLE_ID, operType, uniPacket, null, 0, mRequestEncrypt);
     }
 
     @Override
@@ -153,12 +137,29 @@ public class ServerHandler extends QRomComponentWupManager implements IServerHan
     }
 
     @Override
-    public boolean isTestEnv() {
-        return getWupEtcWupEnviFlg() == 1;
-    }
-
-    @Override
     public void setRequestEncrypt(boolean encrypt) {
         mRequestEncrypt = encrypt;
+    }
+
+    protected void wrapHttpPost(byte[] dataPacket) {
+        mHttpPost.addHeader(HttpHeader.REQ.CONTENT_TYPE, HttpHeader.CONTENT_TYPE);
+        mHttpPost.addHeader(HttpHeader.REQ.HOST, HttpUrl.get().getHttpHost());
+        mHttpPost.addHeader(HttpHeader.REQ.QGUID, "12C7CF7026FDB81AF0F93F1FB281F5C7"); // TODO
+        mHttpPost.addHeader(HttpHeader.REQ.ACCEPT_ENCODING, HttpHeader.WUP_HEADER_GZIP_VALUE);
+        mHttpPost.addHeader(HttpHeader.REQ.QQ_S_ZIP, HttpHeader.WUP_HEADER_GZIP_VALUE);
+        mHttpPost.addBody(ZipUtils.gZip(dataPacket));
+    }
+
+    protected byte[] onParseHttpRsp(String rsp) {
+        byte[] decodeRsp = Base64.decode(rsp, Base64.DEFAULT);
+        if (decodeRsp == null) {
+            return null;
+        }
+        byte[] result = ZipUtils.unGzip(decodeRsp);
+        return result;
+    }
+
+    protected Object getHttpPostContent() {
+        return mHttpPost.get();
     }
 }

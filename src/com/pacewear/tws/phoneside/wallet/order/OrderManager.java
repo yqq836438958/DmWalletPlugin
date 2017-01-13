@@ -33,7 +33,6 @@ import com.pacewear.tws.phoneside.wallet.tosservice.BusCardConfig;
 import com.pacewear.tws.phoneside.wallet.tosservice.LatestCardStatus;
 import com.pacewear.tws.phoneside.wallet.walletservice.IResult;
 import com.pacewear.tws.phoneside.wallet.walletservice.PassData;
-import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 import com.qq.taf.jce.JceStruct;
 
 import org.json.JSONException;

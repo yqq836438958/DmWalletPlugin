@@ -4,6 +4,8 @@ package com.pacewear.tsm.internal;
 import android.text.TextUtils;
 
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.ListState;
 import com.qq.taf.jce.JceStruct;
 
@@ -13,32 +15,46 @@ import TRom.ListStatusRsp;
 
 public class TsmListState extends TsmBaseProcess {
     private boolean mCanStopTransmit = false;
-    private String mSSDAID = null;
     private int mCarElement = 0;
     private String mPostAPDU = null;
     private ListState listState = null;
+    private boolean mSessionListStat = false;
+    private String mCustListStatApdu = null;
 
     public TsmListState(TsmContext context, String ssdAID, int cardElement) {
-        super(context, 0);
-        mSSDAID = ssdAID;
+        super(context, ssdAID, true);
         mCarElement = cardElement;
+        mSessionListStat = true;
+    }
+
+    public TsmListState(TsmContext context, String ssdAID, String custListStatApdu) {
+        super(context, ssdAID, false);
+        mSessionListStat = false;
+        mCustListStatApdu = custListStatApdu;
     }
 
     @Override
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
-        if (listState == null) {
-            listState = new ListState(mContext, mSSDAID);
+        if (listState == null && mSessionListStat) {
+            listState = new ListState(mContext, mContainerAID);
         }
-        listState.setParam(mPostAPDU, mCarElement);
+        if (listState != null) {
+            listState.setParam(mPostAPDU, mCarElement);
+        }
         process(listState, new OnTsmProcessCallback() {
 
             @Override
             public void onSuccess(String[] apduList) {
+                if (apduList != null && apduList.length > 0) {
+                    mPostAPDU = apduList[0];
+                }
+                if (!mSessionListStat) {
+                    mTsmCard.updateAllActiveStatus(mPostAPDU);
+                }
                 if (mCanStopTransmit) {
                     setProcessStatus(PROCESS_STATUS.FINISH);
                 } else {
-                    mPostAPDU = apduList[0];
                     setProcessStatus(PROCESS_STATUS.REPEAT);
                 }
             }
@@ -58,9 +74,13 @@ public class TsmListState extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
-            return -1;
+            if (TextUtils.isEmpty(mCustListStatApdu)) {
+                return -1;
+            }
+            apdus.add(mCustListStatApdu);
+            return 0;
         }
         ListStatusRsp listStatus = (ListStatusRsp) rsp;
         if (listStatus.iRet != 0) {
@@ -76,7 +96,7 @@ public class TsmListState extends TsmBaseProcess {
     }
 
     @Override
-    protected boolean returnWithoutTransmit() {
+    protected boolean canStopWithoutTransmit() {
         return mCanStopTransmit;
     }
 }

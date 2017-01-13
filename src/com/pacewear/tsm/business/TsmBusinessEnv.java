@@ -8,6 +8,7 @@ import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.channel.ITsmAPDUCallback;
 import com.pacewear.tsm.channel.ITsmCardChannel;
+import com.pacewear.tsm.common.CacheUtil;
 import com.pacewear.tsm.server.tosservice.SyncRemoteCardStatus;
 import com.pacewear.tsm.step.IStep;
 import com.qq.taf.jce.JceStruct;
@@ -95,6 +96,10 @@ public class TsmBusinessEnv {
 
         @Override
         public void onStepHandle() {
+            if (!TextUtils.isEmpty(CacheUtil.getCacheCPLC())) {
+                switchStep(mSyncServerStep);
+                return;
+            }
             ITsmCardChannel channel = mContext.getChannel();
             channel.getCPLC(new ITsmAPDUCallback() {
 

@@ -11,12 +11,17 @@ import android.widget.TextView;
 import com.pacewear.tsm.ITsmBusinessListener;
 import com.pacewear.tsm.TsmService;
 import com.pacewear.tsm.channel.ITsmCardChannel;
+import com.pacewear.tsm.common.CacheUtil;
+import com.pacewear.tsm.query.TsmApplet.AppletTagQuery;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TsmTestActivity extends Activity implements OnClickListener, ITsmBusinessListener {
     private Button mIssueCardBtn = null;
@@ -27,6 +32,7 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
     private Button mResetAIDBtn = null;
     private Button mSelectAidBtn = null;
     private Button mTopupBtn = null;
+    private Button mCardQueryBtn = null;
     private TextView mResultTextView = null;
     private TsmService mService = null;
     private ITsmCardChannel mChannel = null;
@@ -43,6 +49,7 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         mResetAIDBtn = (Button) findViewById(R.id.resetaid);
         mSelectAidBtn = (Button) findViewById(R.id.selectaid);
         mTopupBtn = (Button) findViewById(R.id.topup);
+        mCardQueryBtn = (Button) findViewById(R.id.cardinfoquery);
         mResultTextView = (TextView) findViewById(R.id.result);
         mIssueCardBtn.setOnClickListener(this);
         mListStatusBtn.setOnClickListener(this);
@@ -52,6 +59,7 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         mResetAIDBtn.setOnClickListener(this);
         mSelectAidBtn.setOnClickListener(this);
         mTopupBtn.setOnClickListener(this);
+        mCardQueryBtn.setOnClickListener(this);
         init();
     }
 
@@ -59,6 +67,24 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         mChannel = new SnowBallCardChannel();
         mService = TsmService.getInstance();
         mService.register(WalletApp.sGlobalCtx, mChannel, this);
+        Utils.getWorkerHandler().post(new Runnable() {
+
+            @Override
+            public void run() {
+                AppletTagQuery tagQuery = new AppletTagQuery("9156000014010001");
+                List<String> list1 = new ArrayList<String>();
+                list1.add("00A40000023F00");
+                list1.add("00B0840000");
+                // list1.add("805C000204");
+                tagQuery.put("card_number", list1);
+                List<String> list2 = new ArrayList<String>();
+                // list2.add("00A40000023F00");
+                list2.add("00A40000021001");
+                list2.add("805C000204");
+                tagQuery.put("amount", list2);
+                CacheUtil.save("card_query_aid_9156000014010001", tagQuery);
+            }
+        });
     }
 
     @Override
@@ -92,12 +118,26 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
                     case R.id.topup:
                         mService.cardTopup(getTopupParam("00000000BBBBBBBB"));
                         break;
+                    case R.id.cardinfoquery:
+                        mService.cardQuery(getCardQueryParam("9156000014010001"));
+                        break;
                     default:
                         break;
                 }
             }
         });
 
+    }
+
+    private String getCardQueryParam(String aid) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("instance_id", aid);
+            object.put("tag", "amount,card_number");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object.toString();
     }
 
     private String getIssueParam(String aid) {

@@ -111,66 +111,14 @@ public class ByteUtil {
         return sb.toString();
     }
 
-    //
-    // public static String getHexString(String byteStr) {
-    // byte[] byteArray = null;
-    // try {
-    // byteArray = byteStr.getBytes("ISO-8859-1");
-    // } catch (UnsupportedEncodingException e) {
-    // e.printStackTrace();
-    // return "";
-    // }
-    // return toHexString(byteArray);
-    // }
-    //
-    // public static ArrayList<String> getHexStrings(ArrayList<String> sourceList) {
-    // if (sourceList == null || sourceList.size() < 1) {
-    // return null;
-    // }
-    // ArrayList<String> list = new ArrayList<String>();
-    // for (String str : sourceList) {
-    // list.add(getHexString(str));
-    // }
-    // return list;
-    // }
-    public static void saveClassObject2Cache(String aid, Object object) {
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream os = new ObjectOutputStream(bos);
-            os.writeObject(object);
-            String objStr = ByteUtil.toHexString(bos.toByteArray());
-            Context context = TsmService.getInstance().getContext();
-            SharedPreferences oPreference = context.getSharedPreferences("class_cache", 0);
-            Editor oEditor = oPreference.edit();
-            oEditor.putString(aid, objStr);
-            oEditor.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    public static int toInt(byte[] b, int s, int n) {
+        int ret = 0;
 
-    public static Object getClassObjectFormCache(String aid) {
-        Context context = TsmService.getInstance().getContext();
-        SharedPreferences oPreference = context
-                .getSharedPreferences("class_cache", 0);
-        String result = oPreference.getString(aid, "");
-        Object readObject = null;
-        if (TextUtils.isEmpty(result)) {
-            return null;
+        final int e = s + n;
+        for (int i = s; i < e; ++i) {
+            ret <<= 8;
+            ret |= b[i] & 0xFF;
         }
-        byte[] stringToBytes = ByteUtil.toByteArray(result);
-        ByteArrayInputStream bis = new ByteArrayInputStream(stringToBytes);
-        // 返回反序列化得到的对象
-        try {
-            ObjectInputStream is = new ObjectInputStream(bis);
-            readObject = is.readObject();
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return readObject;
+        return ret;
     }
 }

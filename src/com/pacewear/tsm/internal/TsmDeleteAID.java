@@ -3,9 +3,11 @@ package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
 
-import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.common.Constants;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.DeleteAID;
 import com.qq.taf.jce.JceStruct;
 
@@ -19,28 +21,29 @@ import TRom.E_SECURITY_DOMAIN_STATUS;
 import TRom.SSDStatus;
 
 public class TsmDeleteAID extends TsmBaseProcess {
-    private String mAppletAid = null;
+    private String mAppAID = "";
 
-    public TsmDeleteAID(TsmContext context, String aid) {
-        super(context, TsmConstants.TSM_TYPE_DELETEAPPLET);
-        mAppletAid = aid;
+    public TsmDeleteAID(TsmContext context, String containeraid, String aid) {
+        super(context, containeraid, true);
+        mAppAID = aid;
     }
 
     @Override
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
         DeleteAID deleteApplet = new DeleteAID(mContext);
-        deleteApplet.setParams(mAppletAid);
+        deleteApplet.setParams(mAppAID);
         boolean handle = process(deleteApplet, new OnTsmProcessCallback() {
 
             @Override
             public void onSuccess(String[] apdus) {
+                mTsmCard.updateCardListItemInstallStat(mAppAID, Constants.TSM_APP_UNINSTALL);
                 if (isSDAID()) {
                     reportRet2Server(E_REPORT_APDU_KEY._ERAK_SECUTRITY_DOMAIN_KEY,
-                            E_SECURITY_DOMAIN_STATUS._ESDS_DELETE, mAppletAid);
+                            E_SECURITY_DOMAIN_STATUS._ESDS_DELETE, mAppAID);
                 } else {
                     reportRet2Server(E_REPORT_APDU_KEY._ERAK_APP_KEY,
-                            E_APP_LIFE_STATUS._EALS_DELETE, mAppletAid);
+                            E_APP_LIFE_STATUS._EALS_DELETE, mAppAID);
                 }
                 setProcessStatus(PROCESS_STATUS.FINISH);
             }
@@ -62,7 +65,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
             return -1;
         }
@@ -75,8 +78,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
     }
 
     private boolean isSDAID() {
-        TsmCard card = mContext.getCard();
-        if (card.getSSDByAID(mAppletAid) != null) {
+        if (mTsmCard.getSSDByAID(mAppAID) != null) {
             return true;
         }
         return false;
@@ -84,7 +86,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
 
     private int checkAppStatus() {
         int ret = CHECK_READY;
-        AppletStatus appletStatus = mTsmCard.getAppletByAID(mAppletAid);
+        AppletStatus appletStatus = mTsmCard.getAppletByAID(mAppAID);
         if (appletStatus == null) {
             return CHECK_SKIP;
         }
@@ -104,7 +106,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
 
     private int checkSSDStatus() {
         int ret = CHECK_READY;
-        SSDStatus ssdStatus = mTsmCard.getSSDByAID(mAppletAid);
+        SSDStatus ssdStatus = mTsmCard.getSSDByAID(mAppAID);
         if (ssdStatus == null) {
             return CHECK_SKIP;
         }

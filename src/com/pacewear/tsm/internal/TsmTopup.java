@@ -2,7 +2,8 @@
 package com.pacewear.tsm.internal;
 
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.internal.TsmBaseProcess.PROCESS_STATUS;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.AppletTopup;
 import com.pacewear.tsm.server.tosservice.ListState;
 import com.qq.taf.jce.JceStruct;
@@ -16,20 +17,18 @@ import TRom.RechargeExtraData;
 
 public class TsmTopup extends TsmBaseProcess {
     private boolean mStopTramsit = false;
-    private String mAppAid = null;
     private AppletTopup mAppletTopup = null;
     private String mPostAPDU = null;
     private RechargeExtraData mExtraDat = null;
 
     public TsmTopup(TsmContext context, String aid, String token, String extraInfo) {
-        super(context, 0);
-        mAppAid = aid;
+        super(context, aid, false);
         mExtraDat = new RechargeExtraData(token, extraInfo);
     }
 
     @Override
     protected int onCheck() {
-        AppletStatus status = mContext.getCard().getAppletByAID(mAppAid);
+        AppletStatus status = mTsmCard.getAppletByAID(mContainerAID);
         if (status == null) {
             return CHECK_ERROR;
         }
@@ -50,7 +49,7 @@ public class TsmTopup extends TsmBaseProcess {
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
         if (mAppletTopup == null) {
-            mAppletTopup = new AppletTopup(mContext, mAppAid);
+            mAppletTopup = new AppletTopup(mContext, mContainerAID);
         }
         mAppletTopup.setParam(mPostAPDU, mExtraDat);
         process(mAppletTopup, new OnTsmProcessCallback() {
@@ -75,7 +74,7 @@ public class TsmTopup extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal == true) {
             return -1;
         }
@@ -92,7 +91,7 @@ public class TsmTopup extends TsmBaseProcess {
     }
 
     @Override
-    protected boolean returnWithoutTransmit() {
+    protected boolean canStopWithoutTransmit() {
         return mStopTramsit;
     }
 }

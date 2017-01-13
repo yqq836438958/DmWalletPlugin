@@ -1,30 +1,31 @@
 
 package com.pacewear.tsm.internal;
 
-import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.common.APDUUtil;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.qq.taf.jce.JceStruct;
 
 import java.util.List;
 
 public class TsmActiveApp extends TsmBaseProcess {
-    private boolean mActive = false;
-    private String mAid = null;
+    private boolean mToAct = false;
+    private String mToActAID = null;
 
-    public TsmActiveApp(TsmContext context, String aid, boolean isActive) {
-        super(context, 0);
-        mAid = aid;
-        mActive = isActive;
+    public TsmActiveApp(TsmContext context, String containerAID, String aid, boolean isActive) {
+        super(context, containerAID, false);
+        mToActAID = aid;
+        mToAct = isActive;
     }
 
     @Override
     protected int onCheck() {
-        if (!mActive) {
-            TsmCard card = mContext.getCard();
-            mAid = card.getActiveAID();
+        boolean isCurActive = mTsmCard.isAIDActive(mToActAID);
+        if (mToAct == isCurActive) {
+            return CHECK_SKIP;
         }
-        return 0;
+        return CHECK_READY;
     }
 
     @Override
@@ -34,6 +35,11 @@ public class TsmActiveApp extends TsmBaseProcess {
 
             @Override
             public void onSuccess(String[] apduList) {
+                if (mToAct) {
+                    mTsmCard.activeAID(mToActAID);
+                } else {
+                    mTsmCard.unactiveAID(mToActAID);
+                }
                 setProcessStatus(PROCESS_STATUS.FINISH);
             }
 
@@ -46,11 +52,11 @@ public class TsmActiveApp extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLoacal) {
-        if (mActive) {
-            apdus.add(APDUUtil.activeApp(mAid));
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLoacal) {
+        if (mToAct) {
+            apdus.add(APDUUtil.activeApp(mToActAID));
         } else {
-            apdus.add(APDUUtil.disactiveApp(mAid));
+            apdus.add(APDUUtil.disactiveApp(mToActAID));
         }
         return 0;
     }

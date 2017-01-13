@@ -66,8 +66,9 @@
         android:id="@+id/selectaid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/shutdown"
+        android:layout_marginTop="20dp"
         android:text="选择应用" />
 
     <Button
@@ -76,6 +77,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_below="@id/resetaid"
+        android:layout_marginTop="20dp"
         android:text="圈存" />
+
+    <Button
+        android:id="@+id/cardinfoquery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/selectaid"
+        android:layout_marginTop="20dp"
+        android:text="查询卡片详情" />
 
 </RelativeLayout>

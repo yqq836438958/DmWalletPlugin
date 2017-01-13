@@ -4,7 +4,7 @@ package com.pacewear.tsm.business;
 import com.pacewear.tsm.ITsmBusinessListener;
 import com.pacewear.tsm.business.TsmBusinessEnv.OnBusinessEnvCallback;
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.internal.ITsmProcess;
+import com.pacewear.tsm.internal.core.ITsmProcess;
 
 public abstract class TsmBaseBusiness {
     public static interface IBusinessInterceptListener {
@@ -50,6 +50,7 @@ public abstract class TsmBaseBusiness {
     }
 
     public boolean start() {
+        mContext.initIfNeed();
         if (mSkipEnvCheck) {
             return onStart();
         }

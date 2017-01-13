@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.InstallSSD;
 import com.qq.taf.jce.JceStruct;
 
@@ -19,19 +21,19 @@ import TRom.SSDStatus;
 
 public class TsmSecDomInstall extends TsmBaseProcess {
 
-    private String mSDAID = null;
     private int mStep = 0;
+    private String mSSDAID = null;
 
-    public TsmSecDomInstall(TsmContext context, String aid, int step) {
-        super(context, TsmConstants.TSM_TYPE_INSTALLSECDOM);
-        mSDAID = aid;
+    public TsmSecDomInstall(TsmContext context, String parentAid, String aid, int step) {
+        super(context, parentAid, true);
+        mSSDAID = aid;
         mStep = step;
     }
 
     @Override
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
-        InstallSSD install = new InstallSSD(mContext, mSDAID);
+        InstallSSD install = new InstallSSD(mContext, mSSDAID);
         install.setStep(mStep);
         boolean handle = process(install, new OnTsmProcessCallback() {
 
@@ -39,10 +41,10 @@ public class TsmSecDomInstall extends TsmBaseProcess {
             public void onSuccess(String[] apduList) {
                 if (mStep == E_INSTALL_SSD_STEP._EISS_INSTALL_FOR_INSTALL_MAKESELECT) {
                     reportRet2Server(E_REPORT_APDU_KEY._ERAK_SECUTRITY_DOMAIN_KEY,
-                            E_SECURITY_DOMAIN_STATUS._ESDS_INSTALLED, mSDAID);
+                            E_SECURITY_DOMAIN_STATUS._ESDS_INSTALLED, mSSDAID);
                 } else if (mStep == E_INSTALL_SSD_STEP._EISS_INSTALL_FOR_EXTRADITION) {
                     reportRet2Server(E_REPORT_APDU_KEY._ERAK_SECUTRITY_DOMAIN_KEY,
-                            E_SECURITY_DOMAIN_STATUS._ESDS_EXTRADITION, mSDAID);
+                            E_SECURITY_DOMAIN_STATUS._ESDS_EXTRADITION, mSSDAID);
                 }
                 setProcessStatus(PROCESS_STATUS.FINISH);
 
@@ -59,7 +61,7 @@ public class TsmSecDomInstall extends TsmBaseProcess {
 
     @Override
     protected int onCheck() {
-        SSDStatus ssdStatus = mTsmCard.getSSDByAID(mSDAID);
+        SSDStatus ssdStatus = mTsmCard.getSSDByAID(mSSDAID);
         int ret = CHECK_READY;
         switch (ssdStatus.status) {
             case E_SECURITY_DOMAIN_STATUS._ESDS_PERSONALIZED:
@@ -92,7 +94,7 @@ public class TsmSecDomInstall extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal == true) {
             return -1;
         }

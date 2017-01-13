@@ -1,11 +1,16 @@
 
 package com.pacewear.tsm.query;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class TsmApplet implements ITsmApplet {
-    public static class AppletTagQuery {
+    public static class AppletTagQuery implements Serializable {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 802952981743012968L;
         private String aid = null;
         private HashMap<String, List<String>> mTagApduList;
 
@@ -30,6 +35,8 @@ public abstract class TsmApplet implements ITsmApplet {
             applet = new FoodCard();
         } else if (SHANGHAITONG.equalsIgnoreCase(aid)) {
             applet = new ShangHaiTong();
+        } else if (BEIJINGTONG.equalsIgnoreCase(aid)) {
+            applet = new BeijingTong();
         }
         return applet;
     }

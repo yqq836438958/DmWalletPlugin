@@ -17,6 +17,38 @@ import java.io.StreamCorruptedException;
 
 public class CacheUtil {
     private static final String SHARED_FILE = "tsm_file";
+    private static final String KEY_CPLC = "key_cplc";
+    private static final String KEY_MAIN_ISD = "key_isd_key";
+
+    public static String getCacheISD() {
+        return get(KEY_MAIN_ISD, "");
+    }
+
+    public void saveCacheISD(String isd) {
+        save(KEY_MAIN_ISD, isd);
+    }
+
+    public static String getCacheCPLC() {
+        return get(KEY_CPLC, "");
+    }
+
+    public static void saveCacheCPLC(String cplc) {
+        save(KEY_CPLC, cplc);
+    }
+
+    public static void clearAll() {
+        Editor editor = getSharePref().edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    public static void saveCardList(String cplc, String cardlist) {
+        save(cplc, cardlist);
+    }
+
+    public static String getCardList(String cplc) {
+        return get(cplc, "");
+    }
 
     public static void save(String key, String val) {
         Editor editor = getSharePref().edit();
@@ -28,7 +60,7 @@ public class CacheUtil {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             ObjectOutputStream os = new ObjectOutputStream(bos);
-            os.writeObject(bos);
+            os.writeObject(obj);
             String objStr = ByteUtil.toHexString(bos.toByteArray());
             save(key, objStr);
         } catch (IOException e) {

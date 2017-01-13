@@ -1,9 +1,10 @@
 
 package com.pacewear.tsm.internal;
 
-import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.common.ByteUtil;
+import com.pacewear.tsm.common.CacheUtil;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.query.ITsmApplet;
 import com.pacewear.tsm.query.TsmApplet;
 import com.pacewear.tsm.query.TsmApplet.AppletTagQuery;
@@ -19,15 +20,14 @@ import TRom.AppInfoQueryRsp;
 import TRom.TagQuery;
 
 public class TsmAppInfoQuery extends TsmBaseProcess {
-    private String mAppAid = null;
     private JSONObject mQueryResult = null;
     private AppletTagQuery mTagQuery = null;
     private List<String> mToFilterTagList = null;
     private int mQueryIndex = -1;
+    private final String KEY_AID = "card_query_aid_";
 
     public TsmAppInfoQuery(TsmContext context, String appletAID, List<String> tagList) {
-        super(context, TsmConstants.TSM_TYPE_APPINFO);
-        mAppAid = appletAID;
+        super(context, appletAID, false);
         mToFilterTagList = tagList;
         mQueryIndex = 0;
         init();
@@ -39,7 +39,7 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
     }
 
     private void init() {
-        Object tmpObj = ByteUtil.getClassObjectFormCache(mAppAid);
+        Object tmpObj = CacheUtil.get(KEY_AID + mContainerAID);
         if (tmpObj != null) {
             mTagQuery = (AppletTagQuery) tmpObj;
         }
@@ -51,7 +51,7 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
         setProcessStatus(PROCESS_STATUS.WORKING);
         AppInfoQuery query = null;
         if (mTagQuery == null) {
-            query = new AppInfoQuery(mContext, mAppAid);
+            query = new AppInfoQuery(mContext, mContainerAID);
         }
         process(query, new OnTsmProcessCallback() {
 
@@ -74,7 +74,7 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLoacal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLoacal) {
         List<String> tmpList = getCurTransmitApdus();
         if (fromLoacal && tmpList != null && tmpList.size() > 0) {
             apdus.addAll(tmpList);
@@ -87,17 +87,17 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
         if (data.vTagList == null || data.vTagList.size() <= 0) {
             return -1;
         }
-        mTagQuery = new AppletTagQuery(mAppAid);
+        mTagQuery = new AppletTagQuery(mContainerAID);
         for (TagQuery tagQuery : data.vTagList) {
             mTagQuery.put(tagQuery.sTag, tagQuery.sAPDU);
         }
-        ByteUtil.saveClassObject2Cache(mAppAid, mTagQuery);
+        CacheUtil.save(KEY_AID + mContainerAID, mTagQuery);
         apdus.addAll(getCurTransmitApdus());
         return 0;
     }
 
     private void parseQueryResult(String[] apduList) {
-        ITsmApplet applet = TsmApplet.get(mAppAid);
+        ITsmApplet applet = TsmApplet.get(mContainerAID);
         String tag = mToFilterTagList.get(mQueryIndex);
         String tmp = applet.parse(tag, apduList);
         try {

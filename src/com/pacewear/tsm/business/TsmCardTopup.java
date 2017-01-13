@@ -2,7 +2,6 @@
 package com.pacewear.tsm.business;
 
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.internal.TsmSelectAID;
 import com.pacewear.tsm.internal.TsmTopup;
 
 import org.json.JSONException;
@@ -20,7 +19,6 @@ public class TsmCardTopup extends TsmBaseBusiness {
 
     @Override
     protected boolean onStart() {
-        addProcess(new TsmSelectAID(mContext, mBusinessAID));
         addProcess(new TsmTopup(mContext, mBusinessAID, mBusinessToken, mBusinessExtraInfo));
         return true;
     }

@@ -17,9 +17,13 @@ public class TsmContext {
         mTsmCard = new TsmCard();
     }
 
+    public void initIfNeed() {
+        mTsmCard.syncLocalCache();
+    }
+
     public void syncCardStatus(CardStatusContext ctx) {
         if (mTsmCard != null) {
-            mTsmCard.update(ctx);
+            mTsmCard.syncRemote(ctx);
         }
 
     }

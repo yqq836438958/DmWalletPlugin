@@ -1,15 +1,13 @@
 
-package com.pacewear.tsm.internal;
+package com.pacewear.tsm.internal.core;
 
 import android.text.TextUtils;
 
-import com.pacewear.tsm.TsmConstants;
+import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.channel.ITsmAPDUCallback;
 import com.pacewear.tsm.common.UniSessionStore;
 import com.pacewear.tsm.server.tosservice.CreateSession;
 import com.pacewear.tsm.step.IStep;
-import com.pacewear.tsm.step.IStep.STATUS;
 import com.pacewear.tsm.step.Step;
 import com.qq.taf.jce.JceStruct;
 
@@ -18,18 +16,28 @@ import java.util.List;
 import TRom.CreateSessionRsp;
 import TRom.E_CREATE_SESSION_STEP;
 
-public class TsmOpenSession extends TsmBaseProcess {
+public class TsmOpenSession implements IProcessEventConsum {
     public enum SESSION_STEP {
         ECSS_SELECT, ECSS_INITIALIZE_UPDATE, ECSS_EXTERNAL_AUTHEN, ECSS_FINAL,
     }
 
     private IStep<SESSION_STEP> mCurStep = null;
-    private String mSSDAID = null;
+    private boolean mNeedSession = false;
+    private IApduTransmiter mApduTransmiter = null;
+    private TsmContext mContext = null;
+    private String mSessionAID = null;
+    private OnTsmProcessCallback mOutProcessCallback = null;
 
-    public TsmOpenSession(TsmContext context, String ssdAID) {
-        super(context, TsmConstants.TSM_TYPE_AUTH);
-        mSSDAID = ssdAID;
-        setSessionStep(mSelectStep, false);
+    public TsmOpenSession(TsmContext context, String ssdAID, boolean needAuth) {
+        mContext = context;
+        mSessionAID = ssdAID;
+        mNeedSession = needAuth;
+        mApduTransmiter = new ApduTransmiter(context.getChannel(), this);
+    }
+
+    public boolean invoke(OnTsmProcessCallback callback) {
+        mOutProcessCallback = callback;
+        return setSessionStep(mSelectStep, true);
     }
 
     private boolean setSessionStep(IStep<SESSION_STEP> step, boolean execNow) {
@@ -48,7 +56,6 @@ public class TsmOpenSession extends TsmBaseProcess {
             mCurStep.onEnterStep();
         }
         return true;
-
     }
 
     private abstract class SessionStep extends Step<SESSION_STEP> {
@@ -91,20 +98,27 @@ public class TsmOpenSession extends TsmBaseProcess {
 
         @Override
         public void onStepHandle() {
-            getChannel().selectAID(mSSDAID, new ITsmAPDUCallback() {
+            mApduTransmiter.selectAID(mSessionAID, new OnTsmProcessCallback() {
 
                 @Override
-                public void onSuccess(String[] apdus) {
-                    switchStep(mInitUpdateStep);
+                public void onSuccess(String[] apduList) {
+                    TsmCard card = mContext.getCard();
+                    card.setFocusAID(mSessionAID);
+                    if (mNeedSession) {
+                        switchStep(mInitUpdateStep);
+                    } else {
+                        switchStep(mFinalStep);
+                    }
                 }
 
                 @Override
                 public void onFail(int error, String desc) {
                     keepStep();
-                    postHandleFail(error, desc);
+                    if (mOutProcessCallback != null) {
+                        mOutProcessCallback.onFail(error, desc);
+                    }
                 }
             });
-
         }
     };
     private final SessionStep mInitUpdateStep = new SessionStep(
@@ -114,9 +128,9 @@ public class TsmOpenSession extends TsmBaseProcess {
         public void onStepHandle() {
             UniSessionStore.getInstance().clear();
             CreateSession initUpdate = new CreateSession(mContext);
-            initUpdate.setParams(E_CREATE_SESSION_STEP._ECSS_INITIALIZE_UPDATE, mSSDAID, null,
+            initUpdate.setParams(E_CREATE_SESSION_STEP._ECSS_INITIALIZE_UPDATE, mSessionAID, null,
                     null);
-            process(initUpdate, new OnTsmProcessCallback() {
+            mApduTransmiter.transmit(initUpdate, new OnTsmProcessCallback() {
 
                 @Override
                 public void onSuccess(String[] apdus) {
@@ -127,6 +141,9 @@ public class TsmOpenSession extends TsmBaseProcess {
                 @Override
                 public void onFail(int ret, String desc) {
                     keepStep();
+                    if (mOutProcessCallback != null) {
+                        mOutProcessCallback.onFail(ret, desc);
+                    }
                 }
             });
         }
@@ -137,9 +154,9 @@ public class TsmOpenSession extends TsmBaseProcess {
         @Override
         public void onStepHandle() {
             CreateSession externAuth = new CreateSession(mContext);
-            externAuth.setParams(E_CREATE_SESSION_STEP._ECSS_EXTERNAL_AUTHEN, mSSDAID, getmAPDU(),
-                    getHostChanellege());
-            process(externAuth, new OnTsmProcessCallback() {
+            externAuth.setParams(E_CREATE_SESSION_STEP._ECSS_EXTERNAL_AUTHEN, mSessionAID,
+                    getmAPDU(), getHostChanellege());
+            mApduTransmiter.transmit(externAuth, new OnTsmProcessCallback() {
 
                 @Override
                 public void onSuccess(String[] apdus) {
@@ -149,6 +166,9 @@ public class TsmOpenSession extends TsmBaseProcess {
                 @Override
                 public void onFail(int ret, String desc) {
                     keepStep();
+                    if (mOutProcessCallback != null) {
+                        mOutProcessCallback.onFail(ret, desc);
+                    }
                 }
             });
         }
@@ -158,32 +178,14 @@ public class TsmOpenSession extends TsmBaseProcess {
 
         @Override
         public void onStepHandle() {
-            finishProcess();
+            if (mOutProcessCallback != null) {
+                mOutProcessCallback.onSuccess(null);
+            }
         }
     };
 
     @Override
-    protected boolean onStart() {
-        return setSessionStep(mCurStep, true);
-    }
-
-    @Override
-    public boolean isIdle() {
-        return (mCurStep == null) || isFinish() || (mCurStep.getStatus() == STATUS.KEEP);
-    }
-
-    @Override
-    public boolean isFinish() {
-        return mFinalStep.isCurrentStep();
-    }
-
-    @Override
-    protected int onCheck() {
-        return CHECK_READY;
-    }
-
-    @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    public int onParserApdu(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
             return -1;
         }
@@ -203,6 +205,12 @@ public class TsmOpenSession extends TsmBaseProcess {
             mExternAuthStep.setHostChanellege(hostChanllege);
         }
         return data.iRet;
+    }
+
+    @Override
+    public boolean returnWithoutTransmit() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

@@ -5,6 +5,9 @@ import android.text.TextUtils;
 
 import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.common.Constants;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.InstallApplet;
 import com.pacewear.tsm.step.IStep;
 import com.pacewear.tsm.step.Step;
@@ -32,11 +35,11 @@ public class TsmAppletInstall extends TsmBaseProcess {
     private String mInstall_LoadApdu = null;
     private ArrayList<String> mLoadApdus = null;
     private ArrayList<String> mInstallApdu = null;
-    private String mAppletAID = null;
+    private String mBusinessAID = null;
 
-    public TsmAppletInstall(TsmContext context, String appletAID) {
-        super(context, TsmConstants.TSM_TYPE_INSTALLAPPLET);
-        mAppletAID = appletAID;
+    public TsmAppletInstall(TsmContext context, String containerAID, String appletAID) {
+        super(context, containerAID, true);
+        mBusinessAID = appletAID;
         setInstallStep(mInstall_LoadStep, false);
     }
 
@@ -83,7 +86,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
         public void onStepHandle() {
             InstallApplet installApplet = new InstallApplet(mContext);
             installApplet.setParams(E_INSTALL_APPLET_STEP._EALS_INSTALL_ALL_LOAD_APDU,
-                    mAppletAID);
+                    mBusinessAID);
             process(installApplet, new OnTsmProcessCallback() {
 
                 @Override
@@ -105,13 +108,13 @@ public class TsmAppletInstall extends TsmBaseProcess {
         public void onStepHandle() {
             InstallApplet load = new InstallApplet(mContext);
             load.setParams(E_INSTALL_APPLET_STEP._EALS_INSTALL_ALL_LOAD_APDU,
-                    mAppletAID);
+                    mBusinessAID);
             process(load, new OnTsmProcessCallback() {
 
                 @Override
                 public void onSuccess(String[] apdu) {
                     reportRet2Server(E_REPORT_APDU_KEY._ERAK_APP_KEY,
-                            E_APP_LIFE_STATUS._EALS_LOAD, mAppletAID);
+                            E_APP_LIFE_STATUS._EALS_LOAD, mBusinessAID);
                     switchStep(mInstall_Install_Selected);
                 }
 
@@ -130,7 +133,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
         public void onStepHandle() {
             InstallApplet install = new InstallApplet(mContext);
             install.setParams(E_INSTALL_APPLET_STEP._EALS_INSTALL_ALL_LOAD_APDU,
-                    mAppletAID);
+                    mBusinessAID);
             process(install, new OnTsmProcessCallback() {
 
                 @Override
@@ -150,8 +153,9 @@ public class TsmAppletInstall extends TsmBaseProcess {
 
         @Override
         public void onStepHandle() {
+            mTsmCard.updateCardListItemInstallStat(mBusinessAID, Constants.TSM_APP_INSTALL);
             reportRet2Server(E_REPORT_APDU_KEY._ERAK_APP_KEY,
-                    E_APP_LIFE_STATUS._EALS_INSTALL_FOR_MAKESELECT, mAppletAID);
+                    E_APP_LIFE_STATUS._EALS_INSTALL_FOR_MAKESELECT, mBusinessAID);
             finishProcess();
         }
     };
@@ -203,7 +207,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
     @Override
     protected int onCheck() {
         int ret = CHECK_READY;
-        AppletStatus appletStatus = mTsmCard.getAppletByAID(mAppletAID);
+        AppletStatus appletStatus = mTsmCard.getAppletByAID(mBusinessAID);
         if (appletStatus == null) {
             return CHECK_ERROR;
         }
@@ -226,7 +230,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
             return getLocalAPDUS(apdus);
         }

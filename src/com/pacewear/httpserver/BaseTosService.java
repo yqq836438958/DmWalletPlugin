@@ -1,12 +1,10 @@
 
 package com.pacewear.httpserver;
 
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
-import com.pacewear.tws.phoneside.wallet.wupserver.IServerHandler;
-import com.pacewear.tws.phoneside.wallet.wupserver.IServerHandlerListener;
-import com.pacewear.tws.phoneside.wallet.wupserver.ServerHandler;
 import com.qq.jce.wup.UniPacket;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.pay.PayNFCConstants;
@@ -89,7 +87,7 @@ public abstract class BaseTosService
                 mMouduleName, getFunctionName(),
                 mReqName, req);
 
-        IServerHandler serverHandler = ServerHandler.getInstance();
+        IServerHandler serverHandler = ServerHandler.getInstance(WalletApp.sGlobalCtx);
 
         serverHandler.registerServerHandlerListener(this);
         serverHandler.setRequestEncrypt(getRequestEncrypt());

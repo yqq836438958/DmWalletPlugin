@@ -2,6 +2,8 @@
 package com.pacewear.tsm.internal;
 
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.SetAppletState;
 import com.qq.taf.jce.JceStruct;
 
@@ -10,12 +12,12 @@ import java.util.List;
 import TRom.SetAppletStatusRsp;
 
 public class TsmSetAppStatus extends TsmBaseProcess {
-    private String mAppletAid = null;
     private int mAppStatus = 0;
+    private String mBusinessAID = null;
 
-    public TsmSetAppStatus(TsmContext context, String aid, int status) {
-        super(context, 0);
-        mAppletAid = aid;
+    public TsmSetAppStatus(TsmContext context, String containerAID, String aid, int status) {
+        super(context, containerAID, false);
+        mBusinessAID = aid;
         mAppStatus = status;
     }
 
@@ -27,7 +29,7 @@ public class TsmSetAppStatus extends TsmBaseProcess {
     @Override
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
-        SetAppletState setStatus = new SetAppletState(mContext, mAppletAid);
+        SetAppletState setStatus = new SetAppletState(mContext, mBusinessAID);
         setStatus.setParam(mAppStatus);
         process(setStatus, new OnTsmProcessCallback() {
 
@@ -45,7 +47,7 @@ public class TsmSetAppStatus extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
             return -1;
         }

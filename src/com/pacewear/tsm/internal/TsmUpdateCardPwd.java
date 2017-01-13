@@ -3,37 +3,35 @@ package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
 
-import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
+import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
+import com.pacewear.tsm.internal.core.TsmBaseProcess;
 import com.pacewear.tsm.server.tosservice.UpdateCardPwd;
 import com.qq.taf.jce.JceStruct;
 
 import java.util.List;
 
-import TRom.E_APP_LIFE_STATUS;
 import TRom.E_REPORT_APDU_KEY;
 import TRom.E_SECURITY_DOMAIN_STATUS;
 import TRom.SSDStatus;
 import TRom.UpdateCardPwdRsp;
 
 public class TsmUpdateCardPwd extends TsmBaseProcess {
-    private String mSSDAID = null;
 
     public TsmUpdateCardPwd(TsmContext context, String sdAid) {
-        super(context, TsmConstants.TSM_TYPE_UPDATEKEY);
-        mSSDAID = sdAid;
+        super(context, sdAid, true);
     }
 
     @Override
     protected boolean onStart() {
         setProcessStatus(PROCESS_STATUS.WORKING);
-        UpdateCardPwd updateCardPwd = new UpdateCardPwd(mContext, mSSDAID);
+        UpdateCardPwd updateCardPwd = new UpdateCardPwd(mContext, mContainerAID);
         boolean handle = process(updateCardPwd, new OnTsmProcessCallback() {
 
             @Override
             public void onSuccess(String[] apdus) {
                 reportRet2Server(E_REPORT_APDU_KEY._ERAK_SECUTRITY_DOMAIN_KEY,
-                        E_SECURITY_DOMAIN_STATUS._ESDS_PERSONALIZED, mSSDAID);
+                        E_SECURITY_DOMAIN_STATUS._ESDS_PERSONALIZED, mContainerAID);
                 setProcessStatus(PROCESS_STATUS.FINISH);
             }
 
@@ -48,7 +46,7 @@ public class TsmUpdateCardPwd extends TsmBaseProcess {
     @Override
     protected int onCheck() {
         int ret = CHECK_READY;
-        SSDStatus ssdBaseStatus = mTsmCard.getSSDByAID(mSSDAID);
+        SSDStatus ssdBaseStatus = mTsmCard.getSSDByAID(mContainerAID);
         switch (ssdBaseStatus.status) {
             case E_SECURITY_DOMAIN_STATUS._ESDS_INSTALLED:
             case E_SECURITY_DOMAIN_STATUS._ESDS_INITIALIZED:
@@ -66,7 +64,7 @@ public class TsmUpdateCardPwd extends TsmBaseProcess {
     }
 
     @Override
-    protected int getApduList(JceStruct rsp, List<String> apdus, boolean fromLocal) {
+    protected int onParse(JceStruct rsp, List<String> apdus, boolean fromLocal) {
         if (fromLocal) {
             return -1;
         }
