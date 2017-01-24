@@ -307,11 +307,9 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                 busCardInfo.setStBusCardBaseInfo(card.getBusCardBaseInfo());
                 busCardInfo.setSCardBalance(card.getBalance());
                 busCardBaseInfos.add(busCardInfo);
-                QRomLog.d(TAG, i + "---> sCardNum:" + card.getBusCardBaseInfo().getSCardNum()
-                        + "  sIssuerName:"
-                        + card.getBusCardBaseInfo().getSIssuerName() + "  sInstanceAId:"
-                        + card.getBusCardBaseInfo().getSInstanceAId() + "  Balance:"
-                        + card.getBalance());
+//                QRomLog.d(TAG, i + "---> sCardNum:" + card.getBusCardBaseInfo().getSCardNum() + "  sIssuerName:"
+//                        + card.getBusCardBaseInfo().getSIssuerName() + "  sInstanceAId:"
+//                        + card.getBusCardBaseInfo().getSInstanceAId() + "  Balance:" + card.getBalance());
 
             }
             return busCardBaseInfos;

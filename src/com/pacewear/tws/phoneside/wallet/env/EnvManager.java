@@ -264,6 +264,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
             }
         }
         resetCplcRetryTimes();
+        syncCPLC(true);
         getUserNum();
         return true;
     }
