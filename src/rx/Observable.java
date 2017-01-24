@@ -18,10 +18,12 @@ import java.util.concurrent.*;
 import rx.annotations.*;
 import rx.exceptions.*;
 import rx.functions.*;
+import rx.internal.observers.AssertableSubscriberObservable;
 import rx.internal.operators.*;
 import rx.internal.util.*;
 import rx.observables.*;
 import rx.observers.SafeSubscriber;
+import rx.observers.AssertableSubscriber;
 import rx.plugins.*;
 import rx.schedulers.*;
 import rx.subscriptions.Subscriptions;
@@ -109,7 +111,7 @@ public class Observable<T> {
      * {@link Observable#create(AsyncOnSubscribe) asynchronous overload}.
      *
      * <p>
-     * <img width="640" height="200" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/create-sync.png" alt="">
+     * <img width="527" height="262" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/create-sync.png" alt="">
      * <p>
      * See <a href="http://go.microsoft.com/fwlink/?LinkID=205219">Rx Design Guidelines (PDF)</a> for detailed
      * information.
@@ -151,7 +153,7 @@ public class Observable<T> {
      * with the {@link Observable#create(SyncOnSubscribe) synchronous overload}.
      *
      * <p>
-     * <img width="640" height="200" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/create-async.png" alt="">
+     * <img width="527" height="262" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/create-async.png" alt="">
      * <p>
      * See <a href="http://go.microsoft.com/fwlink/?LinkID=205219">Rx Design Guidelines (PDF)</a> for detailed
      * information.
@@ -321,7 +323,7 @@ public class Observable<T> {
      * {@code ignoreAllElements()}) and calls onCompleted when this source observable calls
      * onCompleted. Error terminal events are propagated.
      * <p>
-     * <img width="640" height="295" src=
+     * <img width="470" height="176" src=
      * "https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/Completable.toCompletable.png"
      * alt="">
      * <dl>
@@ -3468,7 +3470,7 @@ public class Observable<T> {
         if (start > Integer.MAX_VALUE - count + 1) {
             throw new IllegalArgumentException("start + count can not exceed Integer.MAX_VALUE");
         }
-        if(count == 1) {
+        if (count == 1) {
             return Observable.just(start);
         }
         return Observable.create(new OnSubscribeRange(start, start + (count - 1)));
@@ -5388,6 +5390,8 @@ public class Observable<T> {
      * Returns an Observable that emits the items emitted by the source Observable or the items of an alternate
      * Observable if the source Observable is empty.
      * <p/>
+     * <p>
+     * <img width="410" height="164" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/switchifempty.png" alt="">
      * <dl>
      *  <dt><b>Backpressure:</b></dt>
      *  <dd>If the source {@code Observable} is empty, the alternate {@code Observable} is expected to honor backpressure.
@@ -11740,7 +11744,7 @@ public class Observable<T> {
      * @return an Observable that emits the items emitted by the source Observable in sorted order
      */
     @Experimental
-    public final Observable<T> sorted(){
+    public final Observable<T> sorted() {
         return toSortedList().flatMapIterable(UtilityFunctions.<List<T>>identity());
     }
 
@@ -12639,5 +12643,47 @@ public class Observable<T> {
     @SuppressWarnings("cast")
     public final <T2, R> Observable<R> zipWith(Observable<? extends T2> other, Func2<? super T, ? super T2, ? extends R> zipFunction) {
         return (Observable<R>)zip(this, other, zipFunction);
+    }
+
+    // -------------------------------------------------------------------------
+    // Fluent test support, super handy and reduces test preparation boilerplate
+    // -------------------------------------------------------------------------
+    /**
+     * Creates a AssertableSubscriber that requests {@code Long.MAX_VALUE} and subscribes
+     * it to this Observable.
+     * <dl>
+     *  <dt><b>Backpressure:</b><dt>
+     *  <dd>The returned AssertableSubscriber consumes this Observable in an unbounded fashion.</dd>
+     *  <dt><b>Scheduler:</b></dt>
+     *  <dd>{@code test} does not operate by default on a particular {@link Scheduler}.</dd>
+     * </dl>
+     * @return the new AssertableSubscriber instance
+     * @since 1.2.3
+     */
+    @Experimental
+    public final AssertableSubscriber<T> test() {
+        AssertableSubscriber<T> ts = AssertableSubscriberObservable.create(Long.MAX_VALUE);
+        subscribe(ts);
+        return ts;
+    }
+
+    /**
+     * Creates an AssertableSubscriber with the initial request amount and subscribes
+     * it to this Observable.
+     * <dl>
+     *  <dt><b>Backpressure:</b><dt>
+     *  <dd>The returned AssertableSubscriber requests the given {@code initialRequest} amount upfront.</dd>
+     *  <dt><b>Scheduler:</b></dt>
+     *  <dd>{@code test} does not operate by default on a particular {@link Scheduler}.</dd>
+     * </dl>
+     * @return the new AssertableSubscriber instance
+     * @param initialRequestAmount the amount to request from upstream upfront, non-negative (not verified)
+     * @since 1.2.3
+     */
+    @Experimental
+    public final AssertableSubscriber<T> test(long initialRequestAmount) {
+        AssertableSubscriber<T> ts = AssertableSubscriberObservable.create(initialRequestAmount);
+        subscribe(ts);
+        return ts;
     }
 }

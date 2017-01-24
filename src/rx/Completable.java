@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import rx.annotations.*;
 import rx.exceptions.*;
 import rx.functions.*;
+import rx.internal.observers.AssertableSubscriberObservable;
 import rx.internal.operators.*;
 import rx.internal.util.*;
 import rx.observers.*;
@@ -1346,7 +1347,7 @@ public class Completable {
      * @param onSubscribe the consumer called when a CompletableSubscriber subscribes.
      * @param onError the consumer called when this emits an onError event
      * @param onComplete the runnable called just before when this Completable completes normally
-     * @param onAfterComplete the runnable called after this Completable completes normally
+     * @param onAfterTerminate the runnable called after this Completable terminates
      * @param onUnsubscribe the runnable called when the child cancels the subscription
      * @return the new Completable instance
      */
@@ -1354,12 +1355,12 @@ public class Completable {
             final Action1<? super Subscription> onSubscribe,
             final Action1<? super Throwable> onError,
             final Action0 onComplete,
-            final Action0 onAfterComplete,
+            final Action0 onAfterTerminate,
             final Action0 onUnsubscribe) {
         requireNonNull(onSubscribe);
         requireNonNull(onError);
         requireNonNull(onComplete);
-        requireNonNull(onAfterComplete);
+        requireNonNull(onAfterTerminate);
         requireNonNull(onUnsubscribe);
         return create(new OnSubscribe() {
             @Override
@@ -1378,7 +1379,7 @@ public class Completable {
                         s.onCompleted();
 
                         try {
-                            onAfterComplete.call();
+                            onAfterTerminate.call();
                         } catch (Throwable e) {
                             RxJavaHooks.onError(e);
                         }
@@ -1393,6 +1394,12 @@ public class Completable {
                         }
 
                         s.onError(e);
+
+                        try {
+                            onAfterTerminate.call();
+                        } catch (Throwable ex) {
+                            RxJavaHooks.onError(ex);
+                        }
                     }
 
                     @Override
@@ -1454,12 +1461,12 @@ public class Completable {
     /**
      * Returns a Completable instance that calls the given onAfterComplete callback after this
      * Completable completes normally.
-     * @param onAfterComplete the callback to call after this Completable emits an onComplete event.
+     * @param onAfterTerminate the callback to call after this Completable emits an onCompleted or onError event.
      * @return the new Completable instance
      * @throws NullPointerException if onAfterComplete is null
      */
-    public final Completable doAfterTerminate(Action0 onAfterComplete) {
-        return doOnLifecycle(Actions.empty(), Actions.empty(), Actions.empty(), onAfterComplete, Actions.empty());
+    public final Completable doAfterTerminate(Action0 onAfterTerminate) {
+        return doOnLifecycle(Actions.empty(), Actions.empty(), Actions.empty(), onAfterTerminate, Actions.empty());
     }
 
     /**
@@ -2363,5 +2370,27 @@ public class Completable {
                 });
             }
         });
+    }
+
+    // -------------------------------------------------------------------------
+    // Fluent test support, super handy and reduces test preparation boilerplate
+    // -------------------------------------------------------------------------
+    /**
+     * Creates an AssertableSubscriber that requests {@code Long.MAX_VALUE} and subscribes
+     * it to this Observable.
+     * <dl>
+     *  <dt><b>Backpressure:</b><dt>
+     *  <dd>The returned AssertableSubscriber consumes this Observable in an unbounded fashion.</dd>
+     *  <dt><b>Scheduler:</b></dt>
+     *  <dd>{@code test} does not operate by default on a particular {@link Scheduler}.</dd>
+     * </dl>
+     * @return the new AssertableSubscriber instance
+     * @since 1.2.3
+     */
+    @Experimental
+    public final AssertableSubscriber<Void> test() {
+        AssertableSubscriberObservable<Void> ts = AssertableSubscriberObservable.create(Long.MAX_VALUE);
+        subscribe(ts);
+        return ts;
     }
 }
