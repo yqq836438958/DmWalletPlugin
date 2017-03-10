@@ -23,7 +23,7 @@ public class Constants {
     public static final int WALLET_ACCOUNT_AUTH_FAILED = -101;
     public static final int WALLET_QUERY_MAX_TIMES = 3;
     public static final long WALLET_ORDER_SYNC_DURATION = 10 * 1000;
-    public static final long WALLET_CONFIG_SYNC_DURATION = 5 * 60 * 1000;
+    public static final long WALLET_CONFIG_SYNC_DURATION = 10 * 1000;
     public static final String WALLET_ERR_PLATFORM_SNOWBALL = "01";
     public static final String WALLET_ERR_PLATFORM_BEIJING = "02";
     public static final String WALLET_DEFAULT_CITYCODE = "4401";
@@ -35,4 +35,5 @@ public class Constants {
     public static final String WALLET_BMAC_INSTALLED = "bmac_installed";
     public static final String WALLET_BEIJING_DUPLITE_OPENCARD = "-1134";
     public static final String WALLET_BEIJING_DUPLITE_TOPUP = "-1135";
+    public static final String WALLET_BEIJING_DUPLITE_PERSONAL = "-1127";
 }

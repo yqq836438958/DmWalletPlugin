@@ -68,7 +68,8 @@ public class WalletHandler_OrderStatus extends WalletBaseHandler {
                 || card == null) {
             return WALLET_HANDLE_EXCEPTION;
         }
-        if (reqParam.getEPayScene() == E_PAY_SCENE._EPS_OPEN_CARD) {
+        if (reqParam.getEPayScene() == E_PAY_SCENE._EPS_OPEN_CARD
+                || reqParam.getEPayScene() == E_PAY_SCENE._EPS_OPEN_CARD_ONLY) {
             CardManager.getInstance().forceUpdate(true);
         } else {
             if (reqParam != null && reqParam.getStBusCardBaseInfo() != null) {

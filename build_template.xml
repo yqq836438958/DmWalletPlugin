@@ -8,9 +8,9 @@
     <property name="LibBranchName" value="${env.LibBranchName}"/>
     
     <!-- 依赖工程配置 -->
-<!-- 	<condition property="appcompat_v7_phone.dir" value="appcompat_v7_phone/" else="../appcompat_v7_phone/">
+    <condition property="TwsPluginWalletLntSdk.dir" value="TwsPluginWalletLntSdk/" else="../TwsPluginWalletLntSdk/">
 		<istrue value="${isCI}"/>
-	</condition> -->
+	</condition>
 	
 		
     <!--
@@ -18,7 +18,9 @@
         为了修改和删除代码，所以脚本会让实现的逻辑在temp空间内进行，而不影响正式的代码）
     -->
 
-    <target name="build">         
+    <target name="build">
+        <antcall target="delete_gitlib" />
+        <antcall target="git-clone" />
         <antcall target="-pre-build" />
         <delete dir="bin" />
         <mkdir dir="bin"/>
@@ -74,18 +76,17 @@
     
     <!-- clone依赖工程 -->
     <target name="git-clone" if="${isCI}">
- <!--        <echo>LibBranchName = ${LibBranchName}</echo> -->
-<!--          <echo>git clone http://git.code.oa.com/wear/appcompat_v7_phone.git ${appcompat_v7_phone.dir} -b ${LibBranchName}</echo> -->
-<!--         <exec executable="git"> -->
-<!-- 		    <arg line="clone http://git.code.oa.com/wear/appcompat_v7_phone.git ${appcompat_v7_phone.dir} -b ${LibBranchName}"/> -->
-<!-- 		</exec> -->
-		
+        <echo>LibBranchName = ${LibBranchName}</echo>
+        <echo>git clone http://git.code.oa.com/wear/TwsPluginWalletLntSdk.git ${TwsPluginWalletLntSdk.dir} -b ${LibBranchName}</echo>
+        <exec executable="git">
+            <arg line="clone http://git.code.oa.com/wear/TwsPluginWalletLntSdk.git ${TwsPluginWalletLntSdk.dir} -b ${LibBranchName}"/>
+        </exec>
     </target>
     
     <!-- 清理依赖工程 -->
     <target name="delete_gitlib" if="${isCI}">
-<!-- 		<echo>删除git clone的appcompat_v7_phone文件 ...dir : ${appcompat_v7_phone.dir}</echo> -->
-<!-- 		<delete dir="${appcompat_v7_phone.dir}"/> -->
+        <echo>删除git clone的lntsdk文件 ...dir :${TwsPluginWalletLntSdk.dir}</echo>
+        <delete dir="${TwsPluginWalletLntSdk.dir}"/>
     </target>
 
     <target name="-pre-build">
@@ -103,11 +104,13 @@
                 <exclude name="**/bin/**"/>
             </fileset>
         </copy>
-<!--         <copy todir="temp/appcompat_v7_phone"> -->
-<!--             <fileset dir="${appcompat_v7_phone.dir}"> -->
-<!--                 <include name="**/**"/> -->
-<!--             </fileset> -->
-<!--         </copy> -->        
+        <copy todir="temp/TwsPluginWalletLntSdk">
+            <fileset dir="${TwsPluginWalletLntSdk.dir}">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+        <delete dir="temp/TwsPluginWalletLntSdk/bin"/>
+        <delete dir="temp/TwsPluginWalletLntSdk/gen"/>
         <move file="temp/ant.project.properties" tofile="temp/project.properties">
         </move>
     </target>

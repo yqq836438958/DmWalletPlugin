@@ -2,6 +2,7 @@
 package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
@@ -47,13 +48,13 @@ public class TsmSecDomInstall extends TsmBaseProcess {
                             E_SECURITY_DOMAIN_STATUS._ESDS_EXTRADITION, mSSDAID);
                 }
                 setProcessStatus(PROCESS_STATUS.FINISH);
-
             }
 
             @Override
             public void onFail(int ret, String desc) {
+                Log.e(TAG, "TsmSecDomInstall fail:" + ret + ",desc:" +
+                        desc);
                 setProcessStatus(PROCESS_STATUS.KEEP);
-
             }
         });
         return handle;
@@ -62,6 +63,10 @@ public class TsmSecDomInstall extends TsmBaseProcess {
     @Override
     protected int onCheck() {
         SSDStatus ssdStatus = mTsmCard.getSSDByAID(mSSDAID);
+        if(ssdStatus == null){
+            Log.e(TAG, "TsmSecDomInstall->onCheck, error :SSDStatus == null");
+            return CHECK_ERROR;
+        }
         int ret = CHECK_READY;
         switch (ssdStatus.status) {
             case E_SECURITY_DOMAIN_STATUS._ESDS_PERSONALIZED:
@@ -100,6 +105,7 @@ public class TsmSecDomInstall extends TsmBaseProcess {
         }
         InstallSSDRsp response = (InstallSSDRsp) rsp;
         if (TextUtils.isEmpty(response.APDU)) {
+            Log.e(TAG, "TsmSecDomInstall->onParse, error :InstallSSDRsp.APDU == null");
             return -1;
         }
         apdus.add(response.APDU);

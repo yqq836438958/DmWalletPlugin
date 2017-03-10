@@ -23,12 +23,10 @@ import TRom.SSDStatus;
 public class TsmCard {
     private String mCPLC = null;
     private String mMainAID = null;
-    private List<AppletStatus> mRemoteAppletList = new ArrayList<AppletStatus>();
-    private List<SSDStatus> mRemoteSSDList = new ArrayList<SSDStatus>();
+    private CardStatusContext mGlobalCardStat = null;
     private JSONArray mOutPutCardList = null;
     private String mFocusAID = null;
     private List<CardListItem> mCardListItems = new ArrayList<CardListItem>();
-    private final String KEY_CPLC = "key_cplc_";
 
     public TsmCard() {
         mFocusAID = mMainAID;
@@ -43,7 +41,7 @@ public class TsmCard {
         mMainAID = TextUtils.isEmpty(cacheISD) ? Constants.TSM_DEFAULT_CARDMAIN_AID : cacheISD;
         mCPLC = TextUtils.isEmpty(cacheCPLC) ? "" : cacheCPLC;
         if (!TextUtils.isEmpty(mCPLC)) {
-            String tmpCardList = CacheUtil.get(KEY_CPLC + mCPLC, "");
+            String tmpCardList = CacheUtil.getCardList(mCPLC);
             try {
                 mOutPutCardList = new JSONArray(tmpCardList);
             } catch (JSONException e) {
@@ -53,6 +51,7 @@ public class TsmCard {
             if (mOutPutCardList != null) {
                 unwrapCardList();
             }
+            mGlobalCardStat = (CardStatusContext) CacheUtil.getRemoteStatus(mCPLC);
         }
     }
 
@@ -142,7 +141,7 @@ public class TsmCard {
                 e.printStackTrace();
             }
         }
-        CacheUtil.save(KEY_CPLC + mCPLC, mOutPutCardList.toString());
+        CacheUtil.saveCardList(mCPLC, mOutPutCardList.toString());
     }
 
     public String getOutputCardlist() {
@@ -184,14 +183,11 @@ public class TsmCard {
     }
 
     public void syncRemote(CardStatusContext context) {
-
         mMainAID = context.mainAID;
-        // TODO
-        mRemoteAppletList.addAll(context.appList);
-        mRemoteSSDList.addAll(context.ssdList);
+        mGlobalCardStat = context;
         mCardListItems.clear();
         int installStat = Constants.TSM_APP_UNINSTALL;
-        for (AppletStatus tmp : mRemoteAppletList) {
+        for (AppletStatus tmp : mGlobalCardStat.appList) {
             if (TsmBusinessConfig.isInWhiteList(tmp.AID)) {
                 if (tmp.status == E_APP_LIFE_STATUS._EALS_PERSONALIZED) {
                     installStat = Constants.TSM_APP_PERSONAL;
@@ -203,11 +199,13 @@ public class TsmCard {
             }
         }
         flushOutCardListQuery();
+        CacheUtil.saveCacheISD(mMainAID);
+        CacheUtil.saveRemoteStatus(mCPLC, context);
     }
 
     public AppletStatus getAppletByAID(String aid) {
         AppletStatus target = null;
-        for (AppletStatus status : mRemoteAppletList) {
+        for (AppletStatus status : mGlobalCardStat.appList) {
             if (status.AID.equalsIgnoreCase(aid)) {
                 target = status;
                 break;
@@ -230,7 +228,7 @@ public class TsmCard {
 
     public SSDStatus getSSDByAID(String aid) {
         SSDStatus targetSSD = null;
-        for (SSDStatus baseStatus : mRemoteSSDList) {
+        for (SSDStatus baseStatus : mGlobalCardStat.ssdList) {
             if (aid.equalsIgnoreCase(baseStatus.AID)) {
                 targetSSD = baseStatus;
                 break;
@@ -239,12 +237,27 @@ public class TsmCard {
         return targetSSD;
     }
 
+    public void updateSSDStat(String aid, int val) {
+        for (SSDStatus baseStatus : mGlobalCardStat.ssdList) {
+            if (aid.equalsIgnoreCase(baseStatus.AID)) {
+                baseStatus.status = val;
+                break;
+            }
+        }
+    }
+
+    public void updateAPPStat(String aid, int val) {
+        for (AppletStatus status : mGlobalCardStat.appList) {
+            if (status.AID.equalsIgnoreCase(aid)) {
+                status.status = val;
+                break;
+            }
+        }
+    }
+
     public void clear() {
         mCPLC = null;
         mMainAID = null;
-        mRemoteAppletList.clear();
-        mRemoteAppletList = null;
-        mRemoteSSDList.clear();
-        mRemoteSSDList = null;
+        mGlobalCardStat = null;
     }
 }

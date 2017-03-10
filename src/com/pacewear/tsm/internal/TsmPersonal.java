@@ -1,6 +1,8 @@
 
 package com.pacewear.tsm.internal;
 
+import android.util.Log;
+
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.common.Constants;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
@@ -13,6 +15,7 @@ import java.util.List;
 import TRom.AppletStatus;
 import TRom.CommonPersonalRsp;
 import TRom.E_APP_LIFE_STATUS;
+import TRom.E_REPORT_APDU_KEY;
 
 public class TsmPersonal extends TsmBaseProcess {
     private String mToken = null;
@@ -61,6 +64,7 @@ public class TsmPersonal extends TsmBaseProcess {
                 if (mPersonalFinish) {
                     mTsmCard.updateCardListItemInstallStat(mContainerAID,
                             Constants.TSM_APP_PERSONAL);
+                    reportRet2Server(E_REPORT_APDU_KEY._ERAK_APP_KEY, E_APP_LIFE_STATUS._EALS_PERSONALIZED, mContainerAID);
                     setProcessStatus(PROCESS_STATUS.FINISH);
                 } else {
                     mExecAPDUResult = apduList[0];// TODO
@@ -83,6 +87,7 @@ public class TsmPersonal extends TsmBaseProcess {
         }
         CommonPersonalRsp data = (CommonPersonalRsp) rsp;
         if (data.iRet != 0) {
+            Log.e(TAG, "TsmPersonal->onParse, error :data.iRet =" + data.iRet);
             return data.iRet;
         }
         mPersonalFinish = data.bFinishPersonal;

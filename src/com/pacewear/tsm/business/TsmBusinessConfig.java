@@ -7,6 +7,7 @@ public class TsmBusinessConfig {
             "535A542E57414C4C45542E454E56",
             "9156000014010001",
             "5943542E55534552",
+            "00000000BBBBBBBB",
     };
 
     public static boolean isInWhiteList(String aid) {

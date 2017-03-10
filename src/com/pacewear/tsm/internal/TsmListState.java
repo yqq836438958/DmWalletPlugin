@@ -2,6 +2,7 @@
 package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
@@ -52,7 +53,7 @@ public class TsmListState extends TsmBaseProcess {
                 if (!mSessionListStat) {
                     mTsmCard.updateAllActiveStatus(mPostAPDU);
                 }
-                if (mCanStopTransmit) {
+                if (mCanStopTransmit || isListStatEnd()) {
                     setProcessStatus(PROCESS_STATUS.FINISH);
                 } else {
                     setProcessStatus(PROCESS_STATUS.REPEAT);
@@ -84,6 +85,7 @@ public class TsmListState extends TsmBaseProcess {
         }
         ListStatusRsp listStatus = (ListStatusRsp) rsp;
         if (listStatus.iRet != 0) {
+            Log.e(TAG, "TsmListState: onParse failed,error:" + listStatus.iRet);
             return -1;
         }
         if (listStatus.hasNext == 0) {
@@ -91,6 +93,8 @@ public class TsmListState extends TsmBaseProcess {
         }
         if (!TextUtils.isEmpty(listStatus.APDU)) {
             apdus.add(listStatus.APDU);
+        } else {
+            Log.e(TAG, "TsmListState: onParse failed,listStatus.APDU null");
         }
         return 0;
     }
@@ -98,5 +102,12 @@ public class TsmListState extends TsmBaseProcess {
     @Override
     protected boolean canStopWithoutTransmit() {
         return mCanStopTransmit;
+    }
+
+    private boolean isListStatEnd(){
+        if(!mSessionListStat){
+            return mPostAPDU.endsWith("9000");
+        }
+        return false;
     }
 }

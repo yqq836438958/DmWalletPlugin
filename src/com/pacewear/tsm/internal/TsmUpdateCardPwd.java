@@ -2,6 +2,7 @@
 package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
@@ -70,6 +71,7 @@ public class TsmUpdateCardPwd extends TsmBaseProcess {
         }
         UpdateCardPwdRsp response = (UpdateCardPwdRsp) rsp;
         if (response == null || response.iRet != 0 || TextUtils.isEmpty(response.APDU)) {
+            Log.e(TAG, "TsmPersonal->onParse, error");
             return -1;
         }
         apdus.add(response.APDU);

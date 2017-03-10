@@ -1,6 +1,7 @@
 
 package com.pacewear.tws.phoneside.wallet.ui;
 
+import TRom.E_PAY_SCENE;
 import TRom.E_PAY_TYPE;
 import TRom.PayConfig;
 import TRom.PayRechargeAmount;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
@@ -71,10 +73,10 @@ public class ActivateCardActivity extends TwsActivity {
     private int mPayChannelSelected = PAY_CHANNEL_WECHAT;
 
     // 开卡费(单位元)
-    private long mActivateFee = 3000;
+    private long mActivateFee = 0;
 
     // 充值金额(单位元)
-    private long mChargeValue = 3000;
+    private long mChargeValue = 0;
 
 	private long mActivityAmount = 0L;
     private SimpleCardListItem mSelectCityLayout = null;
@@ -136,6 +138,7 @@ public class ActivateCardActivity extends TwsActivity {
             return;
         }
         loadUserCityInfo();
+        final boolean isNewLntSupport = isLingNanTongNewSupport();
         ActionBar actionBar = getTwsActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.wallet_action_bar_background)));
@@ -195,10 +198,13 @@ public class ActivateCardActivity extends TwsActivity {
                             .show();
                     return false;
                 }
+                int payScene = isNewLntSupport ? E_PAY_SCENE._EPS_OPEN_CARD_ONLY
+                        : E_PAY_SCENE._EPS_OPEN_CARD;
                 ShowLoadingActivity.launchLoading(
                         mContext,
                         mCard.getCardType(),
                         mCard.getAID(),
+                        payScene,
                         payType,
                         mActivateFee,
                         mActivateFee + mChargeValue,
@@ -296,14 +302,21 @@ public class ActivateCardActivity extends TwsActivity {
         });
 
         PayValueSelect mPayValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
-        mPayValueSelect.setPayRechargeAmount(mPayRechargeAmount);
-        mPayValueSelect.setOnSelectChangeListener(new OnSelectChangeListener() {
-            @Override
-            public void onSelectChange(int which) {
-                onSelected(which);
-            }
-        });
-        mPayValueSelect.setSelect(OnSelectChangeListener.RIGHT_SELECTED);
+        TextView chargeLabelNoticeTv = (TextView) findViewById(R.id.denomination_notice);
+        if (!isNewLntSupport) {
+            mPayValueSelect.setPayRechargeAmount(mPayRechargeAmount);
+            mPayValueSelect.setOnSelectChangeListener(new OnSelectChangeListener() {
+                @Override
+                public void onSelectChange(int which) {
+                    onSelected(which);
+                }
+            });
+            mPayValueSelect.setSelect(OnSelectChangeListener.RIGHT_SELECTED);
+        } else {
+            onSelected(0);
+            chargeLabelNoticeTv.setVisibility(View.GONE);
+            mPayValueSelect.setVisibility(View.GONE);
+        }
 
         mSelectCityLayout = (SimpleCardListItem) findViewById(
                 R.id.wallet_city_select);
@@ -326,6 +339,10 @@ public class ActivateCardActivity extends TwsActivity {
         }
     }
 
+    private boolean isLingNanTongNewSupport() {
+        return CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(mCard.getAID());
+    }
+
     private void onSelected(int which) {
         switch (which) {
             case OnSelectChangeListener.LEFT_SELECTED:
@@ -336,6 +353,9 @@ public class ActivateCardActivity extends TwsActivity {
                 break;
             case OnSelectChangeListener.RIGHT_SELECTED:
                 mChargeValue = mPayRechargeAmount.get(2).getITotalFee();
+                break;
+            default:
+                mChargeValue = 0;
                 break;
         }
 

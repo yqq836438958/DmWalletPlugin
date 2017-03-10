@@ -610,7 +610,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
     }
 
     @Override
-    public final long placeIssueOrder(final String aid, final int payType, final long activateFee,
+    public final long placeIssueOrder(final String aid, final int payScene, final int payType, final long activateFee,
             final long chargeValue, final boolean retry) {
         final long uniqueId = SeqGenerator.getInstance().uniqueSeq();
         // 执行业务时，需清空所有的工作线程，避免阻塞
@@ -618,7 +618,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         Utils.getWorkerHandler().post(new Runnable() {
             @Override
             public void run() {
-                placeOrderInner(uniqueId, aid, E_PAY_SCENE._EPS_OPEN_CARD, payType, activateFee,
+                placeOrderInner(uniqueId, aid, payScene, payType, activateFee,
                         chargeValue, retry);
             }
         });
@@ -627,7 +627,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
     }
 
     @Override
-    public final long placeTopupOrder(final String aid, final int payType,
+    public final long placeTopupOrder(final String aid,final int payScene, final int payType,
             final long chargeValue, final boolean retry) {
         final long uniqueId = SeqGenerator.getInstance().uniqueSeq();
         // 执行业务时，需清空所有的工作线程，避免阻塞
@@ -635,7 +635,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         Utils.getWorkerHandler().post(new Runnable() {
             @Override
             public void run() {
-                placeOrderInner(uniqueId, aid, E_PAY_SCENE._EPS_STAT, payType,
+                placeOrderInner(uniqueId, aid, payScene, payType,
                         0, chargeValue, retry);
             }
         });
@@ -683,7 +683,7 @@ public class OrderManager implements IOrderManager, IOrderManagerInner, IEnvMana
         orderReqParam.setSBody(card.getCardName());
         orderReqParam.setSDetail(card.getCardName());
         orderReqParam.setEPayScene(scene);
-        if (scene == E_PAY_SCENE._EPS_OPEN_CARD) {
+        if (scene == E_PAY_SCENE._EPS_OPEN_CARD || scene == E_PAY_SCENE._EPS_OPEN_CARD_ONLY) {
             orderReqParam.setITotalFee(getFee(activateFee, chargeValue, payConfig));
             orderReqParam.setIOpenCardFee(getFee(activateFee, 0,payConfig));
             orderReqParam.setIOrderType(WalletRunEnv.getVisitChannel());

@@ -16,7 +16,7 @@ public class TsmCardSwitch extends TsmBaseBusiness {
     public TsmCardSwitch(TsmContext ctx, String aid) {
         super(ctx);
         mInstanceId = aid;
-        skipEnvCheck();
+        checkEnv(ENV_CHECK_SKIP);
     }
 
     @Override
@@ -25,15 +25,13 @@ public class TsmCardSwitch extends TsmBaseBusiness {
                 new TsmListState(mContext, Constants.TSM_CRS_AID, getCustomListStatAPDU())); // TODO
         List<CardListItem> list = mContext.getCard().getExistCardList();
         for (CardListItem item : list) {
-            if (item.aid.equalsIgnoreCase(mInstanceId)) {
-                addProcess(new TsmActiveApp(mContext, Constants.TSM_CRS_AID, mInstanceId,
-                        true));
-            } else {
+            if (!item.aid.equalsIgnoreCase(mInstanceId)) {
                 addProcess(
                         new TsmActiveApp(mContext, Constants.TSM_CRS_AID, item.aid, false));
             }
         }
-
+        addProcess(new TsmActiveApp(mContext, Constants.TSM_CRS_AID, mInstanceId,
+                true));
         return true;
     }
 

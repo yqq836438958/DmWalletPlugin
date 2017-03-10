@@ -25,7 +25,7 @@
         <!-- 显示内容content：如果是fragment 直接配置name,其他的配置类名信息 -->
         <!-- 内容类型ctyle：1 fragment； 2 activity； 3 service； 4 application； 5 view -->
         <!-- home_item_watch_wallet -->
-        <plugin-display android:value="pos=2/3@title=公交卡@content=com.pacewear.tws.phoneside.wallet.ui.WalletHomeActivity@ctyle=2@icon=wallet_watch_fragment_launcher" />
+        <plugin-display android:value="pos=2/3@title=交通卡/Traffic card/交通卡@content=com.pacewear.tws.phoneside.wallet.ui.WalletHomeActivity@ctyle=2@icon=wallet_watch_fragment_launcher" />
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -119,6 +119,58 @@
             android:name="com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.RechargeActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ConnectionActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ConfirmActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ComplaintOrderActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ComplaintSelectActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ComplaintSubmit"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.ForgetPassWordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.UpdatePassActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.RegisterActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.lnt.rechargelibrary.NfcQueryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <service
+            android:name="com.pacewear.tws.wallet.service.PaceApduService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.pacewear.tws.phoneside.wallet.action_apdu" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

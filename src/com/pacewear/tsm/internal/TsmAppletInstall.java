@@ -2,6 +2,7 @@
 package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.pacewear.tsm.TsmConstants;
 import com.pacewear.tsm.card.TsmContext;
@@ -36,7 +37,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
     private ArrayList<String> mLoadApdus = null;
     private ArrayList<String> mInstallApdu = null;
     private String mBusinessAID = null;
-
+    
     public TsmAppletInstall(TsmContext context, String containerAID, String appletAID) {
         super(context, containerAID, true);
         mBusinessAID = appletAID;
@@ -76,7 +77,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
         @Override
         protected void notifyStepStatus(INSTALL_STEP step,
                 STATUS status) {
-
+//            Log.d(tag, msg)
         }
     }
 
@@ -96,6 +97,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
 
                 @Override
                 public void onFail(int ret, String desc) {
+                    Log.e(TAG, "InstallApplet->Install_for_load fail, ret:" + ret + ",desc:" + desc);
                     keepStep();
                 }
             });
@@ -120,6 +122,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
 
                 @Override
                 public void onFail(int ret, String desc) {
+                    Log.e(TAG, "InstallApplet->load fail, ret:" + ret + ",desc:" + desc);
                     keepStep();
                 }
             });
@@ -143,6 +146,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
 
                 @Override
                 public void onFail(int ret, String desc) {
+                    Log.e(TAG, "InstallApplet->install_select fail, ret:" + ret + ",desc:" + desc);
                     keepStep();
                 }
             });
@@ -209,6 +213,7 @@ public class TsmAppletInstall extends TsmBaseProcess {
         int ret = CHECK_READY;
         AppletStatus appletStatus = mTsmCard.getAppletByAID(mBusinessAID);
         if (appletStatus == null) {
+            Log.e(TAG, "InstallApplet->onCheck, error :appletStatus == null");
             return CHECK_ERROR;
         }
         switch (appletStatus.status) {
@@ -236,17 +241,20 @@ public class TsmAppletInstall extends TsmBaseProcess {
         }
         InstallAppletRsp data = (InstallAppletRsp) rsp;
         if (data.iRet != 0) {
+            Log.e(TAG, "InstallApplet->onParse, error from InstallAppletRsp:" + data.iRet);
             return data.iRet;
         }
         byte[] unzipApdu = null;
         unzipApdu = ZipUtils.unGzip(data.vData);
         if (unzipApdu == null) {
+            Log.e(TAG, "InstallApplet->onParse, unzip data error");
             return -1;
         }
         InstallAPDU apduList = new InstallAPDU();
         JceInputStream jceInputStream = new JceInputStream(unzipApdu);
         apduList = (InstallAPDU) jceInputStream.read(apduList, 0, false);
         if (apduList == null) {
+            Log.e(TAG, "InstallApplet->onParse, apdu readfrom jceinputstream error");
             return -1;
         }
         mInstall_LoadApdu = apduList.sInstallForLoadAPDU;

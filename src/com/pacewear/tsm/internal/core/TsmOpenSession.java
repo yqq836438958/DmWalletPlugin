@@ -2,6 +2,7 @@
 package com.pacewear.tsm.internal.core;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
@@ -20,7 +21,7 @@ public class TsmOpenSession implements IProcessEventConsum {
     public enum SESSION_STEP {
         ECSS_SELECT, ECSS_INITIALIZE_UPDATE, ECSS_EXTERNAL_AUTHEN, ECSS_FINAL,
     }
-
+    public static final String TAG = "TSM";
     private IStep<SESSION_STEP> mCurStep = null;
     private boolean mNeedSession = false;
     private IApduTransmiter mApduTransmiter = null;
@@ -113,6 +114,8 @@ public class TsmOpenSession implements IProcessEventConsum {
 
                 @Override
                 public void onFail(int error, String desc) {
+                    Log.e(TAG, "TsmOpenSession: select " + mSessionAID + " failed,error:" + error
+                            + ",desc:" + desc);
                     keepStep();
                     if (mOutProcessCallback != null) {
                         mOutProcessCallback.onFail(error, desc);
@@ -140,6 +143,8 @@ public class TsmOpenSession implements IProcessEventConsum {
 
                 @Override
                 public void onFail(int ret, String desc) {
+                    Log.e(TAG, "TsmOpenSession: i-u failed,error:" + ret
+                            + ",desc:" + desc);
                     keepStep();
                     if (mOutProcessCallback != null) {
                         mOutProcessCallback.onFail(ret, desc);
@@ -165,6 +170,8 @@ public class TsmOpenSession implements IProcessEventConsum {
 
                 @Override
                 public void onFail(int ret, String desc) {
+                    Log.e(TAG, "TsmOpenSession: e-a failed,error:" + ret
+                            + ",desc:" + desc);
                     keepStep();
                     if (mOutProcessCallback != null) {
                         mOutProcessCallback.onFail(ret, desc);
@@ -191,10 +198,12 @@ public class TsmOpenSession implements IProcessEventConsum {
         }
         CreateSessionRsp data = (CreateSessionRsp) rsp;
         if (data.iRet != 0) {
+            Log.e(TAG, "TsmOpenSession: onParserApdu failed,error:" + data.iRet);
             return data.iRet;
         }
         String apdu = data.APDU;
         if (TextUtils.isEmpty(apdu)) {
+            Log.e(TAG, "TsmOpenSession: onParserApdu failed,apdu null");
             return -1;
         }
         apdus.add(apdu);

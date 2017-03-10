@@ -129,6 +129,12 @@
                         <!-- 排除jar -->
                         <!-- <exclude name="framework-qrom.jar"/> -->
                     </fileset>
+                    <fileset dir="TwsPluginWalletLntSdk/libs">
+                        <include name="*.jar"/>
+                    </fileset>
+                    <fileset dir="TwsPluginWalletLntSdk/bin">
+                        <include name="*.jar"/>
+                    </fileset>
                     <fileset dir="${sdk.dir}/tools/support">   
               			<include name="*.jar"/>
           			</fileset>
@@ -142,6 +148,12 @@
             <else>
                 <path id="custom.dex.injars.path">
                     <fileset dir="libs">
+                        <include name="*.jar"/>
+                    </fileset>
+                    <fileset dir="TwsPluginWalletLntSdk/libs">
+                        <include name="*.jar"/>
+                    </fileset>
+                    <fileset dir="TwsPluginWalletLntSdk/bin">
                         <include name="*.jar"/>
                     </fileset>
                     <fileset dir="${sdk.dir}/tools/support">   

@@ -1,6 +1,8 @@
 
 package com.pacewear.tsm.internal;
 
+import android.util.Log;
+
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
 import com.pacewear.tsm.internal.core.TsmBaseProcess;
@@ -40,6 +42,8 @@ public class TsmSetAppStatus extends TsmBaseProcess {
 
             @Override
             public void onFail(int ret, String desc) {
+                Log.e(TAG, "TsmSetAppStatus fail:" + ret + ",desc:" +
+                        desc);
                 setProcessStatus(PROCESS_STATUS.KEEP);
             }
         });

@@ -3,6 +3,7 @@ package com.pacewear.tws.phoneside.wallet.ui;
 
 import TRom.GetCustomServiceRsp;
 
+import android.app.Activity;
 import android.app.TwsActivity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +32,10 @@ import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
 import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
+import com.pacewear.tws.phoneside.wallet.lnt.ILntChargeSdk;
+import com.pacewear.tws.phoneside.wallet.lnt.ILntInvokeCallback;
+import com.pacewear.tws.phoneside.wallet.lnt.LntChargeSdk;
+import com.pacewear.tws.phoneside.wallet.lnt.LntChargeSdk.ILntCardPage;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.tosservice.PullUserInfo;
@@ -48,6 +53,7 @@ import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
+import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 import com.tencent.tws.phoneside.utils.DensityUtil;
 
 import qrom.component.log.QRomLog;
@@ -89,6 +95,33 @@ public class ShowCardDetailsActivity extends TwsActivity
     private static final int DIALOG_UBOUND_CONFIRM = DIALOG_UBOUND + 1;
 
     private static final int DIALOG_SET_DEFAULT = DIALOG_UBOUND_CONFIRM + 1;
+    private static final int REQUEST_CODE_LNT_VIP = 1;
+    private ILntChargeSdk mLntChargeSdk = null;
+    private ILntCardPage mCardPage = new ILntCardPage() {
+        @Override
+        public boolean jump(String className) {
+            Intent intent = new Intent();
+            intent.setClassName(mContext, className);
+            startActivityForResult(intent, REQUEST_CODE_LNT_VIP);
+            return true;
+        }
+    };
+    private ILntInvokeCallback mLntInvokeCallback = new ILntInvokeCallback() {
+        @Override
+        public void onResult(boolean suc, final String desc) {
+            if (suc) {
+                mCard.forceUpdate();
+            } else {
+                ShowCardDetailsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GlobalObj.g_appContext, desc,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    };
 
     private Runnable mClickRunable = new Runnable() {
 
@@ -141,9 +174,6 @@ public class ShowCardDetailsActivity extends TwsActivity
 
         Intent intent = getIntent();
         if (intent != null) {
-            int type = intent.getIntExtra(
-                    PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                    PayNFCConstants.Card.TYPE_UNKNOWN);
             String aid = intent
                     .getStringExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID);
             mCard = CardManager.getInstance().getCard(aid);
@@ -221,6 +251,9 @@ public class ShowCardDetailsActivity extends TwsActivity
             mChargeButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (ClickFilter.isMultiClick()) {
+                        return;
+                    }
                     if (!EnvManager.getInstance().isWatchConnected()) {
                         Toast.makeText(GlobalObj.g_appContext,
                                 getString(R.string.wallet_disconnect_tips),
@@ -248,6 +281,7 @@ public class ShowCardDetailsActivity extends TwsActivity
         hideLoading();
         WalletHandlerManager.getInstance().register(mCard.getAID(), ACTVITY_SCENE.SCENE_SWITCHCARD,
                 this);
+        mLntChargeSdk = new LntChargeSdk(mContext, mCardPage, mLntInvokeCallback);
     }
 
     @Override
@@ -266,6 +300,7 @@ public class ShowCardDetailsActivity extends TwsActivity
     protected void onDestroy() {
         WalletHandlerManager.getInstance().unregister(ACTVITY_SCENE.SCENE_SWITCHCARD);
         Utils.getWorkerHandler().removeCallbacks(mClickRunable);
+        mLntChargeSdk.destroy();
         super.onDestroy();
     }
 
@@ -330,6 +365,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                     mContext,
                     mCard.getCardType(),
                     mCard.getAID(),
+                    mOrder.getOrderReqParam().getEPayScene(),
                     mOrder.getOrderReqParam()
                             .getEPayType(),
                     mOrder.getOrderReqParam()
@@ -355,9 +391,12 @@ public class ShowCardDetailsActivity extends TwsActivity
                     Toast.LENGTH_LONG).show();
             return;
         }
+        if (mLntChargeSdk.invoke(mCard.getAID(),null)) {
+            return;
+        }
         Intent intent = new Intent(mContext, ChargeCardActivity.class);
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                mCard.getCardType());
+                mCard.getCardType().toValue());
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                 mCard.getAID());
         mContext.startActivity(intent);
@@ -550,5 +589,20 @@ public class ShowCardDetailsActivity extends TwsActivity
         Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=cn.com.bmac.nfc");
         Intent it = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(it);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case Activity.RESULT_OK:
+                if (requestCode == REQUEST_CODE_LNT_VIP) {
+                    String num = data.getStringExtra(PhoneVerifyActivity.PHONENUM);
+                    if (!TextUtils.isEmpty(num)) {
+                        mLntChargeSdk.invoke(mCard.getAID(), num);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

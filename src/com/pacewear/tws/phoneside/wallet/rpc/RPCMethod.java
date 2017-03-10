@@ -40,10 +40,10 @@ public abstract class RPCMethod<Iterface> implements IRPC<Iterface>, IRPCHandler
     public boolean invoke(Iterface listener) {
 
         boolean handled = false;
-
-        if (listener == null) {
-            return handled;
-        }
+        // 支持无 callback访问
+        // if (listener == null) {
+        // return handled;
+        // }
 
         if (mMethod == MSG_RPC_METHOD._UNKNOWN) {
             return handled;
@@ -143,6 +143,12 @@ public abstract class RPCMethod<Iterface> implements IRPC<Iterface>, IRPCHandler
     public RPCMethod<Iterface> setTimeoutMillis(long millis) {
         mTimeoutMillis = millis;
         return this;
+    }
+
+    @Override
+    public long getTimeoutMillis() {
+        long time = mTimeoutMillis > 0 ? mTimeoutMillis : 4000;
+        return time;
     }
 
     @Override

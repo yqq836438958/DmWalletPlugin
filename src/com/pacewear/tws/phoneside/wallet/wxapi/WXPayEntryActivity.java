@@ -11,7 +11,7 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.business.WeChatOAuthHelper;
+import com.tencent.tws.phoneside.business.AccountManager;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 	
@@ -23,7 +23,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
     	
         super.onCreate(savedInstanceState);
         
-		IWXAPI oApi =  WeChatOAuthHelper.getInstance().wxApi(); 
+		IWXAPI oApi =  AccountManager.getInstance().getWXApi();
 		assert( oApi != null );
 		if( oApi != null ){
 		    QRomLog.d(TAG, "WXEntryActivity oApi != null");
@@ -40,7 +40,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 		
 		setIntent(intent);
 		
-		IWXAPI oApi =  WeChatOAuthHelper.getInstance().wxApi(); 
+		IWXAPI oApi =  AccountManager.getInstance().getWXApi();
 		assert( oApi != null );
 		if( oApi != null ){
 		    QRomLog.d(TAG, "WXEntryActivity oApi != null");

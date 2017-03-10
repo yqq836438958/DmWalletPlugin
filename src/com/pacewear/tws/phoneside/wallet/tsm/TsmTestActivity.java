@@ -3,19 +3,25 @@ package com.pacewear.tws.phoneside.wallet.tsm;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pacewear.common.utils.CacheUtils;
 import com.pacewear.tsm.ITsmBusinessListener;
 import com.pacewear.tsm.TsmService;
 import com.pacewear.tsm.channel.ITsmCardChannel;
+import com.pacewear.tsm.common.ByteUtil;
 import com.pacewear.tsm.common.CacheUtil;
 import com.pacewear.tsm.query.TsmApplet.AppletTagQuery;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
+import com.pacewear.tws.phoneside.wallet.sdkadapter.SnowBallCardChannel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,9 +39,14 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
     private Button mSelectAidBtn = null;
     private Button mTopupBtn = null;
     private Button mCardQueryBtn = null;
+    private Button mLntConnectBtn = null;
+    private Button mLntDisconnectBtn = null;
+    private Button mLntTransmitBtn = null;
     private TextView mResultTextView = null;
     private TsmService mService = null;
     private ITsmCardChannel mChannel = null;
+    private Handler mAsyncHandler = null;
+    private Looper mAsyncLooper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,9 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         mSelectAidBtn = (Button) findViewById(R.id.selectaid);
         mTopupBtn = (Button) findViewById(R.id.topup);
         mCardQueryBtn = (Button) findViewById(R.id.cardinfoquery);
+        mLntConnectBtn = (Button) findViewById(R.id.connect);
+        mLntDisconnectBtn = (Button) findViewById(R.id.disconnect);
+        mLntTransmitBtn = (Button) findViewById(R.id.transmit);
         mResultTextView = (TextView) findViewById(R.id.result);
         mIssueCardBtn.setOnClickListener(this);
         mListStatusBtn.setOnClickListener(this);
@@ -60,14 +74,17 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         mSelectAidBtn.setOnClickListener(this);
         mTopupBtn.setOnClickListener(this);
         mCardQueryBtn.setOnClickListener(this);
+        mLntConnectBtn.setOnClickListener(this);
+        mLntDisconnectBtn.setOnClickListener(this);
+        mLntTransmitBtn.setOnClickListener(this);
+        initThread();
         init();
     }
 
     private void init() {
-        mChannel = new SnowBallCardChannel();
+        mChannel = SnowBallCardChannel.get();
         mService = TsmService.getInstance();
-        mService.register(WalletApp.sGlobalCtx, mChannel, this);
-        Utils.getWorkerHandler().post(new Runnable() {
+        mAsyncHandler.post(new Runnable() {
 
             @Override
             public void run() {
@@ -82,44 +99,64 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
                 list2.add("00A40000021001");
                 list2.add("805C000204");
                 tagQuery.put("amount", list2);
-                CacheUtil.save("card_query_aid_9156000014010001", tagQuery);
+                CacheUtils.save("card_query_aid_9156000014010001", tagQuery);
             }
         });
     }
 
+    private void initThread() {
+        HandlerThread thread = new HandlerThread("Test");
+        thread.start();
+        mAsyncLooper = thread.getLooper();
+        mAsyncHandler = new Handler(mAsyncLooper);
+    }
+
     @Override
     public void onClick(final View arg0) {
-        Utils.getWorkerHandler().removeCallbacksAndMessages(null);
-        Utils.getWorkerHandler().post(new Runnable() {
+        mAsyncHandler.removeCallbacksAndMessages(null);
+        mAsyncHandler.post(new Runnable() {
             @Override
             public void run() {
                 switch (arg0.getId()) {
                     case R.id.issuecard:
-                        mService.issueCard(getIssueParam("00000000BBBBBBBB"));
+                        mService.issueCard(getIssueParam("00000000BBBBBBBB"), TsmTestActivity.this);
                         break;
                     case R.id.liststatus:
-                        mService.cardListQuery();
+                        mService.cardListQuery(TsmTestActivity.this);
                         break;
                     case R.id.clearapp:
-                        mService.deleteCard("00000000BBBBBBBB");
+                        mService.deleteCard("00000000BBBBBBBB", TsmTestActivity.this);
                         break;
                     case R.id.clearssd:
-                        mService.deleteCard("0102030405060708");
+                        mService.deleteCard("0102030405060708", TsmTestActivity.this);
                         break;
                     case R.id.shutdown:
                         mChannel.close();
                         break;
                     case R.id.resetaid:
-                        mService.resetAID("0102030405060708");
+                        mService.resetAID("0102030405060708", TsmTestActivity.this);
                         break;
                     case R.id.selectaid:
-                        mService.cardSwitch("00000000BBBBBBBB");
+                        mService.cardSwitch("00000000BBBBBBBB", TsmTestActivity.this);
                         break;
                     case R.id.topup:
-                        mService.cardTopup(getTopupParam("00000000BBBBBBBB"));
+                        mService.cardTopup(getTopupParam("00000000BBBBBBBB"), TsmTestActivity.this);
                         break;
                     case R.id.cardinfoquery:
-                        mService.cardQuery(getCardQueryParam("9156000014010001"));
+                        mService.cardQuery(getCardQueryParam("9156000014010001"),
+                                TsmTestActivity.this);
+                        break;
+                    case R.id.connect:
+                        // LntConnectTest.connect(getApplicationContext());
+                        break;
+                    case R.id.disconnect:
+                        // LntConnectTest.
+                        break;
+                    case R.id.transmit:
+                        // LntConnectTest.poweron();
+                        //// LntConnectTest.transmit(ByteUtil.toByteArray("80500C0008D98B767CE221C2E1"));
+                        // LntConnectTest.transmit(ByteUtil.toByteArray("00A4040009A00000015143525300"));
+                        // LntConnectTest.powerOff();
                         break;
                     default:
                         break;

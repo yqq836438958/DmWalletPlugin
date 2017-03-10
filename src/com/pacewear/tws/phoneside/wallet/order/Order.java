@@ -342,6 +342,7 @@ public class Order implements IOrder, IOrderInner {
         public void onStepHandle() {
             switch (mOrderReqParam.ePayScene) {
                 case E_PAY_SCENE._EPS_OPEN_CARD:
+                case E_PAY_SCENE._EPS_OPEN_CARD_ONLY:
                     switchStep(mExecuteIssueStep);
                     break;
                 case E_PAY_SCENE._EPS_STAT:
@@ -386,7 +387,11 @@ public class Order implements IOrder, IOrderInner {
                         }
                         if (issueSucceed || canIgnoreError(aid, true)) {
                             // 当前设计，开卡必然包含充值
-                            switchStep(mExecuteTopupStep);
+                            if (mOrderReqParam.ePayScene == E_PAY_SCENE._EPS_OPEN_CARD_ONLY) {
+                                switchStep(mOrderFinishStep);
+                            } else {
+                                switchStep(mExecuteTopupStep);
+                            }
                             clearRetryTimes();
                         } else {
                              if(canRetryBusiness()){
@@ -590,7 +595,8 @@ public class Order implements IOrder, IOrderInner {
 
     @Override
     public boolean isIssueFail() {
-        if (mOrderReqParam == null || mOrderReqParam.ePayScene != E_PAY_SCENE._EPS_OPEN_CARD) {
+        if (mOrderReqParam == null || (mOrderReqParam.ePayScene != E_PAY_SCENE._EPS_OPEN_CARD
+                && mOrderReqParam.ePayScene != E_PAY_SCENE._EPS_OPEN_CARD_ONLY)) {
             return false;
         }
         if (isInValidOrder()) {
@@ -677,7 +683,8 @@ public class Order implements IOrder, IOrderInner {
         boolean canIgnore = false;
         if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(aid)) {
             if (isIssueCard) {
-                canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_OPENCARD);
+                canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_OPENCARD)
+                        || mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_PERSONAL);
             } else {
                 canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_TOPUP);
             }

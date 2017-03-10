@@ -1,6 +1,7 @@
 
 package com.pacewear.tws.phoneside.wallet.ui;
 
+import TRom.E_PAY_SCENE;
 import TRom.E_PAY_TYPE;
 import TRom.PayConfig;
 import TRom.PayRechargeAmount;
@@ -84,9 +85,6 @@ public class ChargeCardActivity extends TwsActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            int type = intent.getIntExtra(
-                    PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                    PayNFCConstants.Card.TYPE_UNKNOWN);
             String instanceId = intent
                     .getStringExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID);
             mCard = CardManager.getInstance().getCard(instanceId);
@@ -135,6 +133,7 @@ public class ChargeCardActivity extends TwsActivity {
 
         TwsButton confirm = (TwsButton) findViewById(R.id.wallet_charge_confirm);
         UIHelper.setTwsButton(confirm, R.string.charge_confirm, "#46dc5f");
+        confirm.setButtonMode(TwsButton.RecommendedButton);
         confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,8 +200,8 @@ public class ChargeCardActivity extends TwsActivity {
                         return;
                     }
                 }
-                ShowLoadingActivity.launchLoading(mContext, mCard.getCardType(), mCard.getAID(),
-                        payType,
+                ShowLoadingActivity.launchLoading(mContext, mCard.getCardType(),mCard.getAID(),
+                        E_PAY_SCENE._EPS_STAT,payType,
                         chargeValue, ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD, false);
                 finish();
             }

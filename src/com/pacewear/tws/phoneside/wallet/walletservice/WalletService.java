@@ -28,13 +28,17 @@ public abstract class WalletService extends RPCMethod<IResult> {
         } else {
             QRomLog.e(TAG, "code:" + result.getIInt() + ",null output");
         }
-        mListener.onResult(getSeqID(), result.getIInt(), outputParams, resultCode,
-                result.getVBytes());
+        if (mListener != null) {
+            mListener.onResult(getSeqID(), result.getIInt(), outputParams, resultCode,
+                    result.getVBytes());
+        }
     }
 
     @Override
     public final void onExecptionReal(MSG msg) {
         QRomLog.e(TAG, "onExecptionReal");
-        mListener.onExecption(getSeqID(), msg.stMsgHeader.eState);
+        if (mListener != null) {
+            mListener.onExecption(getSeqID(), msg.stMsgHeader.eState);
+        }
     }
 }

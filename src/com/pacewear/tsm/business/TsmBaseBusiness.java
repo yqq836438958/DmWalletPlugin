@@ -13,7 +13,10 @@ public abstract class TsmBaseBusiness {
 
     protected TsmContext mContext = null;
     private TsmProcessList mProcessList;
-    protected boolean mSkipEnvCheck = false;
+    public static final int ENV_CHECK_DEFAULT = 0;
+    public static final int ENV_CHECK_SKIP = 1;
+    public static final int ENV_CHECK_FORCE = 2;
+    protected int mEnvCheck = ENV_CHECK_DEFAULT;
 
     final class TsmProcessList {
         ITsmProcess head = null;
@@ -33,8 +36,8 @@ public abstract class TsmBaseBusiness {
         }
     }
 
-    protected void skipEnvCheck() {
-        mSkipEnvCheck = true;
+    protected void checkEnv(int check) {
+        mEnvCheck = check;
     }
 
     protected void addProcess(ITsmProcess process) {
@@ -51,10 +54,11 @@ public abstract class TsmBaseBusiness {
 
     public boolean start() {
         mContext.initIfNeed();
-        if (mSkipEnvCheck) {
-            return onStart();
+        if (mEnvCheck == ENV_CHECK_SKIP) {
+            beginBusiness();
+            return true;
         }
-        TsmBusinessEnv env = new TsmBusinessEnv(mContext);
+        TsmBusinessEnv env = new TsmBusinessEnv(mContext, mEnvCheck == ENV_CHECK_FORCE);
         boolean handle = env.setup(new OnBusinessEnvCallback() {
 
             @Override

@@ -19,7 +19,7 @@ import com.pacewear.tsm.step.Step;
 
 public class TsmBusinessEnv {
     public enum ENV_STEP {
-        CHECK, GET_CPLC, SYNC_SERVER, FINAL
+        GET_CPLC, SYNC_SERVER, FINAL
     }
 
     public static interface OnBusinessEnvCallback {
@@ -32,14 +32,16 @@ public class TsmBusinessEnv {
     private TsmContext mContext = null;
     private IStep<ENV_STEP> mCurEnvStep = null;
     private OnBusinessEnvCallback mCallback = null;
+    private boolean bForceSyncRemoteStat = false;
 
-    public TsmBusinessEnv(TsmContext context) {
+    public TsmBusinessEnv(TsmContext context, boolean forceSync) {
         mContext = context;
+        bForceSyncRemoteStat = forceSync;
     }
 
     public boolean setup(OnBusinessEnvCallback callback) {
         mCallback = callback;
-        return setEnvStep(mCheckEnvStep, true);
+        return setEnvStep(mGetCPLCStep, true);
     }
 
     private abstract class EnvStep extends Step<ENV_STEP> {
@@ -79,19 +81,6 @@ public class TsmBusinessEnv {
 
     }
 
-    private EnvStep mCheckEnvStep = new EnvStep(ENV_STEP.CHECK) {
-
-        @Override
-        public void onStepHandle() {
-            TsmCard card = mContext.getCard();
-            if (card == null || TextUtils.isEmpty(card.getCPLC())) {
-                switchStep(mGetCPLCStep);
-                // todo判断服务端卡状态是否被拉取
-            } else {
-                switchStep(mFinalStep);
-            }
-        }
-    };
     private EnvStep mGetCPLCStep = new EnvStep(ENV_STEP.GET_CPLC) {
 
         @Override
@@ -108,6 +97,7 @@ public class TsmBusinessEnv {
                     // TODO 判断cplc合法性
                     TsmCard card = mContext.getCard();
                     card.setCPLC(apduList[0]);
+                    CacheUtil.saveCacheCPLC(apduList[0]);
                     switchStep(mSyncServerStep);
                 }
 
@@ -124,6 +114,11 @@ public class TsmBusinessEnv {
 
         @Override
         public void onStepHandle() {
+            if (!bForceSyncRemoteStat
+                    && CacheUtil.getRemoteStatus(CacheUtil.getCacheCPLC()) != null) {
+                switchStep(mFinalStep);
+                return;
+            }
             SyncRemoteCardStatus remote = new SyncRemoteCardStatus(mContext);
             final long seqReq = remote.getUniqueSeq();
             remote.invoke(new IResponseObserver() {

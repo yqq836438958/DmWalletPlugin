@@ -52,7 +52,8 @@ public class SelectAddCardActivity extends TwsActivity {
 
     private BaseAdapter mListAdapter = null;
 
-    private final int PEKINGREQUEST = 1;
+    private final int VERIFYREQUEST = 1;
+    private String mPendingCardAid = "";
 
     @Override
     public void finish() {
@@ -71,8 +72,9 @@ public class SelectAddCardActivity extends TwsActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            mType = (CARD_TYPE) intent
-                    .getSerializableExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE);
+            int _type = intent
+                    .getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, 0);
+            mType = CARD_TYPE.values()[_type];
         }
 
         setContentView(R.layout.wallet_select_add_card);
@@ -201,7 +203,7 @@ public class SelectAddCardActivity extends TwsActivity {
                         break;
                 }
                 intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                        newCard.getCardType());
+                        newCard.getCardType().toValue());
                 intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                         newCard.getAID());
                 mContext.startActivity(intent);
@@ -212,6 +214,15 @@ public class SelectAddCardActivity extends TwsActivity {
     }
 
     private boolean gotoPreOpenCardPage(String aid) {
+        mPendingCardAid = aid;
+        if (TextUtils.isEmpty(EnvManager.getInstanceInner().getUserPhoneNum())) {// todo
+            Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
+            startActivityForResult(intent, VERIFYREQUEST);
+            return true;
+        }
+        return false;
+    }
+    private boolean goOtherPage(String aid) {
         if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(aid)) {
             Intent intent = new Intent(mContext, ShowWebPageActivity.class);
             ShowWebPageActivity.putTitle(intent, getString(R.string.wallet_agreement_title));
@@ -225,13 +236,7 @@ public class SelectAddCardActivity extends TwsActivity {
             finish();
             return true;
         }
-        if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(aid)
-                && TextUtils.isEmpty(EnvManager.getInstanceInner().getUserPhoneNum())) {// todo
-            Intent intent = new Intent(mContext, PhoneVerifyActivity.class);
-            startActivityForResult(intent, PEKINGREQUEST);
             // finish();
-            return true;
-        }
         return false;
     }
 
@@ -241,11 +246,14 @@ public class SelectAddCardActivity extends TwsActivity {
             case Activity.RESULT_OK:
                 String num = data.getStringExtra(PhoneVerifyActivity.PHONENUM);
                 EnvManager.getInstanceInner().setUserPhoneNum(num);
-                if (requestCode == PEKINGREQUEST) {
+                if (requestCode == VERIFYREQUEST) {
+                    if(goOtherPage(mPendingCardAid)){
+                        return;
+                    }
                     Intent intent = new Intent();
                     intent.setClass(this, ActivateCardActivity.class);
                     intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
-                            CONFIG.BEIJINGTONG.mAID);
+                            mPendingCardAid);
                     startActivity(intent);
                     finish();
                 }

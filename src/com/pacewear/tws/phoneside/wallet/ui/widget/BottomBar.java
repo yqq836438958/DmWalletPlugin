@@ -72,7 +72,8 @@ public class BottomBar extends FrameLayout implements OnClickListener {
         UIHelper.setTwsButton(mSingleButton, R.string.wallet_traffic_card_add);
         UIHelper.setTwsButton(mCoupleLeftButton, R.string.wallet_traffic_card_add);
         UIHelper.setTwsButton(mCoupleRightButton, R.string.wallet_traffic_card_add);
-        UIHelper.setTwsButton(mSingleButtonWithDesButton, R.string.activate_confirm);
+        UIHelper.setTwsButton(mSingleButtonWithDesButton, R.string.activate_confirm, "#46dc5f");
+        mSingleButtonWithDesButton.setButtonMode(TwsButton.RecommendedButton);
         mSingleMainDes = (TextView) findViewById(R.id.br_single_bt_with_des_main);
         mSingleSubDes = (TextView) findViewById(R.id.br_single_bt_with_des_sub);
 
@@ -116,7 +117,7 @@ public class BottomBar extends FrameLayout implements OnClickListener {
     }
 
     public void setSingleButtonWithDesButtonEnable(boolean enabled) {
-        UIHelper.setTwsButtonEnable(mSingleButtonWithDesButton, enabled);
+//        UIHelper.setTwsButtonEnable(mSingleButtonWithDesButton, enabled);
     }
 
     public void setSingleButtonWithDesButtonText(int resId) {

@@ -86,6 +86,7 @@ public class ApplyRefund extends PayTosService {
                 refoundFeeType = "2";
                 break;
             case E_PAY_SCENE._EPS_OPEN_CARD:
+            case E_PAY_SCENE._EPS_OPEN_CARD_ONLY:
             default:
                 refoundFeeType = "3";
                 break;

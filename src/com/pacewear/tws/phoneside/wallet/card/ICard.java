@@ -10,17 +10,17 @@ public interface ICard {
     /**
      * 卡类型
      */
-    public enum CARD_TYPE {
+    public static enum CARD_TYPE {
+        TRAFFIC_CARD(0), BANK_CARD(1);
+        private int value;
 
-        /**
-         * 交通卡
-         */
-        TRAFFIC_CARD,
+        CARD_TYPE(int num) {
+            this.value = num;
+        }
 
-        /**
-         * 银行卡
-         */
-        BANK_CARD,
+        public int toValue() {
+            return value;
+        }
     }
 
     /**

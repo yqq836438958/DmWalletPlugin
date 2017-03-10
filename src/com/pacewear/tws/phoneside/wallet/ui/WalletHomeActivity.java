@@ -139,7 +139,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
 
     private void loadIntentIfNeed() {
         Intent fromIntent = getIntent();
-        if (fromIntent == null || fromIntent.getScheme() == null) {
+        if (fromIntent == null /*|| fromIntent.getScheme() == null*/) {
             return;
         }
         String urlData = fromIntent.getDataString();

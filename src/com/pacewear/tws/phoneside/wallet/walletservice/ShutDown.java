@@ -7,7 +7,7 @@ import qrom.component.log.QRomLog;
 public class ShutDown extends WalletService {
     private static final String TAG = "shutdown";
 
-    private static final long TIMEOUT_MILLIS = 5000;
+    private static final long TIMEOUT_MILLIS = 20000;
 
     @Override
     public boolean invoke(IResult listener) {

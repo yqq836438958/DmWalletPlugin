@@ -65,7 +65,7 @@ public class ByteUtil {
     }
 
     private static String toHexUtil(int n) {
-        String rt = "";
+        String rt = "0";
         switch (n) {
             case 10:
                 rt += "A";

@@ -42,8 +42,8 @@ public class PhoneVerifyActivity extends TwsActivity implements View.OnClickList
 
         @Override
         public void OnResult(int ret, String result) {
-            if (ret == 0) {
-                showSuccessResult();
+            if (ret == 0 || ret == 1) {
+                showSuccessResult(ret == 1 ? true : false);
             } else {
                 showErrorTip();
             }
@@ -174,12 +174,12 @@ public class PhoneVerifyActivity extends TwsActivity implements View.OnClickList
         });
     }
 
-    private void showSuccessResult() {
+    private void showSuccessResult(final boolean directFinishPage) {
         this.runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
-                if (mStep == STEP_CONFIRM) {
+                if (mStep == STEP_CONFIRM || directFinishPage) {
                     Intent intent = new Intent();
                     intent.putExtra(PHONENUM, mPhoneNum);
                     PhoneVerifyActivity.this.setResult(Activity.RESULT_OK, intent);

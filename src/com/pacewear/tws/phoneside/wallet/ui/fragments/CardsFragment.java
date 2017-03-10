@@ -91,7 +91,7 @@ public class CardsFragment extends Fragment {
             return false;
         }
         Intent intent = new Intent(mContext, SelectAddCardActivity.class);
-        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, mType);
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, mType.toValue());
         mContext.startActivity(intent);
         return true;
     }
@@ -311,6 +311,7 @@ public class CardsFragment extends Fragment {
                 }
                 ShowLoadingActivity.launchLoading(mContext,
                         card.getCardType(), card.getAID(),
+                        order.getOrderReqParam().getEPayScene(),
                         order.getOrderReqParam().getEPayType(),
                         order.getOrderReqParam().getIOpenCardFee(),
                         order.getOrderReqParam().getITotalFee(),
@@ -325,6 +326,7 @@ public class CardsFragment extends Fragment {
                 }
                 ShowLoadingActivity.launchLoading(mContext,
                         card.getCardType(), card.getAID(),
+                        order.getOrderReqParam().getEPayScene(),
                         order.getOrderReqParam().getEPayType(),
                         order.getOrderReqParam().getITotalFee(),
                         ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD,
@@ -344,7 +346,7 @@ public class CardsFragment extends Fragment {
                         ShowCardDetailsActivity.class);
                 intent.putExtra(
                         PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                        mType);
+                        mType.toValue());
                 intent.putExtra(
                         PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                         card.getAID());

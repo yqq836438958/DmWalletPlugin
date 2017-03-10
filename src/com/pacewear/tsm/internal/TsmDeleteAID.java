@@ -2,8 +2,8 @@
 package com.pacewear.tsm.internal;
 
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.common.Constants;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
@@ -71,6 +71,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
         }
         DeleteRsp response = (DeleteRsp) rsp;
         if (response.iRet != 0 || TextUtils.isEmpty(response.APDU)) {
+            Log.e(TAG, "TsmDeleteAID: onParse failed, response null");
             return -1;
         }
         apdus.add(response.APDU);
@@ -88,6 +89,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
         int ret = CHECK_READY;
         AppletStatus appletStatus = mTsmCard.getAppletByAID(mAppAID);
         if (appletStatus == null) {
+            Log.e(TAG, "TsmDeleteAID: appletStatus failed,appletStatus null,skip too");
             return CHECK_SKIP;
         }
         switch (appletStatus.status) {
@@ -108,6 +110,7 @@ public class TsmDeleteAID extends TsmBaseProcess {
         int ret = CHECK_READY;
         SSDStatus ssdStatus = mTsmCard.getSSDByAID(mAppAID);
         if (ssdStatus == null) {
+            Log.e(TAG, "TsmDeleteAID: checkSSDStatus failed,no ssd,so skip");
             return CHECK_SKIP;
         }
         switch (ssdStatus.status) {

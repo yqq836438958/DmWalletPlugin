@@ -2,6 +2,7 @@
 package com.pacewear.tws.phoneside.wallet.ui;
 
 import TRom.ApplyRefundRsp;
+import TRom.E_PAY_SCENE;
 import TRom.E_PAY_TYPE;
 import android.app.TwsActivity;
 import android.content.Context;
@@ -65,6 +66,8 @@ public class ShowOperationResultActivity extends TwsActivity {
 
     private int mPayType = E_PAY_TYPE._E_PT_WEIXIN_PAY;
 
+    private int mPayScene = E_PAY_SCENE._EPS_OPEN_CARD;
+
     private Context mContext = null;
 
     private int mIconClickCount = 0;
@@ -92,8 +95,9 @@ public class ShowOperationResultActivity extends TwsActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            mType = (CARD_TYPE) intent.getSerializableExtra(
-                    PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE);
+            int _type = intent
+                    .getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, 0);
+            mType = CARD_TYPE.values()[_type];
             resultType = intent.getIntExtra(EXTRA_RESULT_TYPE, RESULT_SUCCESS);
             caption = intent.getStringExtra(EXTRA_RESULT_CAPTION);
             description = intent.getStringExtra(EXTRA_RESULT_DESCRIPTION);
@@ -105,6 +109,8 @@ public class ShowOperationResultActivity extends TwsActivity {
             mPayType = intent.getIntExtra(
                     PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
                     E_PAY_TYPE._E_PT_WEIXIN_PAY);
+            mPayScene = intent.getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_SCENE,
+                    E_PAY_SCENE._EPS_OPEN_CARD);
         } else {
             finish();
             return;
@@ -292,7 +298,7 @@ public class ShowOperationResultActivity extends TwsActivity {
             case ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD:
 
                 ShowLoadingActivity.launchLoading(this, mCard.getCardType(),
-                        mCard.getAID(), mPayType, mTotalFee, mLoadingType,
+                        mCard.getAID(), mPayScene, mPayType, mTotalFee, mLoadingType,
                         true);
                 finish();
                 break;

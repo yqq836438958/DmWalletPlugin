@@ -13,7 +13,7 @@ public class SelectAid extends WalletService {
 
     private static final String TAG = "SelectAid";
 
-    private static final long TIMEOUT_MILLIS = 5000;
+    private static final long TIMEOUT_MILLIS = 30000;
 
     @Override
     public boolean invoke(IResult listener) {

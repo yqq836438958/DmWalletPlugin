@@ -1,6 +1,7 @@
 
 package com.pacewear.tsm.internal;
 
+import com.pacewear.common.utils.CacheUtils;
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.common.CacheUtil;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
@@ -39,7 +40,7 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
     }
 
     private void init() {
-        Object tmpObj = CacheUtil.get(KEY_AID + mContainerAID);
+        Object tmpObj = CacheUtils.get(KEY_AID + mContainerAID);
         if (tmpObj != null) {
             mTagQuery = (AppletTagQuery) tmpObj;
         }
@@ -91,7 +92,7 @@ public class TsmAppInfoQuery extends TsmBaseProcess {
         for (TagQuery tagQuery : data.vTagList) {
             mTagQuery.put(tagQuery.sTag, tagQuery.sAPDU);
         }
-        CacheUtil.save(KEY_AID + mContainerAID, mTagQuery);
+        CacheUtils.save(KEY_AID + mContainerAID, mTagQuery);
         apdus.addAll(getCurTransmitApdus());
         return 0;
     }

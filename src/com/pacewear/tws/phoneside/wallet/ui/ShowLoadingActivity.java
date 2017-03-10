@@ -64,7 +64,7 @@ public class ShowLoadingActivity extends TwsActivity
     private long mActiveMoney = 0;
     private long mTotalMoney = 0;
     private int mPayType = E_PAY_TYPE._E_PT_WEIXIN_PAY;
-
+    private int mPayScene = E_PAY_SCENE._EPS_OPEN_CARD;
     private Context mContext = null;
 
     private ICard mCard = null;
@@ -86,23 +86,24 @@ public class ShowLoadingActivity extends TwsActivity
     }
 
     public static void launchLoading(Context context, CARD_TYPE cardType,
-            String instanceId, int payType, long chargeFee, int loadingType,
+            String instanceId, int payScene, int payType, long chargeFee, int loadingType,
             boolean retry) {
-        launchLoading(context, cardType, instanceId, payType, 0, chargeFee,
+        launchLoading(context, cardType, instanceId, payScene, payType, 0, chargeFee,
                 loadingType, retry);
     }
 
     public static void launchLoading(Context context, CARD_TYPE card_TYPE,
-            String instanceId, int payType, long activeFee, long totalFee,
+            String instanceId, int payScene, int payType, long activeFee, long totalFee,
             int loadingType, boolean retry) {
         Intent intent = new Intent(context, ShowLoadingActivity.class);
 
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                card_TYPE);
+                card_TYPE.toValue());
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                 instanceId);
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
                 payType);
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_SCENE, payScene);
         if (activeFee > 0) {
             intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_LNG_OPENCARD_FEE,
                     activeFee);
@@ -143,8 +144,9 @@ public class ShowLoadingActivity extends TwsActivity
         mMainUIHandler = new Handler();
         Intent intent = getIntent();
         if (intent != null) {
-            mType = (CARD_TYPE) intent.getSerializableExtra(
-                    PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE);
+            int _type = intent
+                    .getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, 0);
+            mType = CARD_TYPE.values()[_type];
             mIsRerty = intent.getBooleanExtra(
                     PayNFCConstants.ExtraKeyName.EXTRA_BOOL_IS_RETRY, false);
             mInstanceId = intent.getStringExtra(
@@ -156,10 +158,11 @@ public class ShowLoadingActivity extends TwsActivity
             mPayType = intent.getIntExtra(
                     PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
                     E_PAY_TYPE._E_PT_WEIXIN_PAY);
-
+            mPayScene = intent.getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_SCENE,
+                    E_PAY_SCENE._EPS_OPEN_CARD);
             QRomLog.d(TAG,
                     "onCreate|mType=" + mType + ",mInstanceId=" + mInstanceId
-                            + ",mTotalMoney=" + mTotalMoney + ",mPayType=" + mPayType);
+                            + ",mTotalMoney=" + mTotalMoney + ",mPayType=" + mPayType + ",mPayScene=" + mPayScene);
 
             mCard = CardManager.getInstance().getCard(mInstanceId);
 
@@ -233,86 +236,50 @@ public class ShowLoadingActivity extends TwsActivity
         int orderfinish = -1;
         String caption = null;
         ORDER_STEP localStep = order.getOrderStep();
-        if (mLoadingType == ShowLoadingActivity.LOADING_TYPE_ACTIVATE_CARD) {
-            Intent intent = new Intent(mContext,
-                    ShowOperationResultActivity.class);
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                    mCard.getCardType());
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
-                    mCard.getAID());
-
-            if (rc == 0) {
-                orderfinish = 1;
-                caption = getString(R.string.activate_card_succeed);
-            } else {
-                if (localStep == ORDER_STEP.EXECUTE_TOPUP
-                        && mCard.getInstallStatus() == INSTALL_STATUS.PERSONAL) {
-                    orderfinish = -1;
-                    caption = getString(
-                            R.string.wallet_activate_card_topup_failed);
-                } else if (localStep == ORDER_STEP.ORDER_FINISH) {
-                    orderfinish = 0;
-                    caption = getString(R.string.wallet_activate_card_query_failed);
-                } else {
-                    orderfinish = -1;
-                    caption = getString(R.string.wallet_activate_card_failed);
-                }
-            }
-
-            intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_CAPTION,
-                    mCard.getCardName() + caption);
-            intent.putExtra(
-                    ShowOperationResultActivity.EXTRA_RESULT_DESCRIPTION,
-                    rc == 0
-                            ? getChargeBalanceTips()
-                            : getErrorDesc(caption, order));
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
-                    mPayType);
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE,
-                    order.getOrderReqParam().getITotalFee());
-            intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_TYPE,
-                    (orderfinish >= 0)
-                            ? ShowOperationResultActivity.RESULT_SUCCESS
-                            : ShowOperationResultActivity.RESULT_FAILED);
-            setLoadingType(intent, mLoadingType);
-
-            mContext.startActivity(intent);
-        } else if (mLoadingType == ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD) {
-            Intent intent = new Intent(mContext,
-                    ShowOperationResultActivity.class);
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
-                    mCard.getCardType());
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
-                    mCard.getAID());
-            if (rc == 0) {
-                orderfinish = 1;
-                caption = getString(R.string.wallet_operation_charge_succeed);
-            } else if (localStep == ORDER_STEP.ORDER_FINISH) {
-                orderfinish = 0;
-                caption = getString(R.string.wallet_topup_card_query_failed);
-            } else {
-                orderfinish = -1;
-                caption = getString(R.string.wallet_operation_charge_failed);
-            }
-            intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_TYPE,
-                    (orderfinish >= 0)
-                            ? ShowOperationResultActivity.RESULT_SUCCESS
-                            : ShowOperationResultActivity.RESULT_FAILED);
-            intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_CAPTION,
-                    mCard.getCardName() + caption);
-            intent.putExtra(
-                    ShowOperationResultActivity.EXTRA_RESULT_DESCRIPTION,
-                    rc == 0
-                            ? getChargeBalanceTips()
-                            : getErrorDesc(caption, order));
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
-                    mPayType);
-            intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE,
-                    order.getOrderReqParam().getITotalFee());
-            setLoadingType(intent, mLoadingType);
-
-            mContext.startActivity(intent);
+        boolean isTopup = (mLoadingType == LOADING_TYPE_CHARGE_CARD);
+        if (rc == 0) {
+            orderfinish = 1;
+            caption = isTopup ? getString(R.string.wallet_operation_charge_succeed)
+                    : getString(R.string.activate_card_succeed);
+        } else if (localStep == ORDER_STEP.ORDER_FINISH) {
+            orderfinish = 0;
+            caption = isTopup ? getString(R.string.wallet_topup_card_query_failed)
+                    : getString(R.string.wallet_activate_card_query_failed);
+        } else if (localStep == ORDER_STEP.EXECUTE_TOPUP
+                && mCard.getInstallStatus() == INSTALL_STATUS.PERSONAL) {
+            orderfinish = -1;
+            caption = isTopup ? getString(R.string.wallet_operation_charge_failed) : getString(
+                    R.string.wallet_activate_card_topup_failed);
+        } else {
+            orderfinish = -1;
+            caption = isTopup ? getString(R.string.wallet_operation_charge_failed)
+                    : getString(R.string.wallet_activate_card_failed);
         }
+        Intent intent = new Intent(mContext,
+                ShowOperationResultActivity.class);
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
+                mCard.getCardType().toValue());
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
+                mCard.getAID());
+        intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_CAPTION,
+                mCard.getCardName() + caption);
+        intent.putExtra(
+                ShowOperationResultActivity.EXTRA_RESULT_DESCRIPTION,
+                rc == 0
+                        ? getChargeBalanceTips()
+                        : getErrorDesc(caption, order));
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_TYPE,
+                mPayType);
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_PAY_SCENE, mPayScene);
+        intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_LNG_TOTAL_FEE,
+                order.getOrderReqParam().getITotalFee());
+        intent.putExtra(ShowOperationResultActivity.EXTRA_RESULT_TYPE,
+                (orderfinish >= 0)
+                        ? ShowOperationResultActivity.RESULT_SUCCESS
+                        : ShowOperationResultActivity.RESULT_FAILED);
+        setLoadingType(intent, mLoadingType);
+
+        mContext.startActivity(intent);
         finish();
     }
 
@@ -373,11 +340,11 @@ public class ShowLoadingActivity extends TwsActivity
         switch (mLoadingType) {
             case LOADING_TYPE_ACTIVATE_CARD:
                 ret = OrderManager.getInstance().placeIssueOrder(mInstanceId,
-                        mPayType, mActiveMoney, mTotalMoney - mActiveMoney, retry);
+                        mPayScene,mPayType, mActiveMoney, mTotalMoney - mActiveMoney, retry);
                 break;
             case LOADING_TYPE_CHARGE_CARD:
                 ret = OrderManager.getInstance().placeTopupOrder(mInstanceId,
-                        mPayType, mTotalMoney - mActiveMoney, retry);
+                        mPayScene,mPayType, mTotalMoney - mActiveMoney, retry);
                 break;
         }
         return (ret >= 0);

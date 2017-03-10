@@ -13,7 +13,7 @@ public class CardSwitch extends WalletService {
 
     private static final String TAG = "CardSwitch";
 
-    private static final long TIMEOUT_MILLIS = 5000;
+    private static final long TIMEOUT_MILLIS = 20000;
 
     @Override
     public boolean invoke(IResult listener) {

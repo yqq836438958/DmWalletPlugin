@@ -32,48 +32,62 @@ public class TsmService {
         mTsmContext = new TsmContext();
     }
 
-    public void register(Context ctx, ITsmCardChannel channel, ITsmBusinessListener callback) {
+    public void register(Context ctx,
+            ITsmCardChannel channel/* , ITsmBusinessListener callback */) {
         mAppContext = ctx;
         mTsmContext.setChannel(channel);
-        mTsmContext.setBusinessListener(callback);
     }
 
     public Context getContext() {
         return mAppContext;
     }
 
-    public void issueCard(String input) {
+    public int issueCard(String input,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness issuecard = new TsmIssueCard(mTsmContext, input);
         issuecard.start();
+        return 0;
     }
 
-    public void deleteCard(String aid) {
+    public int deleteCard(String aid,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness delete = new TsmRemoveApp(mTsmContext, aid);
         delete.start();
+        return 0;
     }
 
-    public void cardListQuery() {
+    public int cardListQuery(ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness cardList = new TsmCardListQuery(mTsmContext);
         cardList.start();
+        return 0;
     }
 
-    public void cardSwitch(String aid) {
+    public int cardSwitch(String aid,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness cardSwitch = new TsmCardSwitch(mTsmContext, aid);
         cardSwitch.start();
+        return 0;
     }
 
-    public void cardTopup(String input) {
+    public int cardTopup(String input,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness cardTopup = new TsmCardTopup(mTsmContext, input);
         cardTopup.start();
+        return 0;
     }
 
-    public void cardQuery(String input) {
+    public int cardQuery(String input,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness cardQuery = new TsmCardQuery(mTsmContext, input);
         cardQuery.start();
+        return 0;
     }
 
-    public void resetAID(String aid) {
+    public int resetAID(String aid,ITsmBusinessListener callback) {
+        mTsmContext.setBusinessListener(callback);
         TsmBaseBusiness reset = new TsmResetAID(mTsmContext, aid);
         reset.start();
+        return 0;
     }
 }

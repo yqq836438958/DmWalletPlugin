@@ -7,7 +7,7 @@
         android:id="@+id/issuecard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="133dp"
+        android:layout_marginTop="83dp"
         android:text="开卡" />
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="10dp"
         android:text="hello,world" />
 
     <Button
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/liststatus"
         android:layout_below="@+id/liststatus"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:text="关闭通道" />
 
     <Button
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/issuecard"
         android:layout_below="@+id/issuecard"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="10dp"
         android:text="卡列表" />
 
     <Button
@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/issuecard"
         android:layout_alignBottom="@+id/issuecard"
-        android:layout_alignLeft="@+id/result"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="100dp"
         android:text="清除App" />
 
     <Button
@@ -68,17 +69,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/shutdown"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="选择应用" />
 
     <Button
         android:id="@+id/topup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@id/resetaid"
         android:layout_below="@id/resetaid"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="圈存" />
 
     <Button
@@ -87,7 +87,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/selectaid"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="查询卡片详情" />
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/topup"
+        android:layout_below="@id/selectaid"
+        android:layout_marginTop="10dp"
+        android:text="Lnt连接手表" />
+
+    <Button
+        android:id="@+id/transmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/cardinfoquery"
+        android:layout_marginTop="10dp"
+        android:text="Lnt透传命令" />
+
+    <Button
+        android:id="@+id/disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/topup"
+        android:layout_below="@id/connect"
+        android:layout_marginTop="10dp"
+        android:text="Lnt断开手表" />
 
 </RelativeLayout>

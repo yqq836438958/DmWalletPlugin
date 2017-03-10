@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.pacewear.tws.phoneside.wallet.sdkadapter.SdkAdapter;
 import com.pacewear.tws.phoneside.wallet.watch.WatchBaseHandler;
 import com.tencent.tws.framework.common.CommandHandler;
 import com.tencent.tws.framework.common.MsgCmdDefine;
@@ -32,6 +33,7 @@ public class WalletApp extends Application {
         }
         sGlobalCtx = ctx;
         registerCommandHandler();
+        SdkAdapter.init();
     }
 
     private void registerCommandHandler() {

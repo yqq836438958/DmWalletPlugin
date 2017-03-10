@@ -1,14 +1,13 @@
 
 package com.pacewear.httpserver;
 
+import com.pacewear.httpserver.HttpServiceChecker.IServerErrChecker;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.common.Constants;
 import com.pacewear.tws.phoneside.wallet.common.SeqGenerator;
-import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.qq.jce.wup.UniPacket;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.business.AccountManager;
 
 import java.lang.reflect.Field;
 
@@ -145,8 +144,9 @@ public abstract class BaseTosService
                         String.format("%s,mUniqueSeq:%d rsp:%s", getClass().getSimpleName(),
                                 mUniqueSeq,
                                 JceStruct.toDisplaySimpleString(rsp)));
-                if (getSubClassRspIRet(rsp) == Constants.WALLET_ACCOUNT_AUTH_FAILED) {
-                    AccountManager.getInstance().refreshLoginAccessToken();// 刷新账号的token
+                int errCode = getSubClassRspIRet(rsp);
+                if (handleErrorCode(errCode)) {
+                    return false;
                 }
                 onResponseSucceed(mUniqueSeq, operType, rsp);
             } else {
@@ -163,20 +163,12 @@ public abstract class BaseTosService
     public final boolean onResponseFailed(int reqID, int operType, int errorCode,
             String description) {
         if (mReqID == reqID) {
-            if (errorCode == Constants.WALLET_ACCOUNT_AUTH_FAILED) {
-                QRomLog.e(TAG, "token invalid,need refresh invalid");
-                AccountManager.getInstance().refreshLoginAccessToken();// 刷新账号的token
-                if (mFreshTokenTimes < 3) {
-                    mFreshTokenTimes++;
-                    QRomLog.e(TAG, "because token invalid, retry request now...");
-                    invoke(mResponseObserver);
-                    return false;
-                }
-            }
             QRomLog.d(TAG, String.format("mUniqueSeq:%d errorCode:%d description:%s", mUniqueSeq,
                     errorCode, description));
+            if (handleErrorCode(errorCode)) {
+                return false;
+            }
             onResponseFailed(mUniqueSeq, operType, errorCode, description);
-
             return true;
         }
         return false;
@@ -199,6 +191,13 @@ public abstract class BaseTosService
         }
     }
 
+    private void onHandleTokenInvalid() {
+        IServerErrChecker checker = HttpServiceChecker.get();
+        if (checker != null) {
+            checker.onTokenInvalid();
+        }
+    }
+
     private int getSubClassRspIRet(JceStruct rsp) {
         int iRet = ERR_PARSE_ERROR;
         Class jce = rsp.getClass();
@@ -217,5 +216,21 @@ public abstract class BaseTosService
         return iRet;
     }
 
+    private boolean handleErrorCode(int errorCode) {
+        if (errorCode == Constants.WALLET_ACCOUNT_AUTH_FAILED) {
+            QRomLog.e(TAG, "token invalid,need refresh token");
+            onHandleTokenInvalid();
+            if (mFreshTokenTimes < 2) {
+                mFreshTokenTimes++;
+                QRomLog.e(TAG, "because token invalid, retry request now...");
+                invoke(mResponseObserver);
+                return true;
+            }
+            QRomLog.e(TAG, "token invalid !we have try 2 times, direct return now!!");
+        }
+        return false;
+    }
+
     protected abstract JceStruct getJceHeader();
+
 }

@@ -21,6 +21,7 @@ public class TsmIssueCard extends TsmBaseBusiness {
 
     public TsmIssueCard(TsmContext context, String inputParam) {
         super(context);
+        checkEnv(ENV_CHECK_FORCE);
         parseInputParam(inputParam);
     }
 

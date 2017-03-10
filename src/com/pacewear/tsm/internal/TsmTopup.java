@@ -1,6 +1,8 @@
 
 package com.pacewear.tsm.internal;
 
+import android.util.Log;
+
 import com.pacewear.tsm.card.TsmContext;
 import com.pacewear.tsm.internal.core.OnTsmProcessCallback;
 import com.pacewear.tsm.internal.core.TsmBaseProcess;
@@ -80,9 +82,11 @@ public class TsmTopup extends TsmBaseProcess {
         }
         CommonRechargeRsp data = (CommonRechargeRsp) rsp;
         if (data == null) {
+            Log.e(TAG, "TsmTopup: onParse failed, data null");
             return -1;
         }
         if (data.iRet != 0) {
+            Log.e(TAG, "TsmTopup: onParse failed, data.iRet " + data.iRet);
             return -1;
         }
         mStopTramsit = data.bFinishPersonal;

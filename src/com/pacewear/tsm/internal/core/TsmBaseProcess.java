@@ -1,22 +1,25 @@
 
 package com.pacewear.tsm.internal.core;
 
+import android.util.Log;
+
 import com.pacewear.tsm.ITsmBusinessListener;
 import com.pacewear.tsm.business.TsmBaseBusiness.IBusinessInterceptListener;
 import com.pacewear.tsm.card.TsmCard;
 import com.pacewear.tsm.card.TsmContext;
-import com.pacewear.tsm.channel.ITsmCardChannel;
 import com.pacewear.tsm.server.tosservice.ReportAPDUResult;
 import com.pacewear.tsm.server.tosservice.TSMTosService;
 import com.qq.taf.jce.JceStruct;
 
 import java.util.List;
 
+import TRom.E_REPORT_APDU_KEY;
+
 public abstract class TsmBaseProcess implements ITsmProcess, IProcessEventConsum {
     protected enum PROCESS_STATUS {
         IDLE, WORKING, REPEAT, KEEP, FINISH,
     }
-
+    public static final String TAG = "TSM";
     protected final int CHECK_READY = 0;
     protected final int CHECK_SKIP = 1;
     protected final int CHECK_ERROR = 2;
@@ -64,17 +67,21 @@ public abstract class TsmBaseProcess implements ITsmProcess, IProcessEventConsum
 
     private boolean startProcessInternal() {
         if (mProcessChecker.isReady()) {
+            Log.d(TAG, "Process onStart: " + this.getClass().getSimpleName());
             return onStart();
         }
         OnTsmProcessCallback callback = new OnTsmProcessCallback() {
 
             @Override
             public void onSuccess(String[] apduList) {
+                Log.d(TAG, "Process check ok, so onStart: "
+                        + TsmBaseProcess.this.getClass().getSimpleName());
                 onStart();
             }
 
             @Override
             public void onFail(int error, String desc) {
+                Log.e(TAG, "Process onFail: " + TsmBaseProcess.this.getClass().getSimpleName());
                 postHandleFail(error, desc);
             }
         };
@@ -131,6 +138,8 @@ public abstract class TsmBaseProcess implements ITsmProcess, IProcessEventConsum
     }
 
     private void repeatProcess() {
+        Log.d(TAG, "repeatProcess, so onStart: "
+                + TsmBaseProcess.this.getClass().getSimpleName());
         onStart();
     }
 
@@ -148,6 +157,17 @@ public abstract class TsmBaseProcess implements ITsmProcess, IProcessEventConsum
     }
 
     protected void reportRet2Server(int key, int status, String aid) {
+        // 首先更新本地缓存
+        switch (key) {
+            case E_REPORT_APDU_KEY._ERAK_APP_KEY:
+                mTsmCard.updateAPPStat(aid, status);
+                break;
+            case E_REPORT_APDU_KEY._ERAK_SECUTRITY_DOMAIN_KEY:
+                mTsmCard.updateSSDStat(aid, status);
+                break;
+            default:
+                break;
+        }
         ReportAPDUResult report = new ReportAPDUResult(mContext);
         report.setParams(key, status, aid);
         report.invoke(null);// TODO 是否需要等待上报结果？？

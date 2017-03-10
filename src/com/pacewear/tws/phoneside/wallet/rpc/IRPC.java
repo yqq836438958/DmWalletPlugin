@@ -46,6 +46,12 @@ public interface IRPC<Interface> {
     public IRPC<Interface> setTimeoutMillis(long millis);
 
     /**
+     * getTimeoutMillis
+     * 
+     * @return millis
+     */
+    public long getTimeoutMillis();
+    /**
      * method
      * 
      * @param method

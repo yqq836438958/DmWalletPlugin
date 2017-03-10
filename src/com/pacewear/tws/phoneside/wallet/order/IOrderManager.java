@@ -118,7 +118,7 @@ public interface IOrderManager {
      * @param chargeValue 充值金额
      * @return
      */
-    public long placeIssueOrder(String aid, int payType, long activateFee, long chargeValue,boolean retry);
+    public long placeIssueOrder(String aid, int payScene, int payType, long activateFee, long chargeValue,boolean retry);
 
     /**
      * placeTopupOrder
@@ -127,7 +127,7 @@ public interface IOrderManager {
      * @param payType
      * @return
      */
-    public long placeTopupOrder(String aid, int payType, long chargeValue,boolean retry);
+    public long placeTopupOrder(String aid, int payScene, int payType, long chargeValue,boolean retry);
 
     /**
      * isTrafficConfigReady

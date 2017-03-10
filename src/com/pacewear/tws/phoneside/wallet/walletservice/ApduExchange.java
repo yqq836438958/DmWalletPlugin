@@ -13,7 +13,7 @@ public class ApduExchange extends WalletService {
 
     private static final String TAG = "ApduExchange";
 
-    private static final long TIMEOUT_MILLIS = 12000;
+    private static final long TIMEOUT_MILLIS = 60000;
 
     @Override
     public boolean invoke(IResult listener) {
