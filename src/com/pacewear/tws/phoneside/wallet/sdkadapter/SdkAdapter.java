@@ -8,7 +8,7 @@ import com.pacewear.tws.phoneside.wallet.WalletApp;
 public class SdkAdapter {
     public static void init() {
         HttpServiceChecker.regist(new WalletHttpErrChecker());
-        TsmService.getInstance().register(WalletApp.sGlobalCtx, SnowBallCardChannel.get());
+        TsmService.getInstance().register(WalletApp.getAppContext(), SnowBallCardChannel.get());
         // TODO
     }
 }

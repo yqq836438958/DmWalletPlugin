@@ -13,7 +13,7 @@ public class IssueCard extends WalletService {
 
     private static final String TAG = "IssueCard";
 
-    private static final long TIMEOUT_MILLIS = 200000;
+    private static final long TIMEOUT_MILLIS = 300000;// 200秒还是不够，一旦断开蓝牙，便会延迟很久
 
     @Override
     public boolean invoke(IResult listener) {

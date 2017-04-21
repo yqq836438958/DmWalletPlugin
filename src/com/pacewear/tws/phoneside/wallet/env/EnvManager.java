@@ -109,7 +109,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         IntentFilter intent = new IntentFilter();
         intent.addAction("action_first_connect_by_scan");
         intent.addAction("action_unpair_device");
-        WalletApp.sGlobalCtx.registerReceiver(new BroadcastReceiver() {
+        WalletApp.getAppContext().registerReceiver(new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -136,7 +136,7 @@ public class EnvManager implements IEnvManager, IEnvManagerInner, IEnvManagerLis
         intent.addAction(BroadcastDef.DEVICE_CONNECTED);
         intent.addAction(BroadcastDef.DEVICE_ACTIVE_DISCONNECTED);
         intent.addAction(BroadcastDef.DEVICE_PASSIVE_DISCONNECTED);
-        WalletApp.sGlobalCtx.registerReceiver(new BroadcastReceiver() {
+        WalletApp.getAppContext().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 

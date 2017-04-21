@@ -1,6 +1,8 @@
 
 package com.pacewear.tws.phoneside.wallet.card;
 
+import android.text.TextUtils;
+
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
@@ -219,11 +221,13 @@ public class CardManager implements ICardManager, ICardManagerInner, IEnvManager
                             } else {
                                 keepStep();
                             }
+                            Utils.saveCacheCardList(list);
                         } else if (ret == Constants.WALLET_ERRCODE_EMPTYLIST) {
                             // 查询成功，但是列表为空
                             sLastestCardListQueryMD5 = null;
                             clearAllCards();
                             switchStep(mCardListReady);
+                            Utils.saveCacheCardList("");
                         } else {
                             keepStep();
                         }
@@ -258,6 +262,7 @@ public class CardManager implements ICardManager, ICardManagerInner, IEnvManager
         @Override
         public void onStepHandle() {
             sLastestCardListQueryMD5 = null;
+            Utils.saveCacheCardList("");
             queryCardList();
         }
     };
@@ -497,6 +502,12 @@ public class CardManager implements ICardManager, ICardManagerInner, IEnvManager
             mCurrentCardListStep.onStep();
         } else if (force) {
             setCardListStep(mCardListDubious);
+        } else {
+            if (!TextUtils.isEmpty(Utils.getCacheCardList())) {
+                updateCardsInfo(true);
+            } else {
+                setCardListStep(mCardListDubious);
+            }
         }
     }
 
@@ -540,5 +551,11 @@ public class CardManager implements ICardManager, ICardManagerInner, IEnvManager
             return false;
         }
         return curStatus != STATUS.KEEP && curStatus != STATUS.QUIT;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        String list = Utils.getCacheCardList();
+        return TextUtils.isEmpty(list);
     }
 }

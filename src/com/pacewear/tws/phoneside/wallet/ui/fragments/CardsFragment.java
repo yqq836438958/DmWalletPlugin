@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -39,7 +40,6 @@ import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.EmptyCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 
 public class CardsFragment extends Fragment {
@@ -74,18 +74,18 @@ public class CardsFragment extends Fragment {
     public boolean addCard() {
         Log.d(TAG, "addCard mType:" + mType);
         if (!CardManager.getInstance().isReady()) {
-            Toast.makeText(GlobalObj.g_appContext,
+            Toast.makeText(WalletApp.getHostAppContext(),
                     getString(R.string.wallet_sync_err_watch),
                     Toast.LENGTH_LONG).show();
             return false;
         }
         if (!OrderManager.getInstance().isOrderReady()) {
-            Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_network),
+            Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_sync_err_network),
                     Toast.LENGTH_LONG).show();
             return false;
         }
         if (!OrderManager.getInstance().isTrafficConfigReady()) {
-            Toast.makeText(GlobalObj.g_appContext,
+            Toast.makeText(WalletApp.getHostAppContext(),
                     getString(R.string.select_add_traffic_card_config_no_ready),
                     Toast.LENGTH_LONG).show();
             return false;
@@ -291,12 +291,12 @@ public class CardsFragment extends Fragment {
                 return;
             }
             if (!EnvManager.getInstance().isWatchConnected()) {
-                Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_disconnect_tips),
+                Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_disconnect_tips),
                         Toast.LENGTH_LONG).show();
                 return;
             }
             if (!CardManager.getInstance().isReady()) {
-                Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_watch),
+                Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_sync_err_watch),
                         Toast.LENGTH_LONG).show();
                 return;
             }
@@ -304,7 +304,7 @@ public class CardsFragment extends Fragment {
                     .getLastOrder(card.getAID());
             if (order != null && order.isIssueFail()) {
                 if (!isPayCardConfigOk(card)) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.select_add_traffic_card_config_no_ready),
                             Toast.LENGTH_LONG).show();
                     return;
@@ -319,7 +319,7 @@ public class CardsFragment extends Fragment {
                         true);
             } else if (order != null && order.isCardTopFail()) {
                 if (!isPayCardConfigOk(card)) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.select_add_traffic_card_config_no_ready),
                             Toast.LENGTH_LONG).show();
                     return;

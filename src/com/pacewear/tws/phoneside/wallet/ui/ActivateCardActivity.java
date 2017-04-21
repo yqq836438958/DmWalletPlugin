@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
@@ -43,7 +44,6 @@ import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.CheckBox;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 
 import java.util.ArrayList;
@@ -177,13 +177,13 @@ public class ActivateCardActivity extends TwsActivity {
             public boolean onSingleButtonWithDecClick() {
                 // add by yuanqingqing
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return false;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return false;
@@ -193,7 +193,7 @@ public class ActivateCardActivity extends TwsActivity {
                 if (!PayManager.isPayChannelSupport(payType)) {
                     String qqTip = getString(R.string.wallet_login_download_qq);
                     String weixinTip = getString(R.string.wallet_login_download_mm);
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             (payType == PAY_CHANNEL_QQ) ? qqTip : weixinTip, Toast.LENGTH_LONG)
                             .show();
                     return false;

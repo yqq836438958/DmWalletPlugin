@@ -52,4 +52,9 @@
 	<item>430010#卡片未到啟用日期,請聯繫客服處理</item>
 
     </string-array>
+	<string-array name="wallet_card_detail_more">
+        <item>訂單投訴</item>
+        <item>投訴查詢</item>
+        <item>取消</item>
+    </string-array>
 </resources>

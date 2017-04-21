@@ -29,6 +29,12 @@ public class CacheUtils {
         editor.commit();
     }
 
+    public static void save(String key, boolean val) {
+        Editor editor = getSharePref().edit();
+        editor.putBoolean(key, val);
+        editor.commit();
+    }
+
     public static void save(String key, Object obj) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
@@ -55,6 +61,10 @@ public class CacheUtils {
         return getSharePref().getInt(key, defVal);
     }
 
+    public static boolean getBoolean(String key, boolean defVal) {
+        return getSharePref().getBoolean(key, defVal);
+    }
+
     public static Object get(String key) {
         String val = get(key, "");
         if (TextUtils.isEmpty(val)) {
@@ -78,7 +88,7 @@ public class CacheUtils {
     }
 
     private static SharedPreferences getSharePref() {
-        Context context = WalletApp.sGlobalCtx;
+        Context context = WalletApp.getAppContext();
         SharedPreferences sharedPreferences = context.getSharedPreferences(sShareFile,
                 Context.MODE_PRIVATE);
         return sharedPreferences;

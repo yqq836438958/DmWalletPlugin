@@ -19,12 +19,12 @@ import android.widget.TextView;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.utils.BranchUtil;
 import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.httpserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -140,7 +140,7 @@ public class ShowOperationResultActivity extends TwsActivity {
             public void onClick(View arg0) {
                 mIconClickCount++;
                 if (mIconClickCount == ICON_CLICK_COUNT) {
-                    Toast.makeText(GlobalObj.g_appContext, "ApplyRefund already turnned on",
+                    Toast.makeText(WalletApp.getHostAppContext(), "ApplyRefund already turnned on",
                             Toast.LENGTH_LONG)
                             .show();
                 }
@@ -172,7 +172,7 @@ public class ShowOperationResultActivity extends TwsActivity {
                             icon.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(GlobalObj.g_appContext, toast, Toast.LENGTH_LONG)
+                                    Toast.makeText(WalletApp.getHostAppContext(), toast, Toast.LENGTH_LONG)
                                             .show();
                                 }
                             });
@@ -268,20 +268,20 @@ public class ShowOperationResultActivity extends TwsActivity {
             @Override
             public void onClick(View arg0) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 IOrder order = OrderManager.getInstance().getLastOrder(mCard.getAID());
                 if (isOrderInValid()) {
-                    Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_invalid_order),
+                    Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_invalid_order),
                             Toast.LENGTH_LONG).show();
                     return;
                 }

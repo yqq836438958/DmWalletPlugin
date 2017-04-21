@@ -69,8 +69,9 @@ public class PaceDeviceConnect implements IDeviceConnect {
     @Override
     public void connect(String mac) {
         BluetoothDevice bluetoothDevice = DeviceUtil.getConnectedDeviceInfo(true);
+        QRomLog.d(TAG, "connect from client:" + mac);
         if (bluetoothDevice != null && !mac.equalsIgnoreCase(bluetoothDevice.getAddress())) {
-            QRomLog.d(TAG,
+            QRomLog.e(TAG,
                     "device has connected with another device:" + bluetoothDevice.getAddress());
             dispatchConnectCallbacks(false, mac);
             return;

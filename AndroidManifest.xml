@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 这里配置sharedUserId的作用，是为了告诉宿主程序，这个插件需要依赖宿主程序的class和资源
-如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
+如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pacewear.tws.phoneside.wallet"
@@ -14,7 +14,7 @@
         android:targetSdkVersion="22" />
 
     <application
-        android:name="com.pacewear.tws.phoneside.wallet.WalletApp"
+        android:name=".WalletApp"
         android:label="TwsPluginWallet"
         android:theme="@android:style/Theme.Holo.Light" >
 
@@ -34,7 +34,7 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoDisplay" />
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.QQPayEntryActivity"
+            android:name=".ui.QQPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoDisplay" >
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.WalletHomeActivity"
+            android:name=".ui.WalletHomeActivity"
             android:label="@string/nfc_wallet"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -61,53 +61,53 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ActivateCardActivity"
+            android:name=".ui.ActivateCardActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity"
+            android:name=".ui.ShowWebPageActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ChargeCardActivity"
+            android:name=".ui.ChargeCardActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.RegisterCMBCardInfoActivity"
+            android:name=".ui.RegisterCMBCardInfoActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.SelectAddCardActivity"
+            android:name=".ui.SelectAddCardActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity"
+            android:name=".ui.ShowCardDetailsActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity"
+            android:name=".ui.ShowLoadingActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ShowOperationResultActivity"
+            android:name=".ui.ShowOperationResultActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.CustomerSupportActivity"
+            android:name=".ui.CustomerSupportActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity"
+            android:name=".ui.SelectCityActivity"
             android:label="@string/wallet_city_select"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.CardTransactActivity"
+            android:name=".ui.CardTransactActivity"
             android:label="@string/wallet_transact_label"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.ErrorCardActivity"
+            android:name=".ui.ErrorCardActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -115,8 +115,8 @@
             android:label="@string/wallet_infoverify"
             android:screenOrientation="portrait" >
         </activity>
-		<activity
-            android:name="com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity"
+        <activity
+            android:name=".tsm.TsmTestActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -164,6 +164,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
+
         <service
             android:name="com.pacewear.tws.wallet.service.PaceApduService"
             android:exported="true" >
@@ -171,6 +172,15 @@
                 <action android:name="com.pacewear.tws.phoneside.wallet.action_apdu" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".CategoryActivity"
+            android:label="@string/title_activity_category" >
+        </activity>
+        <activity
+            android:name=".AddCardActivity"
+            android:label="@string/title_activity_add_card" >
+        </activity>
     </application>
 
 </manifest>

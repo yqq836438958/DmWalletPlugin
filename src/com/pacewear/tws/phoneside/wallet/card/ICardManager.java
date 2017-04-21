@@ -101,4 +101,6 @@ public interface ICardManager {
      * @return
      */
     public boolean isInSyncProcess();
+
+    public boolean isEmpty();
 }

@@ -86,7 +86,7 @@ public abstract class BaseTosService
                 mMouduleName, getFunctionName(),
                 mReqName, req);
 
-        IServerHandler serverHandler = ServerHandler.getInstance(WalletApp.sGlobalCtx);
+        IServerHandler serverHandler = ServerHandler.getInstance(WalletApp.getAppContext());
 
         serverHandler.registerServerHandlerListener(this);
         serverHandler.setRequestEncrypt(getRequestEncrypt());

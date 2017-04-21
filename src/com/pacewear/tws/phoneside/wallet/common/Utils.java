@@ -1,17 +1,13 @@
 
 package com.pacewear.tws.phoneside.wallet.common;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.pacewear.common.utils.CacheUtils;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
@@ -19,12 +15,6 @@ import com.qq.taf.jce.JceInputStream;
 import com.tencent.tws.framework.common.DevMgr;
 import com.tencent.tws.framework.common.Device;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,8 +22,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import TRom.PayConfig;
 
 /**
  * @author baodingzhou
@@ -46,10 +34,12 @@ public class Utils {
     private volatile static Looper mWorkerLooper = null;
 
     private volatile static Handler mWorkerHandler = null;
-
-    private static final String COMMON_CACHE_FILE = "common_cache";
-
     private static final String TRAFFIC_CONFIG_CACHE_FILE = "trafficcard_config";
+    private static final String TRAFFIC_AID = "trafficcard_aid";
+    private static final String TRAFFIC_COUNT = "trafficcard_count";
+    private static final String USER_CITY_CODE = "user_city_code";
+    private static final String WALLET_ENABLE = "wallet_module_enable";
+    private static final String PREFIX_KEY_CPLC = "key_cplc_";
     /**
      * getWorkerlooper
      * 
@@ -122,7 +112,7 @@ public class Utils {
         }
         curCity = curCity.substring(0, 4);
         WalletCity walletCity = new WalletCity();
-        String[] citys = WalletApp.sGlobalCtx.getResources().getStringArray(R.array.wallet_city);
+        String[] citys = WalletApp.getAppContext().getResources().getStringArray(R.array.wallet_city);
         for (String city : citys) {
             if (city != null && city.startsWith(curCity)) {
                 String[] tmp = city.split("#");
@@ -147,13 +137,13 @@ public class Utils {
     }
 
     public static String getUserCityCode() {
-        SharedPreferences oPreference = WalletApp.sGlobalCtx
+        SharedPreferences oPreference = WalletApp.getAppContext()
                 .getSharedPreferences("city", 0);
         return oPreference.getString("city_code", "");
     }
 
     public static List<String> getCityList() {
-        String[] citys = WalletApp.sGlobalCtx.getResources().getStringArray(R.array.wallet_city);
+        String[] citys = WalletApp.getAppContext().getResources().getStringArray(R.array.wallet_city);
         if (citys == null || citys.length <= 0) {
             return null;
         }
@@ -194,7 +184,7 @@ public class Utils {
             return errDesc;
         }
         if (CONFIG.BEIJINGTONG.mAID.equals(aid)) {
-            errlist = WalletApp.sGlobalCtx.getResources()
+            errlist = WalletApp.getAppContext().getResources()
                     .getStringArray(R.array.beijingtong_cardinfo_errlist);
             for (String err : errlist) {
                 if (!TextUtils.isEmpty(err) && err.startsWith(code + "")) {
@@ -210,96 +200,82 @@ public class Utils {
     }
 
     public static String getCacheWhiteList() {
-        SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        return oPreference.getString("trafficcard_aid", "");
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        return CacheUtils.get(TRAFFIC_AID, "");
     }
 
     public static int getWhiteListSize() {
-        SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        return oPreference.getInt("trafficcard_count", -1);
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        return CacheUtils.get(TRAFFIC_COUNT, -1);
     }
 
     public static void clearPayConfigs() {
-        SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        Editor oEditor = oPreference.edit();
-        oEditor.clear();
-        oEditor.commit();
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        CacheUtils.save(TRAFFIC_AID, "");
+        CacheUtils.save(TRAFFIC_COUNT, -1);
     }
 
     public static void saveWhiteList2Cache(int count, String aid) {
-        SharedPreferences oPreference = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        Editor oEditor = oPreference.edit();
         String val = TextUtils.isEmpty(aid) ? "empty" : aid;
-        oEditor.putString("trafficcard_aid", val);
-        oEditor.putInt("trafficcard_count", count);
-        oEditor.commit();
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        CacheUtils.save(TRAFFIC_AID, val);
+        CacheUtils.save(TRAFFIC_COUNT, count);
     }
 
     public static void enableWalletMoudle(boolean enable) {
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        Editor editor = sharedPreferences.edit();
-        editor.putBoolean("wallet_enable", enable);
-        editor.commit();
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        CacheUtils.save(WALLET_ENABLE, enable);
     }
 
     public static boolean isWalletMoubleEnable() {
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx
-                .getSharedPreferences(TRAFFIC_CONFIG_CACHE_FILE, 0);
-        return sharedPreferences.getBoolean("wallet_enable", true);
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        return CacheUtils.getBoolean(WALLET_ENABLE, true);
     }
 
-    public static boolean isAppInstalled(Context context, String packagename) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
-        } catch (NameNotFoundException e) {
-            packageInfo = null;
-            e.printStackTrace();
-        }
-        return (packageInfo != null);
-    }
     public static String getCacheCplc() {
         Device device = DevMgr.getInstance().connectedDev();
         if (device == null) {
             return "";
         }
-        String key = device.devString();
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
-                COMMON_CACHE_FILE,
-                0);
-        return sharedPreferences.getString(key, "");
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        return CacheUtils.get(device.devString(), "");
     }
+
     public static void saveCacheCplc(String cplc) {
         Device device = DevMgr.getInstance().connectedDev();
         if (device == null) {
             return;
         }
-        String key = device.devString();
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
-                COMMON_CACHE_FILE,
-                0);
-        Editor editor = sharedPreferences.edit();
-        editor.putString(key, cplc);
-        editor.commit();
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        CacheUtils.save(device.devString(), cplc);
     }
+
+    public static void saveCacheCardList(String list) {
+//        String cplc = getCacheCplc();
+//        if (TextUtils.isEmpty(cplc)) {
+//            return;
+//        }
+//        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+//        CacheUtils.save(PREFIX_KEY_CPLC+cplc, list);
+    }
+
+    public static String getCacheCardList() {
+//        String cplc = getCacheCplc();
+//        if (TextUtils.isEmpty(cplc)) {
+//            return "";
+//        }
+//        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+//        return CacheUtils.get(PREFIX_KEY_CPLC+cplc, "");
+        return "";
+    }
+
     public static String getUserCacheCityCode() {
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
-                COMMON_CACHE_FILE,
-                0);
-        return sharedPreferences.getString("user_city_code", "");
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        return CacheUtils.get(USER_CITY_CODE, "");
     }
 
     public static void saveUserCitycode(String citycode) {
-        SharedPreferences sharedPreferences = WalletApp.sGlobalCtx.getSharedPreferences(
-                COMMON_CACHE_FILE,
-                0);
-        Editor editor = sharedPreferences.edit();
-        editor.putString("user_city_code", citycode);
-        editor.commit();
+        CacheUtils.prepare(TRAFFIC_CONFIG_CACHE_FILE);
+        CacheUtils.save(USER_CITY_CODE, citycode);
     }
 }

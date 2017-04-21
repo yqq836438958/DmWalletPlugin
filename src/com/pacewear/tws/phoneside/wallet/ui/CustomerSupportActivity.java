@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -35,7 +36,6 @@ import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.framework.global.GlobalObj;
 
 import qrom.component.log.QRomLog;
 
@@ -90,7 +90,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                             @Override
                             public void run() {
                                 // TODO Auto-generated method stub
-                                Toast.makeText(GlobalObj.g_appContext,
+                                Toast.makeText(WalletApp.getHostAppContext(),
                                         getString(
                                                 R.string.wallet_support_submit_personal_info_complete),
                                         Toast.LENGTH_LONG)
@@ -109,7 +109,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(GlobalObj.g_appContext,
+                            Toast.makeText(WalletApp.getHostAppContext(),
                                     getString(R.string.wallet_support_submit_fail),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -282,7 +282,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
                 QRomLog.d(TAG, "name:" + mUserName + "   phone:" + mUserPhone);
                 if ((mUserName != null && mUserName.equals(""))
                         || (mUserPhone != null && mUserPhone.equals(""))) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_support_improve_personal_info),
                             Toast.LENGTH_LONG).show();
                     return;

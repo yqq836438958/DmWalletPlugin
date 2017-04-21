@@ -1,8 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui;
 
-import TRom.GetCustomServiceRsp;
-
 import android.app.Activity;
 import android.app.TwsActivity;
 import android.content.Context;
@@ -13,15 +11,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
@@ -32,31 +30,28 @@ import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
 import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntChargeSdk;
 import com.pacewear.tws.phoneside.wallet.lnt.ILntInvokeCallback;
-import com.pacewear.tws.phoneside.wallet.lnt.LntChargeSdk;
-import com.pacewear.tws.phoneside.wallet.lnt.LntChargeSdk.ILntCardPage;
+import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk;
+import com.pacewear.tws.phoneside.wallet.lnt.LntSdk;
+import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk.ILntCardPage;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.tosservice.PullUserInfo;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
-import com.qq.taf.jce.JceStruct;
+import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController;
+import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController.OnItemEvent;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.app.AlertDialog;
 import com.tencent.tws.assistant.app.TwsDialog;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.ToggleButton;
 import com.tencent.tws.assistant.widget.TwsButton;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 import com.tencent.tws.phoneside.utils.DensityUtil;
-
-import qrom.component.log.QRomLog;
 
 public class ShowCardDetailsActivity extends TwsActivity
         implements OnWalletUICallback, OnClickListener {
@@ -88,15 +83,10 @@ public class ShowCardDetailsActivity extends TwsActivity
 
     private ViewGroup mCardTranactLayout = null;
 
-    private long mUniqueReq = -1;
-
-    private static final int DIALOG_UBOUND = 1;
-
-    private static final int DIALOG_UBOUND_CONFIRM = DIALOG_UBOUND + 1;
-
-    private static final int DIALOG_SET_DEFAULT = DIALOG_UBOUND_CONFIRM + 1;
+    private static final int DIALOG_SET_DEFAULT = 1;
+    private static final int DIALOG_MORE_OPTION = DIALOG_SET_DEFAULT + 1;
     private static final int REQUEST_CODE_LNT_VIP = 1;
-    private ILntChargeSdk mLntChargeSdk = null;
+    private ILntSdk mLntSdk = null;
     private ILntCardPage mCardPage = new ILntCardPage() {
         @Override
         public boolean jump(String className) {
@@ -110,12 +100,13 @@ public class ShowCardDetailsActivity extends TwsActivity
         @Override
         public void onResult(boolean suc, final String desc) {
             if (suc) {
+                showLoading();
                 mCard.forceUpdate();
             } else {
                 ShowCardDetailsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(GlobalObj.g_appContext, desc,
+                        Toast.makeText(WalletApp.getHostAppContext(), desc,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -123,49 +114,25 @@ public class ShowCardDetailsActivity extends TwsActivity
         }
     };
 
-    private Runnable mClickRunable = new Runnable() {
-
+    private OnItemEvent mLntComplaint = new OnItemEvent() {
+        
         @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            PullUserInfo userInfo = new PullUserInfo();
-            mUniqueReq = userInfo.getUniqueSeq();
-            userInfo.invoke(new IResponseObserver() {
-
-                @Override
-                public void onResponseSucceed(long uniqueSeq, int operType, JceStruct response) {
-                    // TODO Auto-generated method stub
-                    if (uniqueSeq == mUniqueReq) {
-                        GetCustomServiceRsp rsp = (GetCustomServiceRsp) response;
-                        int ret = rsp.getIRet();
-                        QRomLog.d(TAG, "onResponseSucceed: " + ret);
-                        if (ret == 0) {
-                            startCustomerSupportActivity(
-                                    R.string.wallet_support_personal_info_has_submit);
-                        } else {
-                            startCustomerSupportActivity(R.string.wallet_support_summary);
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onResponseFailed(long uniqueSeq, int operType, int errorCode,
-                        String description) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(GlobalObj.g_appContext,
-                                    getString(R.string.wallet_support_submit_fail),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                }
-            });
+        public void onHandle() {
+            if(mLntSdk != null){
+                mLntSdk.complaint();
+            }
         }
     };
 
+    private OnItemEvent mLntComplaintQuery = new OnItemEvent() {
+        
+        @Override
+        public void onHandle() {
+            if(mLntSdk != null){
+                mLntSdk.complaintQuery();
+            }
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,13 +161,7 @@ public class ShowCardDetailsActivity extends TwsActivity
         switch (mCard.getCardType()) {
             case TRAFFIC_CARD:
                 setContentView(R.layout.wallet_traffic_card_details);
-                ToggleButton btn = (ToggleButton) actionBar.getMultiChoiceView(false);
-                String support = getString(R.string.support);
-                btn.setPadding(0, 0, DensityUtil.dip2px(this, 20), 0);
-                btn.setText(support);
-                btn.setTextOn(support);
-                btn.setTextOff(support);
-                btn.setOnClickListener(this);
+                justMoreOptionBtn(actionBar);
                 break;
             case BANK_CARD:
                 // setContentView(R.layout.wallet_bank_card_details);
@@ -230,13 +191,13 @@ public class ShowCardDetailsActivity extends TwsActivity
             @Override
             public void onClick(View v) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
@@ -255,7 +216,7 @@ public class ShowCardDetailsActivity extends TwsActivity
                         return;
                     }
                     if (!EnvManager.getInstance().isWatchConnected()) {
-                        Toast.makeText(GlobalObj.g_appContext,
+                        Toast.makeText(WalletApp.getHostAppContext(),
                                 getString(R.string.wallet_disconnect_tips),
                                 Toast.LENGTH_LONG).show();
                         return;
@@ -281,7 +242,9 @@ public class ShowCardDetailsActivity extends TwsActivity
         hideLoading();
         WalletHandlerManager.getInstance().register(mCard.getAID(), ACTVITY_SCENE.SCENE_SWITCHCARD,
                 this);
-        mLntChargeSdk = new LntChargeSdk(mContext, mCardPage, mLntInvokeCallback);
+        if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(mCard.getAID())) {
+            mLntSdk = new LntSdk(mContext, mCardPage, mLntInvokeCallback);
+        }
     }
 
     @Override
@@ -299,8 +262,9 @@ public class ShowCardDetailsActivity extends TwsActivity
     @Override
     protected void onDestroy() {
         WalletHandlerManager.getInstance().unregister(ACTVITY_SCENE.SCENE_SWITCHCARD);
-        Utils.getWorkerHandler().removeCallbacks(mClickRunable);
-        mLntChargeSdk.destroy();
+        if(mLntSdk != null){
+            mLntSdk.destroy();
+        }
         super.onDestroy();
     }
 
@@ -344,18 +308,18 @@ public class ShowCardDetailsActivity extends TwsActivity
 
     private void charge() {
         if (OrderManager.getInstanceInner().getPayConfig(mCard.getAID()) == null) {
-            Toast.makeText(GlobalObj.g_appContext, R.string.select_add_traffic_card_config_no_ready,
+            Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.select_add_traffic_card_config_no_ready),
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!OrderManager.getInstance().isOrderReady()) {
-            Toast.makeText(GlobalObj.g_appContext, R.string.wallet_sync_err_network,
+            Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_sync_err_network),
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!CardManager.getInstance().isReady()
                 || !mCard.isReady()) {
-            Toast.makeText(GlobalObj.g_appContext, getString(R.string.wallet_sync_err_watch),
+            Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_sync_err_watch),
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -379,19 +343,19 @@ public class ShowCardDetailsActivity extends TwsActivity
         String startdate = ((ITrafficCard) mCard).getStartDate();
         if (!TextUtils.isEmpty(validity) && Utils.compareDate(today, validity) > 0) {
             // 超过有效期
-            Toast.makeText(GlobalObj.g_appContext,
+            Toast.makeText(WalletApp.getHostAppContext(),
                     getString(R.string.wallet_validity_tips),
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!TextUtils.isEmpty(startdate) && Utils.compareDate(today, startdate) < 0) {
             // 未到启用日期
-            Toast.makeText(GlobalObj.g_appContext,
+            Toast.makeText(WalletApp.getHostAppContext(),
                     getString(R.string.wallet_startdate_tips),
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if (mLntChargeSdk.invoke(mCard.getAID(),null)) {
+        if (mLntSdk != null && mLntSdk.charge()) {
             return;
         }
         Intent intent = new Intent(mContext, ChargeCardActivity.class);
@@ -403,74 +367,9 @@ public class ShowCardDetailsActivity extends TwsActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        showTwsDialog(DIALOG_UBOUND);
-        // showBottomDialog();
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        // if (mCard.getCardType() == CARD_TYPE.BANK_CARD) {
-        // getMenuInflater().inflate(
-        // R.menu.wallet_card_detail_action_bar_menu, menu);
-        // }
-
-        return true;
-    }
-
-    @Override
     protected TwsDialog onCreateTwsDialog(int id) {
         TwsDialog dialog = null;
         switch (id) {
-            case DIALOG_UBOUND:
-                dialog = new AlertDialog.Builder(mContext, true)
-                        .setTitle(getString(R.string.wallet_ubound_dialog_title))
-                        .setBottomButtonItems(R.array.wallet_card_detail_unbound,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface arg0,
-                                            int which) {
-                                        switch (which) {
-                                            case 0:
-                                                showTwsDialog(DIALOG_UBOUND_CONFIRM);
-                                                break;
-                                            case 1:
-                                                break;
-                                        }
-                                    }
-                                })
-                        .setBottomButtonColorItems(
-                                new int[] {
-                                        AlertDialog.BOTTOM_BUTTON_COLOR_RED,
-                                        Color.WHITE
-                }).create(true);
-                dialog.setTitleTextSize(getResources().getDimension(
-                        R.dimen.wallet_dialog_title_text_size)
-                        / getResources().getDisplayMetrics().density);
-                dialog.setTitleTextColor(getResources().getColor(
-                        R.color.wallet_dialog_title_text_color));
-                break;
-            case DIALOG_UBOUND_CONFIRM:
-                dialog = new AlertDialog.Builder(mContext)
-                        .setMessage(R.string.wallet_ubound_dialog_message)
-                        .setPositiveButton(R.string.wallet_ubound_dialog_positive,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                                        finish();
-                                    }
-                                })
-                        .setNegativeButton(R.string.wallet_ubound_dialog_negative,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                                    }
-                                })
-                        .create();
-                break;
             case DIALOG_SET_DEFAULT:
                 dialog = new AlertDialog.Builder(mContext, true)
                         .setTitle(
@@ -506,6 +405,11 @@ public class ShowCardDetailsActivity extends TwsActivity
                 dialog.setTitleTextColor(getResources().getColor(
                         R.color.wallet_dialog_title_text_color));
                 break;
+            case DIALOG_MORE_OPTION:
+                dialog = new TwsDialogController(this, true).fillItems(R.array.wallet_card_detail_more, new OnItemEvent[] {
+                                mLntComplaint, mLntComplaintQuery
+                        }).flush();
+                break;
         }
         return dialog;
     }
@@ -531,7 +435,7 @@ public class ShowCardDetailsActivity extends TwsActivity
             @Override
             public void run() {
                 if (mLoading.getVisibility() == View.VISIBLE && ret != 0) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_set_default_dev_not_connected),
                             Toast.LENGTH_LONG).show();
                 }
@@ -547,15 +451,16 @@ public class ShowCardDetailsActivity extends TwsActivity
         if (ClickFilter.isMultiClick()) {
             return;
         }
-        Utils.getWorkerHandler().removeCallbacks(mClickRunable);
-        Utils.getWorkerHandler().post(mClickRunable);
+        if (hasMoreOption()) {
+            showTwsDialog(DIALOG_MORE_OPTION);
+        }
     }
 
-    private void startCustomerSupportActivity(int resid) {
-        Intent intent = new Intent(this, CustomerSupportActivity.class);
-        intent.putExtra("AID", mCard.getAID());
-        intent.putExtra("tittle_resid", resid);
-        startActivity(intent);
+    private boolean hasMoreOption() {
+        if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(mCard.getAID())) {
+            return true;
+        }
+        return false;
     }
 
     private void updateValidityUI() {
@@ -590,19 +495,29 @@ public class ShowCardDetailsActivity extends TwsActivity
         Intent it = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(it);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case Activity.RESULT_OK:
                 if (requestCode == REQUEST_CODE_LNT_VIP) {
                     String num = data.getStringExtra(PhoneVerifyActivity.PHONENUM);
-                    if (!TextUtils.isEmpty(num)) {
-                        mLntChargeSdk.invoke(mCard.getAID(), num);
+                    if (!TextUtils.isEmpty(num) && mLntSdk != null) {
+                        mLntSdk.resume(num);
                     }
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void justMoreOptionBtn(ActionBar actionBar){
+        ImageView btn = (ImageView) actionBar.getRightButtonView();
+        btn.setImageResource(R.drawable.wallet_more_option);
+        btn.setOnClickListener(this);
+        if (!hasMoreOption()) {
+            btn.setVisibility(View.GONE);
         }
     }
 }

@@ -57,16 +57,6 @@
             android:textColor="#ffffff"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/br_single_bt_with_des_sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/br_single_bt_with_des_main"
-            android:layout_toRightOf="@id/br_single_bt_with_des_main"
-            android:alpha="0.5"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
         <com.tencent.tws.assistant.widget.TwsButton
             android:id="@+id/br_single_bt_with_des_bt"
             android:layout_width="120dp"
@@ -74,6 +64,17 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:gravity="center" />
+
+		<TextView
+            android:id="@+id/br_single_bt_with_des_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/br_single_bt_with_des_main"
+            android:layout_toLeftOf="@id/br_single_bt_with_des_bt"
+            android:layout_centerVertical="true"
+            android:alpha="0.5"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </FrameLayout>

@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.TextView;
 
 import com.pacewear.httpserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -30,6 +33,7 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SC
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.tencent.tws.assistant.app.ActionBar;
+import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.phoneside.utils.BranchUtil;
 
 import qrom.component.log.QRomLog;
@@ -84,8 +88,8 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.wallet_content, mTrafficCardsFragment);
         transaction.commit();
-        if (!CardManager.getInstance().isAvaliable()) {
-            showErrorPage(true, 0);
+        if(CardManager.getInstance().isEmpty()){
+            showErrorPage(false,-1);
         }
         ActionBar actionBar = getTwsActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
@@ -96,7 +100,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
 
     private void onPostCreate() {
         EnvManager.getInstance().forceSyncCPLC(false);
-        CardManager.getInstance().forceUpdate(true);
+        CardManager.getInstance().forceUpdate(false);
         OrderManager.getInstance().forceSyncTrafficConfig(true);
         OrderManager.getInstance().forceSyncOrder(true);
         WalletHandlerManager.getInstance().register(null, ACTVITY_SCENE.SCENE_SYNCALL, this);
@@ -107,28 +111,33 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (!isModuleAvailable()) {
+                if(!isModuleAvailable()){
                     mWaiting.setVisibility(View.VISIBLE);
                     return;
                 }
                 mWaiting.setVisibility(View.GONE);
-                if (CardManager.getInstance().isAvaliable()) {
-                    showErrorPage(false, R.string.wallet_disconnect_tips);
-                } else if (CardManager.getInstance().isOverMaxQueryTimes()) {
-                    showErrorPage(true, R.string.wallet_connect_timeout);
-                } else {
-                    showErrorPage(true, R.string.wallet_disconnect_tips);
+                if (module == MODULE_CALLBACK.MODULE_CARD) {
+                    if (CardManager.getInstance().isReady()) {
+                        showErrorPage(false, 0);
+                    } else if (CardManager.getInstance().isOverMaxQueryTimes()) {
+                        showErrorPage(true, R.string.wallet_connect_timeout);
+                    } else {
+                        showErrorPage(true, R.string.wallet_sync_err_watch);
+                    }
                 }
                 mTrafficCardsFragment.reloadCards(forUpdateUI);
             }
         });
     }
 
-    private void showErrorPage(boolean show, int text_id) {
+    private void showErrorPage(boolean show, int _text_id) {
         boolean isConnect = EnvManager.getInstance().isWatchConnected();
-        mErrorView.setVisibility(isConnect ? View.GONE : View.VISIBLE);
-        mLoading.setVisibility((show && isConnect) ? View.VISIBLE : View.GONE);
-        if (text_id != 0) {
+        boolean showLoading = !show && isConnect && (_text_id == -1);
+        boolean showError =  show || !isConnect;
+        mErrorView.setVisibility(showError? View.VISIBLE:View.GONE);
+        mLoading.setVisibility(showLoading ? View.VISIBLE : View.GONE);
+        int text_id = !isConnect ? R.string.wallet_disconnect_tips : _text_id;
+        if (text_id > 0) {
             mErrorTextView.setText(text_id);
         }
     }
@@ -163,7 +172,7 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
     }
 
     private void checkTestFunction(ActionBar actionBar) {
-        if (!ServerHandler.getInstance(this).isTestEnv() && BranchUtil.isGA()) {
+        if (!ServerHandler.getInstance(this).isTestEnv() || BranchUtil.isGA()) {
             return;
         }
         actionBar.getTitleView(false).setOnClickListener(new OnClickListener() {
@@ -175,6 +184,19 @@ public class WalletHomeActivity extends TwsActivity implements OnWalletUICallbac
                 if (mTitleViewHits[0] >= (SystemClock.uptimeMillis() - 1000)) {
                     startActivity(new Intent(WalletHomeActivity.this, TsmTestActivity.class));
                 }
+            }
+        });
+        actionBar.getTitleView(false).setOnLongClickListener(new OnLongClickListener() {
+            
+            @Override
+            public boolean onLongClick(View v) {
+                if (!CardManager.getInstance().isEmpty()) {
+                    Utils.saveCacheCardList("");
+                    Toast.makeText(WalletApp.getHostAppContext(), "clean cache list success",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
             }
         });
     }

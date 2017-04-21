@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -34,7 +35,6 @@ import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 
@@ -179,18 +179,18 @@ public class SelectAddCardActivity extends TwsActivity {
                 switch (newCard.getCardType()) {
                     case TRAFFIC_CARD:
                         if (OrderManager.getInstanceInner().getPayConfig(newCard.getAID()) == null) {
-                            Toast.makeText(GlobalObj.g_appContext,
+                            Toast.makeText(WalletApp.getHostAppContext(),
                                     getString(R.string.select_add_traffic_card_config_no_ready),
                                     Toast.LENGTH_LONG).show();
                             return;
                         }
                         if (!OrderManager.getInstance().isOrderReady()) {
-                            Toast.makeText(GlobalObj.g_appContext, R.string.wallet_sync_err_network,
+                            Toast.makeText(WalletApp.getHostAppContext(), getString(R.string.wallet_sync_err_network),
                                     Toast.LENGTH_LONG).show();
                             return;
                         }
                         if (!CardManager.getInstance().isReady()) {
-                            Toast.makeText(GlobalObj.g_appContext,
+                            Toast.makeText(WalletApp.getHostAppContext(),
                                     getString(R.string.wallet_sync_err_watch),
                                     Toast.LENGTH_LONG).show();
                             return;

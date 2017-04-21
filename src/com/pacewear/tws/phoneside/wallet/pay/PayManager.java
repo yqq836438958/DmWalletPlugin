@@ -60,7 +60,7 @@ public class PayManager implements IPayManagerInner {
     private PayManager() {
         initPayResultReceiver();
 
-        openApi = OpenApiFactory.getInstance(WalletApp.sGlobalCtx, Constants.APP_ID_FOR_QQPAY);
+        openApi = OpenApiFactory.getInstance(WalletApp.getAppContext(), Constants.APP_ID_FOR_QQPAY);
         miwxApi = AccountManager.getInstance().getWXApi();
     }
 
@@ -248,7 +248,7 @@ public class PayManager implements IPayManagerInner {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION_QQPAY_RESULT_NOTIFY);
         filter.addAction(Constants.ACTION_WXPAY_RESULT_NOTIFY);
-        LocalBroadcastManager.getInstance(WalletApp.sGlobalCtx).registerReceiver(
+        LocalBroadcastManager.getInstance(WalletApp.getAppContext()).registerReceiver(
                 mBroadcastReceiver, filter);
     }
 
@@ -267,7 +267,7 @@ public class PayManager implements IPayManagerInner {
         if ("".equals(packagename)) {
             return false;
         }
-        return DeviceUtils.checkAppInstalled(WalletApp.sGlobalCtx, packagename);
+        return DeviceUtils.checkAppInstalled(WalletApp.getAppContext(), packagename);
     }
 
     @Override

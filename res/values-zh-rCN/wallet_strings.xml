@@ -78,7 +78,7 @@
     <string name="wallet_traffic_card_balance_charge">当前卡内余额%1$s元</string>
     <string name="wallet_set_default_title">将%1$s设置为默认卡？</string>
     <string name="wallet_delete_card">删除此卡</string>
-    <string name="wallet_set_default_dev_not_connected">无法设为默认卡，请稍后重试。</string>
+    <string name="wallet_set_default_dev_not_connected">页面更新异常，请稍后重试。</string>
     <string name="wallet_validity_label">有效期</string>
     <string name="wallet_num_label">卡号</string>
     <string name="wallet_jump_url">你还可以使用 <u>北京一卡通APP</u> 进行充值</string>
@@ -173,7 +173,7 @@
 	<string name="wallet_next">下一步</string>
 	<string name="wallet_phonenum">手机号</string>
 	<string name="wallet_verifycode">验证码</string>
-	<string name="wallet_reget_verify">重新获取(#S)</string>
+	<string name="wallet_reget_verify">#S</string>
 	<string name="wallet_get_verify">获取验证码</string>
 	<string name="wallet_get_verify_fail">获取验证码失败</string>
 	<string name="wallet_phone_error">请输入正确的手机号码</string>

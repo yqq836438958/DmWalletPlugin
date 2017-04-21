@@ -38,7 +38,6 @@ import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect.OnSelectChange
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.pay.PayNFCConstants;
@@ -138,14 +137,14 @@ public class ChargeCardActivity extends TwsActivity {
             @Override
             public void onClick(View v) {
                 if (!EnvManager.getInstance().isWatchConnected()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_disconnect_tips),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!CardManager.getInstance().isReady()
                         || !mCard.isReady()) {
-                    Toast.makeText(GlobalObj.g_appContext,
+                    Toast.makeText(WalletApp.getHostAppContext(),
                             getString(R.string.wallet_sync_err_watch),
                             Toast.LENGTH_LONG).show();
                     return;
@@ -177,7 +176,7 @@ public class ChargeCardActivity extends TwsActivity {
                             .getIMaxRechargeAmount();
                     String strBalance = ((ITrafficCard) mCard).getBalance();
                     if (TextUtils.isEmpty(strBalance)) {
-                        Toast.makeText(GlobalObj.g_appContext,
+                        Toast.makeText(WalletApp.getHostAppContext(),
                                 getString(R.string.wallet_sync_err_watch),
                                 Toast.LENGTH_LONG).show();
                         return;
@@ -185,7 +184,7 @@ public class ChargeCardActivity extends TwsActivity {
                     long iCurBalance = Long.parseLong(strBalance);
                     if (iMaxRechargeAmount > chargeValue && (chargeValue
                             + iCurBalance) > iMaxRechargeAmount) {
-                        Toast.makeText(GlobalObj.g_appContext,
+                        Toast.makeText(WalletApp.getHostAppContext(),
                                 String.format(
                                         getString(R.string.wallet_flow_charge_amount),
                                         Utils.getDisplayBalance(iMaxRechargeAmount)),
@@ -194,7 +193,7 @@ public class ChargeCardActivity extends TwsActivity {
                     }
                     if ((chargeValue + iCurBalance) <= 0) {
                         // 透支判断
-                        Toast.makeText(GlobalObj.g_appContext,
+                        Toast.makeText(WalletApp.getHostAppContext(),
                                 getString(R.string.wallet_amount_nozero),
                                 Toast.LENGTH_LONG).show();
                         return;

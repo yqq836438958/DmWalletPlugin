@@ -31,8 +31,6 @@ public abstract class Card implements ICard, ICardInner {
 
     private ACTIVATION_STATUS mActivationStatus = ACTIVATION_STATUS.UNACTIVATED;
 
-    private String mCardName = null;
-
     protected String mCardInfoErrDesc = null;
 
     private HashMap<String,String> mExtraInfoMap = new HashMap<String,String>();
@@ -52,8 +50,6 @@ public abstract class Card implements ICard, ICardInner {
     public final void setConfig(CONFIG config) {
         if (mConfig == null) {
             mConfig = config;
-
-            mCardName = WalletApp.sGlobalCtx.getString(mConfig.mCardNameRes);
 
             // Final
             mCurrentCardStep = mCardUnavaiable;
@@ -102,7 +98,8 @@ public abstract class Card implements ICard, ICardInner {
 
     @Override
     public final String getCardName() {
-        return mCardName;
+        // 改为实时获取，不然会出现切换语言后不变化的问题
+        return WalletApp.getAppContext().getString(mConfig.mCardNameRes);
     }
 
     /**

@@ -681,13 +681,11 @@ public class Order implements IOrder, IOrderInner {
 
     private boolean canIgnoreError(String aid, boolean isIssueCard) {
         boolean canIgnore = false;
-        if (CONFIG.BEIJINGTONG.mAID.equalsIgnoreCase(aid)) {
             if (isIssueCard) {
                 canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_OPENCARD)
                         || mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_PERSONAL);
             } else {
                 canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_TOPUP);
-            }
         }
         return canIgnore;
     }

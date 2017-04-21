@@ -16,9 +16,9 @@ import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.framework.global.GlobalObj;
 import com.tencent.tws.pay.PayNFCConstants;
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
@@ -351,7 +351,7 @@ public class ShowLoadingActivity extends TwsActivity
     }
 
     private void finishAndToast(int strRes) {
-        Toast.makeText(GlobalObj.g_appContext, getString(strRes), Toast.LENGTH_LONG)
+        Toast.makeText(WalletApp.getHostAppContext(), getString(strRes), Toast.LENGTH_LONG)
                 .show();
         finish();
     }

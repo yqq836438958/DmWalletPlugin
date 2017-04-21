@@ -19,15 +19,24 @@
 #   public *;
 #}
 
-
+-dontoptimize
 -libraryjars linklib/TencentWearServiceLibApp.jar
 -libraryjars linklib/twspluginsharelib.jar
 
 -ignorewarnings
 -dontwarn android.**
+-keep class android.** { *; }
+
 -dontwarn com.android.**
+-keep class com.android.** { *; }
+
 -dontwarn com.google.**
+-keep class com.google.** { *; }
+
 -dontwarn com.tencent.qrom.**
+-keep class com.tencent.qrom.** { *; }
+
+-keeppackagenames com.tencent
 
 -keep class * extends com.qq.taf.jce.JceStruct {
    *;
@@ -62,3 +71,96 @@
 -keep class com.tencent.tws.plugin.slave.PluginMsgSender {
    *;
 }
+
+-keep public class * extends android.app.Activity
+
+-keep public class * extends android.app.Application
+
+-keep public class * extends android.app.Service
+
+-keep public class * extends android.content.BroadcastReceiver
+
+-keep class * implements android.os.IInterface {*;}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context,android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context,android.util.AttributeSet,int);
+}
+
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context,android.util.AttributeSet);
+    public <init>(android.content.Context,android.util.AttributeSet,int);
+    public void set*(...);
+}
+
+-keep class * extends android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+-keepclassmembers class * extends java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keep class **.R$* {
+    <fields>;
+    <methods>;
+}
+
+-keepclassmembers enum * {  #保持枚举 enum 不被混淆  
+    public static **[] values();  
+    public static ** valueOf(java.lang.String);  
+}
+
+#=================== bleservice.jar begin===================
+-dontwarn cn.com.whty.bleservice.**
+-keep class cn.com.whty.bleservice.** {*;}
+#=================== bleservice.jar end ===================
+
+#=================== quinticble.jar begin===================
+-dontwarn cn.paycloud.quinticble.**
+-keep class cn.paycloud.quinticble.** {*;}
+#=================== quinticble.jar end ===================
+
+#=================== fastjson.jar begin===================
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** {*;}
+#=================== fastjson.jar end ===================
+
+#=================== lnt begin===================
+-dontwarn com.lnt.**
+-keep class com.lnt.** {*;}
+-dontwarn com.watchdata.sharkey.**
+-keep class com.watchdata.sharkey.** {*;}
+#=================== lnt end ===================
+
+#=================== linkloving_ble.jar begin===================
+-dontwarn com.example.android.bluetoothlegatt.**
+-keep class com.example.android.bluetoothlegatt.** {*;}
+#=================== linkloving_ble.jar end ===================
+
+#=================== slmlib.jar begin===================
+-dontwarn cn.com.whty.slmlib.**
+-keep class cn.com.whty.slmlib.** {*;}
+#=================== slmlib.jar end ===================
+
+#=================== commons-codec.jar and ksoap2-android.jar begin===================
+-dontwarn org.**
+-keep class org.** {*;}
+#=================== ksoap2-android.jar and ksoap2-android.jar end ===================
+#=================== xutil begin===================
+-keepattributes Signature,EnclosingMethod
+#=================== xutil end ===================

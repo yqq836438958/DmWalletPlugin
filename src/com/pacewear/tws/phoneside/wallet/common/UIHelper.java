@@ -24,7 +24,7 @@ public class UIHelper {
 
     public static void setTwsButtonStyle(TwsButton button, int textResId, String color,
             float textSize) {
-        button.setText(WalletApp.sGlobalCtx.getString(textResId));
+        button.setText(WalletApp.getAppContext().getString(textResId));
         button.setTextColor(Color.parseColor(color));
         button.setTextSize(textSize);
     }

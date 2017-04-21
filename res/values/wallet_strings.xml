@@ -13,7 +13,7 @@
     <string name="wallet_bankcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_bank_card.html"</string>
 
     <!-- nfcwallet begin -->
-    <string name="nfc_wallet">Watch card bag</string>
+    <string name="nfc_wallet">Traffic card</string>
     <string name="nfc_traffic_card">Traffic card</string>
     <string name="nfc_bank_card">Bank card</string>
     <string name="wallet_tuo_wan_check_passwd_tip">To ensure fund safety, wrist-off password test needs to be activated before transaction. Please activate “wrist-off password test” at watch-side. </string>
@@ -31,7 +31,7 @@
     <string name="activate_payment_succeed">Successful transaction </string>
     <string name="activate_card_succeed">Successful card activation </string>
     <string name="activate_card_succeed_notice">%1$s Successful card activation</string>
-    <string name="activate_card_fee">(Including %1$d yuan charged for card activation)</string>
+    <string name="activate_card_fee">(%1$d yuan for activation)</string>
     <string name="activate_confirm">Confirmation of card activation</string>
     <string name="wallet_confirm_provision">Confirmation means accepting the term that the fee charged for card activation will not be returned </string>
     <string name="wallet_pay_value_bar_yuan">%1$s yuan</string>
@@ -81,7 +81,7 @@
     <string name="wallet_traffic_card_balance">Balance: ¥%1$s</string>
     <string name="wallet_set_default_title">Set %1$s as default card? </string>
     <string name="wallet_delete_card">Delete this card</string>
-    <string name="wallet_set_default_dev_not_connected">%1$s cannot be set as default card at the moment, please connect watch before trying again. </string>
+    <string name="wallet_set_default_dev_not_connected">Page update exception, please try again. </string>
     <string name="wallet_validity_label">Period of validity</string>
     <string name="wallet_num_label">Card number</string>
     <string name="wallet_jump_url">You can also use the <u>beijing yikatong APP</u> to recharge</string>
@@ -177,7 +177,7 @@
 	<string name="wallet_next">Next</string>
 	<string name="wallet_phonenum">Phone</string>
 	<string name="wallet_verifycode">Code</string>
-	<string name="wallet_reget_verify">To obtain(#S)</string>
+	<string name="wallet_reget_verify">#S</string>
 	<string name="wallet_get_verify">Get code</string>
 	<string name="wallet_get_verify_fail">Failed code</string>
 	<string name="wallet_phone_error">Enter correct number</string>

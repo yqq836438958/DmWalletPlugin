@@ -52,4 +52,9 @@
         <item>430009#Card expired,please contact service</item>
         <item>430010#Card before the opening date,please contact service</item>
     </string-array>
+	<string-array name="wallet_card_detail_more">
+        <item>Order Complaint</item>
+        <item>Complaint Query</item>
+        <item>Cancel</item>
+    </string-array>
 </resources>

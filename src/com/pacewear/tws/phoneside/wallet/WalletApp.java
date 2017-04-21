@@ -13,13 +13,16 @@ import com.tencent.tws.framework.common.CommandHandler;
 import com.tencent.tws.framework.common.MsgCmdDefine;
 import com.tencent.tws.framework.common.MsgDispatcher;
 import com.tencent.tws.framework.proxy.PluginCommandHandler;
+import com.tencent.tws.sharelib.util.HostProxy;
+
+import org.xutils.x;
 
 import tws.component.log.TwsLog;
 
 public class WalletApp extends Application {
     private static final String TAG = "rick_Pring:PluginTestApplication";
     private String packageName;
-    public static Context sGlobalCtx = null;
+    private static Context sGlobalCtx = null;
 
     @Override
     public void onCreate() {
@@ -34,6 +37,13 @@ public class WalletApp extends Application {
         sGlobalCtx = ctx;
         registerCommandHandler();
         SdkAdapter.init();
+        x.Ext.init(this); // TODO 后续由lntsdk去实现
+    }
+    public static Context getHostAppContext(){
+        return HostProxy.getApplication().getApplicationContext();
+    }
+    public static Context getAppContext(){
+        return sGlobalCtx;
     }
 
     private void registerCommandHandler() {

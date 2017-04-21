@@ -2,6 +2,7 @@
 package com.pacewear.tws.phoneside.wallet.ui.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,10 @@ public class BottomBar extends FrameLayout implements OnClickListener {
     public static final int MODE_COUPLE_BUTTON = MODE_SINGLE_BUTTON + 1;
 
     public static final int MODE_SINGLE_WITH_DESCRIPTION = MODE_COUPLE_BUTTON + 1;
+
+    private final String COLOR_ENABLE = "#46dc5f";
+
+    private final String COLOR_DISABLE = "#3346DC5F";
 
     private int mMode = MODE_ERROR;
 
@@ -72,7 +77,7 @@ public class BottomBar extends FrameLayout implements OnClickListener {
         UIHelper.setTwsButton(mSingleButton, R.string.wallet_traffic_card_add);
         UIHelper.setTwsButton(mCoupleLeftButton, R.string.wallet_traffic_card_add);
         UIHelper.setTwsButton(mCoupleRightButton, R.string.wallet_traffic_card_add);
-        UIHelper.setTwsButton(mSingleButtonWithDesButton, R.string.activate_confirm, "#46dc5f");
+        UIHelper.setTwsButton(mSingleButtonWithDesButton, R.string.activate_confirm, COLOR_ENABLE);
         mSingleButtonWithDesButton.setButtonMode(TwsButton.RecommendedButton);
         mSingleMainDes = (TextView) findViewById(R.id.br_single_bt_with_des_main);
         mSingleSubDes = (TextView) findViewById(R.id.br_single_bt_with_des_sub);
@@ -118,6 +123,9 @@ public class BottomBar extends FrameLayout implements OnClickListener {
 
     public void setSingleButtonWithDesButtonEnable(boolean enabled) {
 //        UIHelper.setTwsButtonEnable(mSingleButtonWithDesButton, enabled);
+        mSingleButtonWithDesButton.setEnabled(enabled);
+        mSingleButtonWithDesButton.setTextColor(
+                enabled ? Color.parseColor(COLOR_ENABLE) : Color.parseColor(COLOR_DISABLE));
     }
 
     public void setSingleButtonWithDesButtonText(int resId) {
