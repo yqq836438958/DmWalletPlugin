@@ -40,11 +40,12 @@
     <string name="wallet_activate_card_failed">开卡失败</string>
     <string name="wallet_activate_card_query_failed">开卡成功,卡余额查询失败</string>
     <string name="wallet_topup_card_query_failed">充值成功,卡余额查询失败</string>
-    <string name="wallet_activate_loading">开卡中...</string>
+    <string name="wallet_activate_loading">正在开卡</string>
     <!-- 充值 -->
     <string name="charge_card_title">%1$s充值</string>
     <string name="charge_card_continue">继续充值</string>
     <string name="charge_card_button">充值</string>
+    <string name="charge_card_confirm_button">立即充值</string>
     <string name="wallet_pay_channel_wechat">微信支付</string>
     <string name="wallet_pay_channel_qq">QQ钱包</string>
     <string name="charge_confirm">确认充值</string>
@@ -96,8 +97,9 @@
     <string name="wallet_loading_activate_title">%1$s开卡</string>
     <string name="wallet_loading_charge_title">%1$s充值</string>
     <string name="wallet_loading_circle_notice">正在传输资料&#8230;</string>
-    <string name="wallet_loading_notice">根据您的网络情况该过程可能需要1&#8211;3分钟，\n请耐心等候并避免使用手机进行其他操作。</string>
-
+    <string name="wallet_loading_notice1">开卡过程大致需要 1~5 分钟</string>
+	<string name="wallet_loading_notice2">请保持手机 Pacewear 与手表的连接</string>
+	<string name="wallet_loading_notice3">在开卡完成之前请勿离开本页面</string>
     <!-- Payment result -->
     <string name="wallet_payment_result_finish">完成</string>
     <string name="wallet_order_number">订单号</string>

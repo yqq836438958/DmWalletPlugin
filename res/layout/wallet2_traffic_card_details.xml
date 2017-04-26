@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/wallet_traffic_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible" >
+
+        <com.tencent.tws.assistant.widget.TwsButton
+            android:id="@+id/wallet_traffic_card_charge"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/wallet_bjt_asssit_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="62dp"
+            android:paddingLeft="20dp"
+            android:text="@string/wallet_bjt_assist_tips"
+            android:textColor="#7FFFFFFF"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/wallet_jump_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/wallet_bjt_asssit_tip"
+            android:paddingLeft="20dp"
+            android:text="@string/wallet_jump_url"
+            android:textColor="#7FFFFFFF"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView
+        android:id="@+id/wallet_card_detail_card"
+        android:layout_width="320dp"
+        android:layout_height="200dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/wallet_traffic_bottom"
+        android:layout_below="@id/wallet_card_detail_card" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/wallet_traffic_card_num_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:background="@color/wallet_listview_divider_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/wallet_num_label"
+                    android:textColor="@color/wallet_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/wallet_traffic_card_num_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="11111111"
+                    android:textColor="@color/wallet_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/wallet_listview_divider_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wallet_traffic_card_validity_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_below="@id/wallet_traffic_card_num_layout"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:background="@color/wallet_listview_divider_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/wallet_validity_label"
+                    android:textColor="@color/wallet_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/wallet_traffic_card_validity_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="2016-09-14"
+                    android:textColor="@color/wallet_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/wallet_listview_divider_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wallet_traffic_card_transact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_below="@id/wallet_traffic_card_validity_layout"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:background="@color/wallet_listview_divider_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/wallet_transact_label"
+                    android:textColor="@color/wallet_dark"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wallet_listview_divider_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/wallet_listview_divider_color" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -238,19 +238,23 @@ public class ShowLoadingActivity extends TwsActivity
         ORDER_STEP localStep = order.getOrderStep();
         boolean isTopup = (mLoadingType == LOADING_TYPE_CHARGE_CARD);
         if (rc == 0) {
+            // 订单成功
             orderfinish = 1;
             caption = isTopup ? getString(R.string.wallet_operation_charge_succeed)
                     : getString(R.string.activate_card_succeed);
         } else if (localStep == ORDER_STEP.ORDER_FINISH) {
+            // 订单成功，但查询失败
             orderfinish = 0;
             caption = isTopup ? getString(R.string.wallet_topup_card_query_failed)
                     : getString(R.string.wallet_activate_card_query_failed);
         } else if (localStep == ORDER_STEP.EXECUTE_TOPUP
                 && mCard.getInstallStatus() == INSTALL_STATUS.PERSONAL) {
+            // 已开卡，充值失败
             orderfinish = -1;
             caption = isTopup ? getString(R.string.wallet_operation_charge_failed) : getString(
                     R.string.wallet_activate_card_topup_failed);
         } else {
+            // 默认失败状态
             orderfinish = -1;
             caption = isTopup ? getString(R.string.wallet_operation_charge_failed)
                     : getString(R.string.wallet_activate_card_failed);
@@ -329,6 +333,7 @@ public class ShowLoadingActivity extends TwsActivity
             }
             if (order.isInValidOrder()) {
                 finishAndToast(R.string.wallet_invalid_order);
+                return;
             }
             OrderManager.getInstance().setOrderLocalPaidStatus(order.getOrderRspParam().sTradeNo,
                     true);

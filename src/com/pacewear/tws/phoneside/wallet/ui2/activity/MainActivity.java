@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.pacewear.tws.phoneside.wallet.R;
 
+//plan 2.0
 public class MainActivity extends Activity {
 
     @Override

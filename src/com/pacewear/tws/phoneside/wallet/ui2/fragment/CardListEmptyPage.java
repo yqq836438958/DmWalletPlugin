@@ -2,7 +2,7 @@
 package com.pacewear.tws.phoneside.wallet.ui2.fragment;
 
 import com.pacewear.tws.phoneside.wallet.R;
-import com.pacewear.tws.phoneside.wallet.present.ICardListPresent;
+import com.pacewear.tws.phoneside.wallet.present.ICardModulePresent;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.AddCardActivity;
 
 import android.app.Fragment;
@@ -14,14 +14,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 public class CardListEmptyPage extends Fragment implements ICardListTypeView {
     private Button mIssueCardBtn = null;
-    private ICardListPresent mPresent = null;
+    private ICardModulePresent mPresent = null;
     private Context mContext = null;
 
-    public CardListEmptyPage(ICardListPresent present) {
+    public CardListEmptyPage(ICardModulePresent present) {
         super();
         mPresent = present;
         mContext = getActivity();

@@ -29,7 +29,9 @@ import com.tencent.utils.DeviceUtils;
 
 import qrom.component.log.QRomLog;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import TRom.E_PAY_TYPE;
 import TRom.OrderReqParam;
@@ -278,5 +280,10 @@ public class PayManager implements IPayManagerInner {
     @Override
     public void cancelPay() {
         isPaying = false;
+    }
+
+    @Override
+    public List<PayBean> getPayBeans() {
+        return Arrays.asList(PayBean.WEIXIN_PAY, PayBean.QQ_PAY);
     }
 }

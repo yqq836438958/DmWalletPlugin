@@ -3,7 +3,7 @@
     xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
     android:id="@+id/layout_bottom_bar"
     android:layout_width="match_parent"
-    android:layout_height="66dp"
+    android:layout_height="64dp"
     android:background="@color/wallet_action_bar_background"
     android:paddingLeft="20dp"
     android:paddingRight="20dp" >
@@ -27,7 +27,6 @@
             android:id="@+id/br_couple_left_bt"
             android:layout_width="148dp"
             android:layout_height="36dp"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:gravity="center" />
 
@@ -35,7 +34,6 @@
             android:id="@+id/br_couple_right_bt"
             android:layout_width="148dp"
             android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:gravity="center" />
     </RelativeLayout>
@@ -50,30 +48,35 @@
             android:id="@+id/br_single_bt_with_des_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:text="¥130.00"
-            android:textColor="#ffffff"
+            android:textColor="@color/wallet_black"
             android:textSize="24sp" />
 
-        <com.tencent.tws.assistant.widget.TwsButton
+<!--         <com.tencent.tws.assistant.widget.TwsButton
             android:id="@+id/br_single_bt_with_des_bt"
             android:layout_width="120dp"
             android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center" /> -->
+            
+       <Button
+            android:id="@+id/br_single_bt_with_des_bt"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
             android:layout_centerVertical="true"
             android:gravity="center" />
 
-		<TextView
+        <TextView
             android:id="@+id/br_single_bt_with_des_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/br_single_bt_with_des_main"
-            android:layout_toLeftOf="@id/br_single_bt_with_des_bt"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/br_single_bt_with_des_bt"
+            android:layout_toRightOf="@id/br_single_bt_with_des_main"
             android:alpha="0.5"
-            android:textColor="#ffffff"
+            android:textColor="@color/wallet_black"
             android:textSize="12sp" />
     </RelativeLayout>
 

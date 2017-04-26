@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tv_paychoose_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:text="￥100"
+        android:textColor="@color/wallet_black"
+        android:textSize="56sp" />
+
+    <TextView
+        android:id="@+id/tv_paychoose_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_paychoose_money"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="北京一卡通充值" />
+
+    <ListView
+        android:id="@+id/lv_paychoose_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_paychoose_desc"
+        android:layout_marginTop="39dp" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_paychoose_confirm"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/charge_card_confirm_button"
+        android:textColor="@color/wallet_black"
+        android:textSize="16sp" />
+
+</RelativeLayout>

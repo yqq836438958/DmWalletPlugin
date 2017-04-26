@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/wallet_listview_divider_height"
         android:layout_below="@+id/card_list"
-        android:layout_marginStart="@dimen/wallet_listview_divider_margin_left"
         android:background="@color/wallet_listview_divider_color" />
 
     <TextView
@@ -28,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/card_list"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:textColor="#80ffffff"
         android:textSize="12sp"

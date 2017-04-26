@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_overall_background" >
+
+    <ImageView
+        android:id="@+id/wallet_result_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="174dp"
+        android:src="@drawable/wallet_operate_success" />
+
+    <TextView
+        android:id="@+id/wallet_result_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_result_ic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="开卡成功"
+        android:textColor="@color/wallet_black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/wallet_result_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wallet_result_caption"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="当前金额1000"
+        android:textColor="@color/wallet_gray"
+        android:textSize="14sp" />
+
+    <com.tencent.tws.assistant.widget.TwsButton
+        android:id="@+id/wallet_operation_result_close"
+        android:layout_width="288dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="68dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/wallet_operation_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text="申请退款"
+        android:textColor="@color/wallet_gray"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

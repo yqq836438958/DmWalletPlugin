@@ -44,7 +44,7 @@
     <dimen name="wallet_loading_description_line_spacing_extra">6dp</dimen>
     <dimen name="wallet_loading_percentage_center_x_offest">8dp</dimen>
     <dimen name="wallet_loading_symbol_offest">4dp</dimen>
-    <dimen name="wallet_listview_divider_height">1dp</dimen>
+    <dimen name="wallet_listview_divider_height">0.5dp</dimen>
     <dimen name="wallet_listview_divider_margin_left">20dp</dimen>
 	<dimen name="wallet_listview_divider_margin_right">20dp</dimen>
     <!-- CustomerSupport -->

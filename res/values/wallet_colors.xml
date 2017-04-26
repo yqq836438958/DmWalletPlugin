@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="wallet_action_bar_background">#292634</color>
-    <color name="wallet_overall_background">#24212d</color>
+    <color name="wallet_action_bar_background">#FFFAFAFA</color>
+    <color name="wallet_overall_background">#ffffff</color>
     <color name="wallet_loading_bubble">#46DC5F</color>
 
     <!-- Card -->
-    <color name="wallet_szt_balance">#536243</color>
-    <color name="wallet_bjt_balance">#ffffff</color>
-    <color name="wallet_lnt_balance">#ffffff</color>
+    <color name="wallet_card_balance">#ffffff</color>
 
     <!-- Charge Button -->
     <color name="wallet_charge_bt_bg_unselected">#0dffffff</color>
@@ -25,5 +23,9 @@
     <color name="store_detail_divider_color">#07FFFFFF</color>
 
     <!-- Divider -->
-    <color name="wallet_listview_divider_color">#07FFFFFF</color>
+    <color name="wallet_listview_divider_color">#1A000000</color>
+    <color name="wallet_black">#FF000000</color>
+    <color name="wallet_gray">#80000000</color>
+    <color name="wallet_dark">#CC000000</color>
+
 </resources>
