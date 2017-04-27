@@ -12,6 +12,7 @@ public class OrderBean implements Serializable {
 
     private String sAid;
     private int iCardType;
+    private int iPaySene;
     private int iPayType;
     private long lIssueFee;
     private long lTopupFee;
@@ -24,6 +25,10 @@ public class OrderBean implements Serializable {
 
     public int getCardType() {
         return iCardType;
+    }
+
+    public int getPaySene() {
+        return iPaySene;
     }
 
     public int getPayType() {

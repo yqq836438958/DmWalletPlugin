@@ -2,131 +2,130 @@
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
 import android.app.TwsActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
+import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
-import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseViewChain;
-import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseViewChain.BaseViewHandler;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.pay.PayManager;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
+import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.tencent.tws.assistant.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BusinessLoadingActivity extends TwsActivity {
-    private IOrder mOrder = null;
-    private BaseViewChain mBaseViewChain = null;
+import qrom.component.log.QRomLog;
+
+public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICallback {
     private boolean mIsTopupInvoke = false;
     private final int RESULT_UNKOWN = 9999;
     private int mExeResult = RESULT_UNKOWN;
     private String mNextTitle = null;
+    private String mAid = null;
     // chain mode
-    private BaseViewHandler mOrderIsNull = new BaseViewHandler() {
-
+    private boolean mIsFirstIn = true;
+    private Handler mUIHandler = null;
+    private ProgressBar mLoadingBar = null;
+    private Runnable mHandleResumeEvent = new Runnable() {
         @Override
-        public void onHandle() {
-            finishAndToast(R.string.wallet_no_order);
-        }
-
-        @Override
-        public boolean isConditionReady() {
-            return mOrder == null;
-        }
-    };
-    private BaseViewHandler mOrderIsInvalid = new BaseViewHandler() {
-
-        @Override
-        public void onHandle() {
-            finishAndToast(R.string.wallet_invalid_order);
-        }
-
-        @Override
-        public boolean isConditionReady() {
-            return mOrder.isInValidOrder();
-        }
-    };
-    private BaseViewHandler mOrderIsSuc = new BaseViewHandler() {
-
-        @Override
-        public void onHandle() {
-        }
-
-        @Override
-        public boolean isConditionReady() {
-            return mExeResult == 0;
+        public void run() {
+            onHandleResumeEvent();
         }
     };
 
-    private void showTitle(int resTitle) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(arg0);
 
+        mUIHandler = new Handler();
+        // TODO getintent data
+        startBusisnessInternal(null);
     }
 
-    private void showDesc(int resDesc) {
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        WalletHandlerManager.getInstance().requestFocus(ACTVITY_SCENE.SCENE_ISSE_TOPUP);
+        if (mIsFirstIn) {
+            mIsFirstIn = false;
+            return;
+        }
+        mUIHandler.postDelayed(mHandleResumeEvent, 2000);
     }
 
-    private void finishAndToast(int strRes) {
-        Toast.makeText(WalletApp.getHostAppContext(), getString(strRes), Toast.LENGTH_LONG)
-                .show();
+    @Override
+    public void onPause() {
+        super.onPause();
+        mUIHandler.removeCallbacks(mHandleResumeEvent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+    }
+
+    @Override
+    public void onDestroy() {
+        WalletHandlerManager.getInstance().unregister(ACTVITY_SCENE.SCENE_ISSE_TOPUP);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onUIUpdate(MODULE_CALLBACK module, final int ret, boolean forUpdateUI) {
+        mUIHandler.removeCallbacks(mHandleResumeEvent);
+        mUIHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                gotoResultPage(ret);
+            }
+        });
+    }
+
+    private void onHandleResumeEvent() {
+        if (PayManager.getInstanceInner().isPaying()) {
+            PayManager.getInstanceInner().cancelPay();
+            ICard card = CardManager.getInstance().getCard(mAid);
+            IOrder order = OrderManager.getInstance()
+                    .getLastOrder(card.getAID());
+            if (order == null || order.isInValidOrder()) {
+                gotoResultPage(-1);
+                return;
+            }
+            OrderManager.getInstance().setOrderLocalPaidStatus(order.getOrderRspParam().sTradeNo,
+                    true);
+        }
+    }
+
+    private void gotoResultPage(int result) {
+        Intent intent = new Intent(this, BusinessResultActivity.class);
+        intent.putExtra("ret", result);
+        startActivity(intent);
         finish();
     }
 
-    ///////////////////// Inner Class////////////////////
-    class ResultFilterChain {
-        private List<ResultFilter> mList = new ArrayList<ResultFilter>();
-        private int mSize = 0;
-
-        void add(ResultFilter node) {
-            if (node == null) {
-                return;
-            }
-            synchronized (ResultFilter.class) {
-                if (mSize > 0) {
-                    mList.get(mSize - 1).setNext(node);
-                }
-                mList.add(node);
-                mSize++;
-            }
+    private boolean startBusisnessInternal(OrderBean bean) {
+        long lReqId = -1L;
+        if (!mIsTopupInvoke) {
+            lReqId = OrderManager.getInstance().placeIssueOrder(bean.getCardInstanceId(),
+                    bean.getPaySene(), bean.getPayType(), bean.getIssueFee(), bean.getTopupFee(),
+                    bean.isRetry());
+        } else {
+            lReqId = OrderManager.getInstance().placeTopupOrder(bean.getCardInstanceId(),
+                    bean.getPaySene(), bean.getPayType(), bean.getTopupFee(),
+                    bean.isRetry());
         }
-
-        final Result invoke(int result, IOrder order) {
-            if (mList.size() <= 0) {
-                return null;
-            }
-            return mList.get(0).filter(result, order);
-        }
-    }
-
-    abstract class ResultFilter {
-        private Result mResult = null;
-        private ResultFilter mNextFilter = null;
-
-        public ResultFilter(int finish, int resTitle) {
-            mResult = new Result(finish, resTitle);
-        }
-
-        public void setNext(ResultFilter next) {
-            mNextFilter = next;
-        }
-
-        public final Result filter(int result, IOrder order) {
-            if (onFilter(result, order)) {
-                return mResult;
-            }
-            return mNextFilter != null ? mNextFilter.filter(result, order) : null;
-        }
-
-        abstract boolean onFilter(int result, IOrder order);
-    }
-
-    class Result {
-        private int iFinish;
-        private int iTitleRes;
-
-        Result(int finsh, int res) {
-            iFinish = finsh;
-            iTitleRes = res;
-        }
+        return lReqId >= 0;
     }
 }

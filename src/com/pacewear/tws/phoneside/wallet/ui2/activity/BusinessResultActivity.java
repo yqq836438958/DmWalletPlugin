@@ -44,17 +44,11 @@ public class BusinessResultActivity extends TwsActivity {
 
     public static final int RESULT_FAILED = RESULT_SUCCESS + 1;
 
-    public static final String EXTRA_RESULT_CAPTION = "EXTRA_RESULT_CAPTION";
-
-    public static final String EXTRA_RESULT_DESCRIPTION = "EXTRA_RESULT_DESCRIPTION";
-
     private int mLoadingType = ShowLoadingActivity.LOADING_TYPE_NULL;
 
     private CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
     private ICard mCard = null;
-
-    private String mInstanceId;
 
     private long mTotalFee = 0;
 
@@ -85,8 +79,6 @@ public class BusinessResultActivity extends TwsActivity {
                     .getIntExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE, 0);
             mType = CARD_TYPE.values()[_type];
             resultType = intent.getIntExtra(EXTRA_RESULT_TYPE, RESULT_SUCCESS);
-            caption = intent.getStringExtra(EXTRA_RESULT_CAPTION);
-            description = intent.getStringExtra(EXTRA_RESULT_DESCRIPTION);
             mInstanceId = intent
                     .getStringExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID);
             mLoadingType = ShowLoadingActivity.getLoadingType(intent);
@@ -129,16 +121,10 @@ public class BusinessResultActivity extends TwsActivity {
 
     private void onRetryClick() {
         QRomLog.d(TAG, "onRetryClick");
-
-        switch (mLoadingType) {
-            case ShowLoadingActivity.LOADING_TYPE_ACTIVATE_CARD:
-            case ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD:
-                ShowLoadingActivity.launchLoading(this, mCard.getCardType(),
-                        mCard.getAID(), mPayScene, mPayType, mTotalFee, mLoadingType,
-                        true);
-                finish();
-                break;
-        }
+        ShowLoadingActivity.launchLoading(this, mCard.getCardType(),
+                mCard.getAID(), mPayScene, mPayType, mTotalFee, mLoadingType,
+                true);
+        finish();
     }
 
     @Override
@@ -160,6 +146,7 @@ public class BusinessResultActivity extends TwsActivity {
         public void onCall() {
             mIcon.setImageResource(R.drawable.wallet_operate_success);
             mButton.setText(getString(R.string.wallet_payment_result_finish));
+            mDesc.setText("余额xxxx元");
             mRefundTip.setVisibility(View.GONE);
             getTwsActionBar().hide();
             mButton.setOnClickListener(new OnClickListener() {
