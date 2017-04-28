@@ -14,7 +14,7 @@ import TRom.E_PAY_SCENE;
 
 public class BusinessResultHandler {
     // 开卡成功
-    private ResultFilter mIssueSuccess = new ResultFilter(0, R.string.activate_card_succeed) {
+    private ResultFilter mIssueSuccess = new ResultFilter(R.string.activate_card_succeed) {
 
         @Override
         boolean onFilter(BusinessContext context) {
@@ -22,7 +22,7 @@ public class BusinessResultHandler {
         }
     };
     // 充值成功
-    private ResultFilter mTopupSuccess = new ResultFilter(0,
+    private ResultFilter mTopupSuccess = new ResultFilter(
             R.string.wallet_operation_charge_succeed) {
 
         @Override
@@ -32,7 +32,7 @@ public class BusinessResultHandler {
         }
     };
     // 开卡成功，但充值失败
-    private ResultFilter mIssueSuc_TopupFail = new ResultFilter(-1,
+    private ResultFilter mIssueSuc_TopupFail = new ResultFilter(
             R.string.wallet_activate_card_topup_failed) {
 
         @Override
@@ -46,7 +46,7 @@ public class BusinessResultHandler {
         }
     };
     // 开卡成功，但查询失败
-    private ResultFilter mIssueSuc_QueryFail = new ResultFilter(1,
+    private ResultFilter mIssueSuc_QueryFail = new ResultFilter(
             R.string.wallet_activate_card_query_failed) {
 
         @Override
@@ -60,7 +60,7 @@ public class BusinessResultHandler {
         }
     };
     // 充值成功，但查询失败
-    private ResultFilter mTopupSuc_QueryFail = new ResultFilter(1,
+    private ResultFilter mTopupSuc_QueryFail = new ResultFilter(
             R.string.wallet_topup_card_query_failed) {
 
         @Override
@@ -74,7 +74,7 @@ public class BusinessResultHandler {
         }
     };
     // 开卡失败
-    private ResultFilter mIssueFail = new ResultFilter(-1, R.string.wallet_activate_card_failed) {
+    private ResultFilter mIssueFail = new ResultFilter(R.string.wallet_activate_card_failed) {
 
         @Override
         boolean onFilter(BusinessContext context) {
@@ -93,7 +93,7 @@ public class BusinessResultHandler {
         }
     };
     // 充值失败
-    private ResultFilter mTopupFail = new ResultFilter(-1,
+    private ResultFilter mTopupFail = new ResultFilter(
             R.string.wallet_operation_charge_failed) {
 
         @Override
@@ -113,7 +113,7 @@ public class BusinessResultHandler {
         }
     };
 
-    public void invoke(BusinessContext context) {
+    public Result invoke(BusinessContext context) {
         ResultFilterChain chain = new ResultFilterChain();
         chain.add(mIssueSuccess);
         chain.add(mTopupSuccess);
@@ -122,7 +122,7 @@ public class BusinessResultHandler {
         chain.add(mTopupSuc_QueryFail);
         chain.add(mIssueFail);
         chain.add(mTopupFail);
-        chain.invoke(context);
+        return chain.invoke(context);
     }
 
     public static class ResultFilterChain {
@@ -154,8 +154,8 @@ public class BusinessResultHandler {
         private ResultFilter mNextFilter = null;
         private Result mResult = null;
 
-        public ResultFilter(int finish, int resTitle) {
-            mResult = new Result(finish, resTitle);
+        public ResultFilter(int resTitle) {
+            mResult = new Result(resTitle);
         }
 
         public void setNext(ResultFilter next) {
@@ -181,17 +181,23 @@ public class BusinessResultHandler {
     }
 
     public static class Result {
-        private int iFinish;
         private int iTitleRes;
         private int iToastRes;
 
-        public Result(int finsh, int resTitle) {
-            iFinish = finsh;
+        public Result(int resTitle) {
             iTitleRes = resTitle;
         }
 
         public void setToast(int toast) {
             iToastRes = toast;
+        }
+
+        public int getTitleRes() {
+            return iTitleRes;
+        }
+
+        public int getToastRes() {
+            return iToastRes;
         }
     }
 
@@ -200,6 +206,5 @@ public class BusinessResultHandler {
         public IOrder order;
         public boolean isTopupInvoke;
         public int invokeResult;
-        public String aid;
     }
 }

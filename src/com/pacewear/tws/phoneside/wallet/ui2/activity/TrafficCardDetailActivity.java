@@ -46,7 +46,7 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUI
 import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController;
 import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController.OnItemEvent;
-import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletEnvToast;
+import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.app.AlertDialog;
 import com.tencent.tws.assistant.app.TwsDialog;
@@ -205,7 +205,7 @@ public class TrafficCardDetailActivity extends TwsActivity
     }
 
     private void charge() {
-        if (WalletEnvToast.checkAll(this)) {
+        if (WalletErrToast.checkAll(this)) {
             return;
         }
         if (mOrder != null && mOrder.isCardTopFail()) {

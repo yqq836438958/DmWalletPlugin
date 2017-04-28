@@ -37,6 +37,8 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
     private boolean mIsFirstIn = true;
     private Handler mUIHandler = null;
     private ProgressBar mLoadingBar = null;
+    public static final String KEY_ORDER_BEAN = "key_order_bean";
+    public static final String KEY_EXE_RESULT = "key_exec_result";
     private Runnable mHandleResumeEvent = new Runnable() {
         @Override
         public void run() {
@@ -47,7 +49,7 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(arg0);
+        setContentView(R.layout.wallet2_activity_loading);
 
         mUIHandler = new Handler();
         // TODO getintent data

@@ -50,4 +50,8 @@ public class OrderBean implements Serializable {
     public boolean isRetry() {
         return bRetry;
     }
+
+    public void setRetry(boolean retry) {
+        bRetry = retry;
+    }
 }

@@ -4,52 +4,40 @@ package com.pacewear.tws.phoneside.wallet.ui2.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.pacewear.tws.phoneside.wallet.R;
-import com.pacewear.tws.phoneside.wallet.present.ICardListPresent;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
 
-public class CardListErrPage extends Fragment implements ICardListTypeView {
-    private ICardListPresent mPresent;
+public class CardListErrPage extends CardListFragment {
 
-    public CardListErrPage(ICardListPresent present) {
+    public CardListErrPage() {
         super();
-        init();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return null;
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.wallet2_view_cardlist_empty, this);
-        this.setOnClickListener(new OnClickListener() {
+        View view = inflater.inflate(R.layout.wallet2_view_cardlist_error,
+                container, false);
+        view.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                refreshPage();
+                CardManager.getInstance().forceUpdate(true);
             }
         });
-    }
-
-    private void refreshPage() {
-        mPresent.cardListQuery();
+        return view;
     }
 
     @Override
-    public int update() {
-        if (mPresent.isCardListReady()) {
-            setVisibility(View.GONE);
-        } else {
-            setVisibility(View.VISIBLE);
+    protected boolean onUpdate() {
+        if (!CardManager.getInstance().isAvaliable()) {
+            return true;
         }
-
+        return false;
     }
 }

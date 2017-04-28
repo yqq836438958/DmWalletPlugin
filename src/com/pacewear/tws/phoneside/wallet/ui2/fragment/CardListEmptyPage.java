@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class CardListEmptyPage extends Fragment implements ICardListTypeView {
+public class CardListEmptyPage extends CardListFragment {
     private Button mIssueCardBtn = null;
     private ICardModulePresent mPresent = null;
     private Context mContext = null;
@@ -53,5 +53,11 @@ public class CardListEmptyPage extends Fragment implements ICardListTypeView {
             return -1;
         }
         return 0;
+    }
+
+    @Override
+    protected boolean onUpdate() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }
