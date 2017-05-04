@@ -5,11 +5,8 @@ import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
-import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
@@ -20,23 +17,13 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
-import com.tencent.tws.assistant.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import qrom.component.log.QRomLog;
 
 public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICallback {
     private boolean mIsTopupInvoke = false;
-    private final int RESULT_UNKOWN = 9999;
-    private int mExeResult = RESULT_UNKOWN;
-    private String mNextTitle = null;
     private String mAid = null;
-    // chain mode
+    private OrderBean mOrderBean = null;
     private boolean mIsFirstIn = true;
     private Handler mUIHandler = null;
-    private ProgressBar mLoadingBar = null;
     public static final String KEY_ORDER_BEAN = "key_order_bean";
     public static final String KEY_EXE_RESULT = "key_exec_result";
     private Runnable mHandleResumeEvent = new Runnable() {
@@ -52,8 +39,10 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
         setContentView(R.layout.wallet2_activity_loading);
 
         mUIHandler = new Handler();
-        // TODO getintent data
-        startBusisnessInternal(null);
+        mOrderBean = (OrderBean) getIntent().getSerializableExtra(KEY_ORDER_BEAN);
+        if (!startBusisnessInternal(mOrderBean)) {
+            finish();
+        }
     }
 
     @Override
@@ -119,6 +108,9 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
 
     private boolean startBusisnessInternal(OrderBean bean) {
         long lReqId = -1L;
+        if (bean == null) {
+            return false;
+        }
         if (!mIsTopupInvoke) {
             lReqId = OrderManager.getInstance().placeIssueOrder(bean.getCardInstanceId(),
                     bean.getPaySene(), bean.getPayType(), bean.getIssueFee(), bean.getTopupFee(),

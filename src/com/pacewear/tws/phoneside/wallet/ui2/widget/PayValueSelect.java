@@ -31,10 +31,9 @@ public class PayValueSelect extends FrameLayout implements OnClickListener {
 
     private Button mCurrentSelected = null;
 
-    private int mColorUnselected = getResources().getColor(R.color.wallet_charge_bt_bg_unselected);
+    private int mBttonBgSelect = R.drawable.wallet_payselect_btn_select;
 
-    private int mColorSelected = getResources().getColor(R.color.wallet_charge_bt_bg_selected);
-
+    private int mButtonBgUnSelect = R.drawable.wallet_payselect_btn_normal;
     private int mTextColorUnselected = getResources().getColor(
             R.color.wallet_charge_bt_text_unselected);
 
@@ -89,14 +88,14 @@ public class PayValueSelect extends FrameLayout implements OnClickListener {
     private void notifySelectChanged(View current) {
 
         if (current != mCurrentSelected) {
-            mBTLeft.setBackgroundColor(mColorUnselected);
+            mBTLeft.setBackgroundResource(mButtonBgUnSelect);
             mBTLeft.setTextColor(mTextColorUnselected);
-            mBTMiddle.setBackgroundColor(mColorUnselected);
+            mBTMiddle.setBackgroundResource(mButtonBgUnSelect);// (mColorUnselected);
             mBTMiddle.setTextColor(mTextColorUnselected);
-            mBTRight.setBackgroundColor(mColorUnselected);
+            mBTRight.setBackgroundColor(mButtonBgUnSelect);
             mBTRight.setTextColor(mTextColorUnselected);
             mCurrentSelected = (Button) current;
-            mCurrentSelected.setBackgroundColor(mColorSelected);
+            mCurrentSelected.setBackgroundColor(mBttonBgSelect);
             mCurrentSelected.setTextColor(mTextColorSelected);
             if (mOnSelectChangeListener != null) {
                 if (mCurrentSelected == mBTLeft) {

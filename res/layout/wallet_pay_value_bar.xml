@@ -9,10 +9,10 @@
         android:layout_height="36dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:background="#0dffffff"
+        android:background="@drawable/wallet_payselect_btn_normal"
         android:gravity="center"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textColor="@color/wallet_gray"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/pay_value_middle_bt"
@@ -20,10 +20,10 @@
         android:layout_height="36dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="#0dffffff"
+        android:background="@drawable/wallet_payselect_btn_normal"
         android:gravity="center"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textColor="@color/wallet_gray"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/pay_value_right_bt"
@@ -31,7 +31,7 @@
         android:layout_height="36dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="#8046dc5f"
+        android:background="@drawable/wallet_payselect_btn_select"
         android:gravity="center"
         android:textColor="#ffffff"
         android:textSize="16sp" />

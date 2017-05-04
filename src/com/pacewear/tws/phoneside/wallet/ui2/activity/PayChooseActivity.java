@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.pay.PayBean;
 import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
@@ -38,16 +39,19 @@ public class PayChooseActivity extends TwsActivity {
         Button confirm = (Button) findViewById(R.id.btn_paychoose_confirm);
         TextView payMoney = (TextView) findViewById(R.id.tv_paychoose_money);
         TextView desc = (TextView) findViewById(R.id.tv_paychoose_desc);
-        final PaySelectAdapter paySelectAdapter = new PaySelectAdapter(PayManager.getInstanceInner().getPayBeans());
+        final PaySelectAdapter paySelectAdapter = new PaySelectAdapter(
+                PayManager.getInstanceInner().getPayBeans());
         payList.setAdapter(paySelectAdapter);
-        payMoney.setText(intent.getStringExtra(PAY_AMOUNT));
+        final long lAmount = intent.getLongExtra(PAY_AMOUNT, 0L);
+        payMoney.setText("￥" + Utils.getDisplayBalance(lAmount));
         desc.setText(intent.getStringExtra(PAY_DESC));
         confirm.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 Intent result = new Intent();
                 result.putExtra(PAY_TYPE, mSelectPayType);
+                result.putExtra(PAY_AMOUNT, lAmount);
                 PayChooseActivity.this.setResult(Activity.RESULT_OK, result);
                 finish();
             }
@@ -58,7 +62,8 @@ public class PayChooseActivity extends TwsActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSelectPayType = position;
                 paySelectAdapter.notifyDataSetChanged();
-            }});
+            }
+        });
     }
 
     class PaySelectAdapter extends BaseAdapter {

@@ -64,8 +64,6 @@ public class CardIssuePrepareActivity extends TwsActivity {
 
     private static final int PAY_CHANNEL_WECHAT = 0;
 
-    private static final int PAY_CHANNEL_QQ = PAY_CHANNEL_WECHAT + 1;
-
     private int mPayChannelSelected = PAY_CHANNEL_WECHAT;
 
     // 开卡费(单位元)
@@ -151,7 +149,7 @@ public class CardIssuePrepareActivity extends TwsActivity {
             }
         });
 
-        setContentView(R.layout.wallet_activate_card);
+        setContentView(R.layout.wallet2_activity_cardissue);
 
         mBottomBar = (BottomBar) findViewById(R.id.wallet_bottom_bar);
         mBottomBar.setMode(BottomBar.MODE_SINGLE_WITH_DESCRIPTION);
@@ -167,16 +165,8 @@ public class CardIssuePrepareActivity extends TwsActivity {
                 if (WalletErrToast.checkAll(CardIssuePrepareActivity.this)) {
                     return false;
                 }
-                int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
-                        : E_PAY_TYPE._E_PT_WEIXIN_PAY;
-                if (!PayManager.isPayChannelSupport(payType)) {
-                    String qqTip = getString(R.string.wallet_login_download_qq);
-                    String weixinTip = getString(R.string.wallet_login_download_mm);
-                    Toast.makeText(WalletApp.getHostAppContext(),
-                            (payType == PAY_CHANNEL_QQ) ? qqTip : weixinTip, Toast.LENGTH_LONG)
-                            .show();
-                    return false;
-                }
+                int payType = 0;
+
                 int payScene = isNewLntSupport ? E_PAY_SCENE._EPS_OPEN_CARD_ONLY
                         : E_PAY_SCENE._EPS_OPEN_CARD;
                 ShowLoadingActivity.launchLoading(

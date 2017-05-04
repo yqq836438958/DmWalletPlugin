@@ -1,10 +1,10 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
+import android.app.Activity;
 import android.app.TwsActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,21 +13,19 @@ import android.widget.Button;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
+import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.ui.ChargeCardActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
-import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect;
-import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect.OnSelectChangeListener;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.pay.PayNFCConstants;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ import qrom.component.log.QRomLog;
 
 public class CardTopupPrepareActivity extends TwsActivity {
 
-    public static final String TAG = ChargeCardActivity.class.getSimpleName();
+    public static final String TAG = CardTopupPrepareActivity.class.getSimpleName();
 
     private ICard mCard = null;
 
@@ -50,15 +48,7 @@ public class CardTopupPrepareActivity extends TwsActivity {
     // 充值配置
     ArrayList<PayRechargeAmount> mPayRechargeAmount = null;
 
-    private Context mContext = null;
-
     private PayValueSelect mPayValueSelect = null;
-
-    private static final int PAY_CHANNEL_WECHAT = 0;
-
-    private static final int PAY_CHANNEL_QQ = PAY_CHANNEL_WECHAT + 1;
-
-    private int mPayChannelSelected = PAY_CHANNEL_WECHAT;
 
     @Override
     public void finish() {
@@ -72,8 +62,6 @@ public class CardTopupPrepareActivity extends TwsActivity {
         // overridePendingTransition(R.anim.wallet_push_up, 0);
 
         super.onCreate(savedInstanceState);
-
-        mContext = this;
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -119,18 +107,15 @@ public class CardTopupPrepareActivity extends TwsActivity {
             }
         });
 
-        setContentView(R.layout.wallet_charge_card);
+        setContentView(R.layout.wallet2_activity_cardtopup);
 
-        TwsButton confirm = (TwsButton) findViewById(R.id.wallet_charge_confirm);
-        confirm.setButtonMode(TwsButton.RecommendedButton);
+        Button confirm = (Button) findViewById(R.id.wallet_charge_confirm);
         confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (WalletErrToast.checkAll(CardTopupPrepareActivity.this)) {
                     return;
                 }
-                int payType = mPayChannelSelected == PAY_CHANNEL_QQ ? E_PAY_TYPE._E_PT_QQ_PAY
-                        : E_PAY_TYPE._E_PT_WEIXIN_PAY;
                 long chargeValue = 0;
                 int selected = mPayValueSelect.getSelected();
                 switch (selected) {
@@ -172,16 +157,38 @@ public class CardTopupPrepareActivity extends TwsActivity {
                         return;
                     }
                 }
-                ShowLoadingActivity.launchLoading(mContext, mCard.getCardType(), mCard.getAID(),
-                        E_PAY_SCENE._EPS_STAT, payType,
-                        chargeValue, ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD, false);
-                finish();
+                goPayChoosePage(chargeValue);
             }
         });
 
         mPayValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
         mPayValueSelect.setPayRechargeAmount(mPayRechargeAmount);
         mPayValueSelect.setSelect(OnSelectChangeListener.RIGHT_SELECTED);
-
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            goTopupPageInternal(data.getIntExtra(PayChooseActivity.PAY_TYPE, 0),
+                    data.getLongExtra(PayChooseActivity.PAY_AMOUNT, 0L));
+        }
+    }
+
+    private void goTopupPageInternal(int payType, long chargeFee) {
+        Intent intent = new Intent(this, BusinessLoadingActivity.class);
+        OrderBean bean = OrderBean.genNewInstance(mCard.getAID(), payType, E_PAY_SCENE._EPS_STAT, 0,
+                chargeFee, false);
+        intent.putExtra(BusinessLoadingActivity.KEY_ORDER_BEAN, bean);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goPayChoosePage(long chargeVal) {
+        Intent intent = new Intent(this, PayChooseActivity.class);
+        intent.putExtra(PayChooseActivity.PAY_AMOUNT, chargeVal);
+        intent.putExtra(PayChooseActivity.PAY_DESC, mCard.getCardName());
+        startActivityForResult(intent, 1);
+    }
+
 }

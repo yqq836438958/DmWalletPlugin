@@ -5,8 +5,11 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import com.pacewear.tws.phoneside.wallet.R;
 
 public class CardBusinessLoadingView extends RelativeLayout {
     private ProgressBar mProgressBar = null;
@@ -25,11 +28,11 @@ public class CardBusinessLoadingView extends RelativeLayout {
     }
 
     public CardBusinessLoadingView(Context context, AttributeSet attrs) {
-        this(context,null,-1);
+        this(context, null, -1);
     }
 
     public CardBusinessLoadingView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     @Override
@@ -46,7 +49,8 @@ public class CardBusinessLoadingView extends RelativeLayout {
     }
 
     private void init(Context context) {
-        // TODO init mProgressBar!!
+        LayoutInflater.from(context).inflate(R.layout.wallet2_view_loading_progress, this);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
         mValueAnimator = ValueAnimator.ofInt(0, PERCENT_MAX_VALUE);
         mValueAnimator.setDuration(DEFALUT_TIME);
         mValueAnimator.addUpdateListener(new AnimatorUpdateListener() {
@@ -56,7 +60,6 @@ public class CardBusinessLoadingView extends RelativeLayout {
                 // TODO Auto-generated method stub
                 int progress = (Integer) arg0.getAnimatedValue();
                 mProgressBar.setProgress(progress);
-
             }
         });
         mValueAnimator.start();

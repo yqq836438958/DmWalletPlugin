@@ -1,6 +1,8 @@
 
 package com.pacewear.tws.phoneside.wallet.bean;
 
+import android.R.integer;
+
 import java.io.Serializable;
 
 public class OrderBean implements Serializable {
@@ -11,20 +13,14 @@ public class OrderBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String sAid;
-    private int iCardType;
     private int iPaySene;
     private int iPayType;
     private long lIssueFee;
     private long lTopupFee;
-    private long lTotalFee;
     private boolean bRetry;
 
     public String getCardInstanceId() {
         return sAid;
-    }
-
-    public int getCardType() {
-        return iCardType;
     }
 
     public int getPaySene() {
@@ -43,15 +39,23 @@ public class OrderBean implements Serializable {
         return lTopupFee;
     }
 
-    public long getTotalFee() {
-        return lTopupFee;
-    }
-
     public boolean isRetry() {
         return bRetry;
     }
 
     public void setRetry(boolean retry) {
         bRetry = retry;
+    }
+
+    public static OrderBean genNewInstance(String aid, int payType, int scene,
+            long actFee, long chargeFee,
+            boolean isRetry) {
+        OrderBean bean = new OrderBean();
+        bean.sAid = aid;
+        bean.iPayType = payType;
+        bean.iPaySene = scene;
+        bean.lIssueFee = actFee;
+        bean.lTopupFee = chargeFee;
+        return bean;
     }
 }

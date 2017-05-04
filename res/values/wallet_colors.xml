@@ -4,15 +4,15 @@
     <color name="wallet_action_bar_background">#FFFAFAFA</color>
     <color name="wallet_overall_background">#ffffff</color>
     <color name="wallet_loading_bubble">#46DC5F</color>
-
+    <color name="wallet_green">#FF00BB00</color>
     <!-- Card -->
     <color name="wallet_card_balance">#ffffff</color>
 
     <!-- Charge Button -->
-    <color name="wallet_charge_bt_bg_unselected">#0dffffff</color>
+    <color name="wallet_charge_bt_bg_unselected">#ffffff</color>
     <color name="wallet_charge_bt_bg_selected">#7f46DC5F</color>
-    <color name="wallet_charge_bt_text_unselected">#80ffffff</color>
-    <color name="wallet_charge_bt_text_selected">#ffffff</color>
+    <color name="wallet_charge_bt_text_unselected">#80000000</color>
+    <color name="wallet_charge_bt_text_selected">#FF00BB00</color>
 
     <!-- Button Detail -->
     <color name="wallet_detail_bt_text_disabled">#33ffffff</color>

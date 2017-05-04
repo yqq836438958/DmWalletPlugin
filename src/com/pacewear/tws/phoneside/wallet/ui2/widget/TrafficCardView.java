@@ -16,11 +16,11 @@ public class TrafficCardView extends BaseCardView {
 
     public TrafficCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public TrafficCardView(Context context) {
         this(context, null);
-        init();
     }
 
     @Override
