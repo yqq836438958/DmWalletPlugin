@@ -28,8 +28,6 @@ import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.ui.ActivateCardActivity;
-import com.pacewear.tws.phoneside.wallet.ui.SelectAddCardActivity;
 import com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
@@ -41,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddCardActivity extends TwsActivity {
-    public static final String TAG = SelectAddCardActivity.class.getSimpleName();
+    public static final String TAG = AddCardActivity.class.getSimpleName();
 
     private CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
@@ -78,8 +76,6 @@ public class AddCardActivity extends TwsActivity {
         TextView tip = (TextView) findViewById(R.id.wallet_select_add_card_tip);
 
         ActionBar actionBar = getTwsActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(
-                R.color.wallet_action_bar_background)));
         switch (mType) {
             case TRAFFIC_CARD:
                 actionBar.setTitle(getString(R.string.select_add_traffic_card_title));
@@ -176,11 +172,10 @@ public class AddCardActivity extends TwsActivity {
                         if (!WalletErrToast.checkAll(AddCardActivity.this)) {
                             return;
                         }
-                        intent = new Intent(mContext, ActivateCardActivity.class);
+                        intent = new Intent(mContext, CardIssuePrepareActivity.class);
                         break;
                     case BANK_CARD:
                         // TODO
-                        intent = new Intent(mContext, ActivateCardActivity.class);
                         break;
                 }
                 intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
@@ -212,7 +207,7 @@ public class AddCardActivity extends TwsActivity {
                     getString(R.string.wallet_lnt_agreement_rl));
             ShowWebPageActivity.putActionBarText(intent, getString(R.string.wallet_cancel),
                     getString(R.string.wallet_confirm));
-            intent.putExtra(ShowWebPageActivity.TARGET_CLASS, ActivateCardActivity.class.getName());
+            intent.putExtra(ShowWebPageActivity.TARGET_CLASS, CardIssuePrepareActivity.class.getName());
             intent.putExtra(ShowWebPageActivity.TARGET_AID, aid);
             startActivity(intent);
             finish();
@@ -232,7 +227,7 @@ public class AddCardActivity extends TwsActivity {
                         return;
                     }
                     Intent intent = new Intent();
-                    intent.setClass(this, ActivateCardActivity.class);
+                    intent.setClass(this, CardIssuePrepareActivity.class);
                     intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
                             mPendingCardAid);
                     startActivity(intent);

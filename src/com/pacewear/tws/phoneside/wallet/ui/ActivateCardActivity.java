@@ -269,11 +269,11 @@ public class ActivateCardActivity extends TwsActivity {
 
                 switch (position) {
                     case PAY_CHANNEL_WECHAT:
-                        item.setIcon(R.drawable.wallet_pay_channel_wechat);
+//                        item.setIcon(R.drawable.wallet_pay_channel_wechat);
                         item.setDescription(R.string.wallet_pay_channel_wechat);
                         break;
                     case PAY_CHANNEL_QQ:
-                        item.setIcon(R.drawable.wallet_pay_channel_qq);
+//                        item.setIcon(R.drawable.wallet_pay_channel_qq);
                         item.setDescription(R.string.wallet_pay_channel_qq);
                         break;
                 }

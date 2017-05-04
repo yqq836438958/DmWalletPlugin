@@ -30,7 +30,7 @@ import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
 import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.env.EnvManager;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntInvokeCallback;
+//import com.pacewear.tws.phoneside.wallet.lnt.ILntInvokeCallback;
 import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk;
 import com.pacewear.tws.phoneside.wallet.lnt.LntSdk;
 import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk.ILntCardPage;
@@ -96,23 +96,23 @@ public class ShowCardDetailsActivity extends TwsActivity
             return true;
         }
     };
-    private ILntInvokeCallback mLntInvokeCallback = new ILntInvokeCallback() {
-        @Override
-        public void onResult(boolean suc, final String desc) {
-            if (suc) {
-                showLoading();
-                mCard.forceUpdate();
-            } else {
-                ShowCardDetailsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(WalletApp.getHostAppContext(), desc,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }
-    };
+//    private ILntInvokeCallback mLntInvokeCallback = new ILntInvokeCallback() {
+//        @Override
+//        public void onResult(boolean suc, final String desc) {
+//            if (suc) {
+//                showLoading();
+//                mCard.forceUpdate();
+//            } else {
+//                ShowCardDetailsActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(WalletApp.getHostAppContext(), desc,
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        }
+//    };
 
     private OnItemEvent mLntComplaint = new OnItemEvent() {
         
@@ -242,9 +242,9 @@ public class ShowCardDetailsActivity extends TwsActivity
         hideLoading();
         WalletHandlerManager.getInstance().register(mCard.getAID(), ACTVITY_SCENE.SCENE_SWITCHCARD,
                 this);
-        if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(mCard.getAID())) {
-            mLntSdk = new LntSdk(mContext, mCardPage, mLntInvokeCallback);
-        }
+//        if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(mCard.getAID())) {
+//            mLntSdk = new LntSdk(mContext, mCardPage, mLntInvokeCallback);
+//        }
     }
 
     @Override

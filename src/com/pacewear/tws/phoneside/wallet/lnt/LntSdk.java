@@ -13,6 +13,36 @@ import com.pacewear.tws.phoneside.wallet.common.PackageUtils;
 import com.pacewear.tws.phoneside.wallet.lnt.ILntVip.ILntVipCallback;
 
 public class LntSdk implements ILntSdk {
+
+    @Override
+    public boolean resume(String content) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean charge() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void complaint() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void complaintQuery() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void destroy() {
+        // TODO Auto-generated method stub
+        
+    }/*
     private ILntCardPage mCardPage = null;
     private ILntInvokeCallback mILntInvokeCallback = null;
     private Context mContext = null;
@@ -126,4 +156,4 @@ public class LntSdk implements ILntSdk {
         return true;
     }
 
-}
+*/}

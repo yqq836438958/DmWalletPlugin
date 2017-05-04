@@ -19,7 +19,7 @@ import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.pay.PayBean;
 import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
-import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem.SimpleViewCache;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
 
 import java.util.List;
 

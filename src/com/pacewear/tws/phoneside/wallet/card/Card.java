@@ -33,7 +33,7 @@ public abstract class Card implements ICard, ICardInner {
 
     protected String mCardInfoErrDesc = null;
 
-    private HashMap<String,String> mExtraInfoMap = new HashMap<String,String>();
+    private HashMap<String, String> mExtraInfoMap = new HashMap<String, String>();
 
     private IStep<COMMON_STEP> mCurrentCardStep = null;
 
@@ -54,7 +54,7 @@ public abstract class Card implements ICard, ICardInner {
             // Final
             mCurrentCardStep = mCardUnavaiable;
             mCurrentCardSwitchStep = mSwitchStepUnavaiable;
-            if(CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(getAID())){
+            if (CONFIG.LINGNANTONG.mAID.equalsIgnoreCase(getAID())) {
                 mExtraInfoMap.put("city_code", "00");
             }
         }
@@ -396,11 +396,16 @@ public abstract class Card implements ICard, ICardInner {
     }
 
     @Override
+    public int getCardDisableBg() {
+        return mConfig.mCardDisableRes;
+    }
+
+    @Override
     public String getExtra_Info() {
         StringBuilder builder = new StringBuilder();
         boolean isEmpty = true;
         for (Entry<String, String> entry : mExtraInfoMap.entrySet()) {
-            if(isEmpty){
+            if (isEmpty) {
                 isEmpty = false;
             } else {
                 builder = builder.append("&");

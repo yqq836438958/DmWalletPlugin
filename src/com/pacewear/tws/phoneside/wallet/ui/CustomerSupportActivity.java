@@ -131,7 +131,7 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
         }
 
         initActionBar();
-        setContentView(R.layout.wallet_customer_support_activity);
+//        setContentView(R.layout.wallet_customer_support_activity);
         initViews();
         AID = intent.getStringExtra("AID");
         int resid = intent.getIntExtra("tittle_resid", R.string.wallet_support_summary);
@@ -146,14 +146,14 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     }
 
     private void initViews() {
-        mCardImageView = (ImageView) findViewById(R.id.wallet_card_imageview_id);
-        mConfirmButton = (TwsButton) findViewById(R.id.wallet_start_filling_button_id);
+//        mCardImageView = (ImageView) findViewById(R.id.wallet_card_imageview_id);
+//        mConfirmButton = (TwsButton) findViewById(R.id.wallet_start_filling_button_id);
         UIHelper.setTwsButton(mConfirmButton, R.string.wallet_support_start_filling, 14);
         mConfirmButton.setOnClickListener(this);
-        mSummaryTextView = (TextView) findViewById(R.id.wallet_summary_tv_id);
-        mInPutLayout = (RelativeLayout) findViewById(R.id.wallet_input_layout_id);
-        mPhoneEditText = (EditText) findViewById(R.id.phone_edt_id);
-        mNameEditText = (EditText) findViewById(R.id.name_edt_id);
+//        mSummaryTextView = (TextView) findViewById(R.id.wallet_summary_tv_id);
+//        mInPutLayout = (RelativeLayout) findViewById(R.id.wallet_input_layout_id);
+//        mPhoneEditText = (EditText) findViewById(R.id.phone_edt_id);
+//        mNameEditText = (EditText) findViewById(R.id.name_edt_id);
     }
 
     private void initActionBar() {
@@ -183,9 +183,9 @@ public class CustomerSupportActivity extends TwsActivity implements OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.wallet_start_filling_button_id:
-                showInputView();
-                break;
+//            case R.id.wallet_start_filling_button_id:
+//                showInputView();
+//                break;
 
             default:
                 break;

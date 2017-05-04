@@ -138,6 +138,12 @@ public interface ICard {
     public int getCardBg();
 
     /**
+     * getCardDisableBg
+     * 
+     * @return
+     */
+    public int getCardDisableBg();
+    /**
      * getExtra_Info
      * 
      * @return

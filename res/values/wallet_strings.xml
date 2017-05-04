@@ -186,4 +186,13 @@
 
 	<string name="wallet_login_download_qq">You have not installed QQ, please install it before trying again</string>
     <string name="wallet_login_download_mm">You have not installed WeChat, please install it before trying again</string>
+    <!-- 主页 -->
+    <string name="wallet_launcher_trafficcard">交通卡</string>
+    <string name="wallet_launcher_doorcard">门禁卡</string>
+    <string name="wallet_launcher_bankcard">银行卡</string>
+    <string name="wallet_launcher_foodcard">饭卡</string>
+    <string name="wallet_launcher_schoolcard">校园一卡通</string>
+
+    <!-- 退款 -->
+    <string name="wallet_cardlist_refunding">退款中</string>
 </resources>

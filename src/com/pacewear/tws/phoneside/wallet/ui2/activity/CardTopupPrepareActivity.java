@@ -107,8 +107,6 @@ public class CardTopupPrepareActivity extends TwsActivity {
         }
 
         ActionBar actionBar = getTwsActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(
-                R.color.wallet_action_bar_background)));
         actionBar.setTitle(getString(R.string.charge_card_title, mCard.getCardName()));
 
         Button actionLeftBt = (Button) actionBar.getCloseView(false);

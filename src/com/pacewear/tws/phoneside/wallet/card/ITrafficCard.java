@@ -24,20 +24,6 @@ public interface ITrafficCard extends ICard {
     public String getBalance();
 
     /**
-     * getBalanceTextColor
-     * 
-     * @return 余额颜色
-     */
-    public int getBalanceTextColor();
-
-    /**
-     * getBalanceUnitIcon
-     * 
-     * @return 余额图标
-     */
-    public int getBalanceUnitIcon();
-
-    /**
      * getValidity
      *
      * @return 有效期

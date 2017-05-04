@@ -86,22 +86,4 @@ public class SimpleCardListItem extends FrameLayout {
         return true;
     }
 
-    public static class SimpleViewCache {
-        private View baseView;
-
-        public SimpleViewCache() {
-        }
-
-        public SimpleViewCache(View baseView) {
-            this.baseView = baseView;
-        }
-
-        public View getBaseView() {
-            return baseView;
-        }
-
-        public void setBaseView(View baseView) {
-            this.baseView = baseView;
-        }
-    }
 }

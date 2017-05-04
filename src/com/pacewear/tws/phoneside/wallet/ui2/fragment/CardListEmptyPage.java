@@ -48,14 +48,6 @@ public class CardListEmptyPage extends CardListFragment {
     }
 
     @Override
-    public int update() {
-        if (!mPresent.isCardListReady() || mPresent.size() > 0) {
-            return -1;
-        }
-        return 0;
-    }
-
-    @Override
     protected boolean onUpdate() {
         // TODO Auto-generated method stub
         return false;

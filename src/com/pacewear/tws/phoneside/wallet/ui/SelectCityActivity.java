@@ -18,7 +18,6 @@ import android.widget.ListView;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
-import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem.SimpleViewCache;
 import com.tencent.tws.assistant.app.ActionBar;
 
 import java.util.ArrayList;
@@ -139,14 +138,14 @@ public class SelectCityActivity extends TwsActivity {
 
         @Override
         public View getView(int postion, View contentView, ViewGroup viewGroup) {
-            SimpleViewCache cache = null;
+            com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache cache = null;
             if (contentView == null) {
-                cache = new SimpleViewCache();
+//                cache = new SimpleViewCache();
                 contentView = new SimpleCardListItem(mContext);
                 cache.setBaseView(contentView);
                 contentView.setTag(cache);
             } else {
-                cache = (SimpleViewCache) contentView.getTag();
+//                cache = (SimpleViewCache) contentView.getTag();
                 contentView = cache.getBaseView();
             }
             SimpleCardListItem item = (SimpleCardListItem) contentView;

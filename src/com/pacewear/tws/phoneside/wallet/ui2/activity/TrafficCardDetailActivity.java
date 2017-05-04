@@ -1,19 +1,16 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.Activity;
 import android.app.TwsActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,38 +19,25 @@ import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
-import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
-import com.pacewear.tws.phoneside.wallet.common.UIHelper;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
-import com.pacewear.tws.phoneside.wallet.env.EnvManager;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntInvokeCallback;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk;
-import com.pacewear.tws.phoneside.wallet.lnt.LntSdk;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntSdk.ILntCardPage;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.CardTransactActivity;
 import com.pacewear.tws.phoneside.wallet.ui.ChargeCardActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity;
 import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
-import com.pacewear.tws.phoneside.wallet.ui.widget.BaseCard;
-import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController;
-import com.pacewear.tws.phoneside.wallet.ui.widget.TwsDialogController.OnItemEvent;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.assistant.app.AlertDialog;
 import com.tencent.tws.assistant.app.TwsDialog;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.assistant.widget.TwsButton;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 
 public class TrafficCardDetailActivity extends TwsActivity
         implements OnWalletUICallback, OnClickListener {
@@ -67,9 +51,9 @@ public class TrafficCardDetailActivity extends TwsActivity
 
     private IOrder mOrder = null;
 
-    private BaseCard mCardView = null;
+    private BaseCardView mCardView = null;
 
-    private TwsButton mChargeButton = null;
+    private Button mChargeButton = null;
 
     private View mLoading = null;
 
@@ -105,13 +89,11 @@ public class TrafficCardDetailActivity extends TwsActivity
         }
 
         ActionBar actionBar = getTwsActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.wallet_action_bar_background)));
         actionBar.setTitle(mCard.getCardName());
 
         switch (mCard.getCardType()) {
             case TRAFFIC_CARD:
-                setContentView(R.layout.wallet_traffic_card_details);
+                setContentView(R.layout.wallet2_traffic_card_details);
                 justMoreOptionBtn(actionBar);
                 break;
             case BANK_CARD:
@@ -120,9 +102,8 @@ public class TrafficCardDetailActivity extends TwsActivity
                 break;
         }
 
-        mCardView = (BaseCard) findViewById(R.id.wallet_card_detail_card);
-        mCardView.hideWhenShowDetail(true);
-        mCardView.attachCard(mCard);
+        mCardView = (BaseCardView) findViewById(R.id.wallet_card_detail_card);
+        mCardView.attachCard(mCard, BaseCardView.SENCE_SINGLE);
 
         mValidityLayout = (ViewGroup) findViewById(R.id.wallet_traffic_card_validity_layout);
         mValidityTextView = (TextView) findViewById(R.id.wallet_traffic_card_validity_val);
@@ -137,18 +118,12 @@ public class TrafficCardDetailActivity extends TwsActivity
         });
 
         if (mCard.getCardType() == CARD_TYPE.TRAFFIC_CARD) {
-            mChargeButton = (TwsButton) findViewById(R.id.wallet_traffic_card_charge);
-            UIHelper.setTwsButton(mChargeButton, R.string.charge_card_button, 14);
+            mChargeButton = (Button) findViewById(R.id.wallet_traffic_card_charge);
             mChargeButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (ClickFilter.isMultiClick()) {
-                        return;
-                    }
-                    if (!EnvManager.getInstance().isWatchConnected()) {
-                        Toast.makeText(WalletApp.getHostAppContext(),
-                                getString(R.string.wallet_disconnect_tips),
-                                Toast.LENGTH_LONG).show();
+                    if (ClickFilter.isMultiClick()
+                            || WalletErrToast.checkAll(TrafficCardDetailActivity.this)) {
                         return;
                     }
                     charge();
@@ -199,7 +174,7 @@ public class TrafficCardDetailActivity extends TwsActivity
             mChargeButton.setText(getString(R.string.charge_card_button));
         }
         // 每次对象不一样，需重新attachCard
-        mCardView.attachCard(mCard);
+        mCardView.attachCard(mCard, BaseCardView.SENCE_SINGLE);
         updateCardNumUI();
         updateValidityUI();
     }
@@ -240,7 +215,7 @@ public class TrafficCardDetailActivity extends TwsActivity
                     Toast.LENGTH_LONG).show();
             return;
         }
-        Intent intent = new Intent(mContext, ChargeCardActivity.class);
+        Intent intent = new Intent(mContext, CardTopupPrepareActivity.class);
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
                 mCard.getCardType().toValue());
         intent.putExtra(PayNFCConstants.ExtraKeyName.EXTRA_STR_INSTANCE_ID,
@@ -253,10 +228,10 @@ public class TrafficCardDetailActivity extends TwsActivity
         TwsDialog dialog = null;
         switch (id) {
             case DIALOG_MORE_OPTION:
-                dialog = new TwsDialogController(this, true)
-                        .fillItems(R.array.wallet_card_detail_more, new OnItemEvent[] {
-                                mLntComplaint, mLntComplaintQuery
-                }).flush();
+                // dialog = new TwsDialogController(this, true)
+                // .fillItems(R.array.wallet_card_detail_more, new OnItemEvent[] {
+                // mLntComplaint, mLntComplaintQuery
+                // }).flush();
                 break;
         }
         return dialog;

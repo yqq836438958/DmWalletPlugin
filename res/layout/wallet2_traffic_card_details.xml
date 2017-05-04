@@ -10,14 +10,18 @@
         android:layout_alignParentBottom="true"
         android:visibility="visible" >
 
-        <com.tencent.tws.assistant.widget.TwsButton
+        <Button
             android:id="@+id/wallet_traffic_card_charge"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:gravity="center" />
+            android:background="@drawable/wallet_button_blackbord_whitefill"
+            android:gravity="center"
+            android:text="@string/charge_card_button"
+            android:textColor="@color/wallet_black"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/wallet_bjt_asssit_tip"
@@ -44,10 +48,11 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <com.pacewear.tws.phoneside.wallet.ui.widget.TrafficCardView
+    <com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView
         android:id="@+id/wallet_card_detail_card"
-        android:layout_width="320dp"
-        android:layout_height="200dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -173,5 +178,27 @@
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/wallet_card_detail_loading_ly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFFFF"
+        android:clickable="true"
+        android:visibility="gone" >
+
+        <!-- style="@style/WalletProgressBarTheme" -->
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
+            android:indeterminateDuration="700"
+            android:maxHeight="48dp"
+            android:maxWidth="48dp"
+            android:minHeight="12dp"
+            android:minWidth="12dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

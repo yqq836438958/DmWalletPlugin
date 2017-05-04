@@ -127,7 +127,7 @@ public class BusinessResultHandler {
 
     public static class ResultFilterChain {
         private List<ResultFilter> mList = new ArrayList<ResultFilter>();
-        private int  mSize = 0;
+        private int mSize = 0;
 
         void add(ResultFilter node) {
             if (node == null) {

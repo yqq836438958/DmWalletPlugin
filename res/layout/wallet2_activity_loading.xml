@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="184dp"
-        android:src="@drawable/wallet2_loading_bg" />
+        android:src="@drawable/panel_card_beijing_little" />
 
     <ProgressBar
         android:id="@+id/progressBar1"

@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.lnt.rechargelibrary.view.DialogWaitNfc;
 import com.pacewear.common.utils.CacheUtils;
 import com.pacewear.tsm.ITsmBusinessListener;
 import com.pacewear.tsm.TsmService;
@@ -166,19 +165,12 @@ public class TsmTestActivity extends Activity implements OnClickListener, ITsmBu
         });
         switch (arg0.getId()) {
             case R.id.transmit:
-                invokelntdialog();
                 break;
             default:
                 break;
         }
     }
 
-    private void invokelntdialog() {
-        DialogWaitNfc dialogWaitNfc = new DialogWaitNfc(this, R.anim.lntsdk_loading_blue, "haha");
-        dialogWaitNfc.showProgressBar("aaaaa");
-        dialogWaitNfc.dialogShow("bbb");
-//        dialogWaitNfc.setprogressBar(0);
-    }
 
     private String getCardQueryParam(String aid) {
         JSONObject object = new JSONObject();

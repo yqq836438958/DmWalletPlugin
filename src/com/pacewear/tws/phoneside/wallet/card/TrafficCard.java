@@ -119,16 +119,6 @@ public class TrafficCard extends Card implements ITrafficCard {
     }
 
     @Override
-    public int getBalanceTextColor() {
-        return mConfig.mBalanceTxtColor;
-    }
-
-    @Override
-    public int getBalanceUnitIcon() {
-        return mConfig.mBalanceIcon;
-    }
-
-    @Override
     public String getValidity() {
         return mValidity;
     }

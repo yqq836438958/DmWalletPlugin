@@ -44,8 +44,9 @@ public class TrafficCardView extends BaseCard {
 
     @Override
     protected void inflate(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.wallet_base_traffic_card, this,
-                false);
+        View view = null;// LayoutInflater.from(context).inflate(R.layout.wallet_base_traffic_card,
+                         // this,
+        // false);
 
         if (view != null && view.getLayoutParams() != null) {
             LayoutParams lp = (LayoutParams) view.getLayoutParams();
@@ -60,16 +61,13 @@ public class TrafficCardView extends BaseCard {
         super.initView();
 
         mTrafficBalanceLayout = findViewById(R.id.traffic_card_balance_layout);
-        mBalanceIcon = (ImageView) findViewById(R.id.iv_wallet_balance_ic);
+        // mBalanceIcon = (ImageView) findViewById(R.id.iv_wallet_balance_ic);
         mTrafficCardBalance = (TextView) findViewById(R.id.traffic_card_balance);
     }
 
     @Override
     protected void onCardAttached() {
         super.onCardAttached();
-        mBalanceIcon.setImageResource(((ITrafficCard) mCardAttached).getBalanceUnitIcon());
-        mTrafficCardBalance.setTextColor(
-                getResources().getColor(((ITrafficCard) mCardAttached).getBalanceTextColor()));
         mTrafficCardBalance
                 .setText(Utils.getDisplayBalance(((ITrafficCard) mCardAttached).getBalance()));
     }
@@ -108,8 +106,9 @@ public class TrafficCardView extends BaseCard {
     public static void setShowDefaultTag(boolean show) {
         sShowDefaultTag = show;
     }
+
     @Override
-    protected void showCardContent(){
+    protected void showCardContent() {
         if (mHideWhenShowDetail) {
             mTrafficBalanceLayout.setVisibility(View.GONE);
         } else {

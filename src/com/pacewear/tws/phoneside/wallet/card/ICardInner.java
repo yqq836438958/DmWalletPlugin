@@ -29,11 +29,10 @@ public interface ICardInner extends ICard {
                 // Card ICon
                 R.drawable.wallet_ic_shenzhen,
                 // Card Bg
-                R.drawable.wallet_szt_card_bg,
+                R.drawable.panel_card_shenzhen,
                 // Card Balance TextColor
-                R.color.wallet_szt_balance,
-                // Card Balance Unit Icon
-                R.drawable.wallet_ic_balance_gray,
+                // TODO
+                R.drawable.panel_card_shenzhen,
                 // class
                 TrafficCard.class),
 
@@ -50,11 +49,9 @@ public interface ICardInner extends ICard {
                 // Card ICon
                 R.drawable.wallet_ic_beijing,
                 // Card Bg
-                R.drawable.wallet_bjt_card_bg,
+                R.drawable.panel_card_beijing,
                 // Card Balance TextColor
-                R.color.wallet_bjt_balance,
-                // Card Balance Unit Icon
-                R.drawable.wallet_ic_balance,
+                R.drawable.panel_card_beijing_failed,
                 // class
                 TrafficCard.class),
 
@@ -71,14 +68,11 @@ public interface ICardInner extends ICard {
                 // Card ICon
                 R.drawable.wallet_ic_lingnan,
                 // Card Bg
-                R.drawable.wallet_lnt_card_bg,
+                R.drawable.panel_card_lingnantong,
                 // Card Balance TextColor
-                R.color.wallet_lnt_balance,
-                // Card Balance Unit Icon
-                R.drawable.wallet_ic_balance,
+                R.drawable.panel_card_lingnantong_failed,
                 // class
-                TrafficCard.class),
-        ;
+                TrafficCard.class),;
 
         private static final String TAG = "ICard.CONFIG";
 
@@ -98,24 +92,21 @@ public interface ICardInner extends ICard {
         public CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
 
         public int mCardNameRes = 0;
-        
+
         public int mCardIconRes = 0;
-        
+
         public int mCardBgRes = 0;
-        
-        public int mBalanceTxtColor = 0;
 
-        public int mBalanceIcon = 0;
+        public int mCardDisableRes = 0;
 
-        private CONFIG(String aid, CARD_TYPE type, int cardNameRes,int cardIconRes,
-                int cardBgRes,int balanceTxtColor,int balanceIcon,Class<? extends Card> cls) {
+        private CONFIG(String aid, CARD_TYPE type, int cardNameRes, int cardIconRes,
+                int cardBgRes, int cardDisableBgRes, Class<? extends Card> cls) {
             mAID = aid;
             mType = type;
             mCardNameRes = cardNameRes;
             mCardIconRes = cardIconRes;
             mCardBgRes = cardBgRes;
-            mBalanceTxtColor = balanceTxtColor;
-            mBalanceIcon = balanceIcon;
+            mCardDisableRes = cardDisableBgRes;
             mClass = cls;
         }
 
