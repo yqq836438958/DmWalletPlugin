@@ -57,7 +57,6 @@ public class CardListPage extends CardListFragment {
 
     @Override
     protected boolean onUpdate() {
-        // updateCardListInternal();
         return CardManager.getInstance().isReady();
     }
 

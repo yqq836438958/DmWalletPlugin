@@ -21,6 +21,7 @@ import com.pacewear.tws.phoneside.wallet.pay.PayBean;
 import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
+import com.tencent.tws.assistant.app.ActionBar;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class PayChooseActivity extends TwsActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet2_activity_paychoose);
+        ActionBar actionBar = getTwsActionBar();
+        actionBar.setTitle(R.string.wallet_payment);
         Intent intent = getIntent();
         ListView payList = (ListView) findViewById(R.id.lv_paychoose_list);
         Button confirm = (Button) findViewById(R.id.btn_paychoose_confirm);
@@ -104,7 +107,7 @@ public class PayChooseActivity extends TwsActivity {
             PayBean payBean = mPayBeans.get(position);
             item.setIcon(payBean.getIcon());
             item.setDescription(payBean.getName());
-            item.setSelected(mSelectPayType == payBean.getType() ? true : false);
+            item.setItemSelect(mSelectPayType == payBean.getType() ? true : false);
             return contentView;
         }
 

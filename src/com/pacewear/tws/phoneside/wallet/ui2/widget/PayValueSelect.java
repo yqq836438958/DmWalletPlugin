@@ -92,10 +92,10 @@ public class PayValueSelect extends FrameLayout implements OnClickListener {
             mBTLeft.setTextColor(mTextColorUnselected);
             mBTMiddle.setBackgroundResource(mButtonBgUnSelect);// (mColorUnselected);
             mBTMiddle.setTextColor(mTextColorUnselected);
-            mBTRight.setBackgroundColor(mButtonBgUnSelect);
+            mBTRight.setBackgroundResource(mButtonBgUnSelect);
             mBTRight.setTextColor(mTextColorUnselected);
             mCurrentSelected = (Button) current;
-            mCurrentSelected.setBackgroundColor(mBttonBgSelect);
+            mCurrentSelected.setBackgroundResource(mBttonBgSelect);
             mCurrentSelected.setTextColor(mTextColorSelected);
             if (mOnSelectChangeListener != null) {
                 if (mCurrentSelected == mBTLeft) {

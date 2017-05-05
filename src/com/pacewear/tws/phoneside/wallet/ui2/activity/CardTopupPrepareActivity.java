@@ -21,8 +21,10 @@ import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
@@ -108,7 +110,8 @@ public class CardTopupPrepareActivity extends TwsActivity {
         });
 
         setContentView(R.layout.wallet2_activity_cardtopup);
-
+        TrafficCardView cardView = (TrafficCardView) findViewById(R.id.wallet_topup_card_panel);
+        cardView.attachCard(mCard, BaseCardView.SENCE_SINGLE);
         Button confirm = (Button) findViewById(R.id.wallet_charge_confirm);
         confirm.setOnClickListener(new OnClickListener() {
             @Override

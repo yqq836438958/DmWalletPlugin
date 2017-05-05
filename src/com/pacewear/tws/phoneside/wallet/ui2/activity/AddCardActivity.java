@@ -169,7 +169,7 @@ public class AddCardActivity extends TwsActivity {
                 Intent intent = null;
                 switch (newCard.getCardType()) {
                     case TRAFFIC_CARD:
-                        if (!WalletErrToast.checkAll(AddCardActivity.this)) {
+                        if (WalletErrToast.checkAll(AddCardActivity.this)) {
                             return;
                         }
                         intent = new Intent(mContext, CardIssuePrepareActivity.class);

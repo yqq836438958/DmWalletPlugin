@@ -9,7 +9,7 @@
         android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="106dp"
         android:src="@drawable/panel_card_beijing_little" />
 
     <com.pacewear.tws.phoneside.wallet.ui2.widget.CardBusinessLoadingView
@@ -20,25 +20,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp" />
 
-    <!--
-         <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="4dp"
-        android:layout_below="@+id/wallet2_loading_img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp" />
-    -->
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cardloadingview"
+        android:layout_below="@id/wallet2_loading_img"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/wallet_activate_loading" />
+        android:layout_marginTop="48dp"
+        android:text="@string/wallet_activate_loading"
+        android:textColor="@color/wallet_black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tip1"
@@ -48,7 +39,9 @@
         android:layout_marginLeft="78dp"
         android:layout_marginTop="21dp"
         android:singleLine="true"
-        android:text="@string/wallet_loading_notice1" />
+        android:text="@string/wallet_loading_notice1"
+        android:textColor="@color/wallet_gray"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tip2"
@@ -57,7 +50,9 @@
         android:layout_alignLeft="@id/tip1"
         android:layout_below="@id/tip1"
         android:layout_marginTop="8dp"
-        android:text="@string/wallet_loading_notice2" />
+        android:text="@string/wallet_loading_notice2"
+        android:textColor="@color/wallet_gray"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tip3"
@@ -66,6 +61,8 @@
         android:layout_alignLeft="@id/tip2"
         android:layout_below="@id/tip2"
         android:layout_marginTop="8dp"
-        android:text="@string/wallet_loading_notice3" />
+        android:text="@string/wallet_loading_notice3"
+        android:textColor="@color/wallet_gray"
+        android:textSize="12sp" />
 
 </RelativeLayout>

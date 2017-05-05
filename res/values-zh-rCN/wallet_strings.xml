@@ -194,4 +194,6 @@
 
     <!-- 退款 -->
     <string name="wallet_cardlist_refunding">退款中</string>
+    <!-- 支付 -->
+    <string name="wallet_payment">支付</string>
 </resources>

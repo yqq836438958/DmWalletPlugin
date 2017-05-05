@@ -75,7 +75,6 @@ public class TrafficCardActivity extends TwsActivity implements OnWalletUICallba
         list.add(new CardListLoadingPage());
         list.add(new CardListErrPage());
         list.add(new CardListPage());
-        list.add(new CardListErrPage());
         mController = new FragmentController(this, R.id.wallet_content, list);
         mController.update();
     }
