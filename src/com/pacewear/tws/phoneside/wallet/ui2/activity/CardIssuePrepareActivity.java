@@ -17,24 +17,20 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
+import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.common.Utils.WalletCity;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
-import com.pacewear.tws.phoneside.wallet.ui.widget.BottomBar;
-import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect;
-import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
-import com.pacewear.tws.phoneside.wallet.ui.widget.BottomBar.OnBottomBarClickListener;
-import com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect.OnSelectChangeListener;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleCardListItem;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.assistant.widget.CheckBox;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.pay.PayNFCConstants;
 
@@ -60,11 +56,7 @@ public class CardIssuePrepareActivity extends TwsActivity {
 
     private Context mContext = null;
 
-    private BottomBar mBottomBar = null;
-
     private static final int PAY_CHANNEL_WECHAT = 0;
-
-    private int mPayChannelSelected = PAY_CHANNEL_WECHAT;
 
     // 开卡费(单位元)
     private long mActivateFee = 0;
@@ -76,10 +68,13 @@ public class CardIssuePrepareActivity extends TwsActivity {
     private SimpleCardListItem mSelectCityLayout = null;
 
     private final int CODE_REQ_SELECT_CITY = 1;
-
+    private final int CODE_REQ_CHOOSE_PAY = 2;
     private WalletCity mDefaultCity = new WalletCity();
 
     private WalletCity mSelectCity = new WalletCity();
+
+    private TextView mTotalFeeTv = null;
+    private TextView mIssueFeeTv = null;
 
     @Override
     public void finish() {
@@ -134,8 +129,6 @@ public class CardIssuePrepareActivity extends TwsActivity {
         loadUserCityInfo();
         final boolean isNewLntSupport = isLingNanTongNewSupport();
         ActionBar actionBar = getTwsActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.wallet_action_bar_background)));
         actionBar.setTitle(getString(R.string.activate_card_title,
                 mCard.getCardName()));
 
@@ -150,71 +143,24 @@ public class CardIssuePrepareActivity extends TwsActivity {
         });
 
         setContentView(R.layout.wallet2_activity_cardissue);
-
-        mBottomBar = (BottomBar) findViewById(R.id.wallet_bottom_bar);
-        mBottomBar.setMode(BottomBar.MODE_SINGLE_WITH_DESCRIPTION);
-        QRomLog.d(TAG, String.format(getString(R.string.activate_card_fee),
-                mActivateFee / 100));
-        mBottomBar.setSingleSubDesText(String.format(
+        mTotalFeeTv = (TextView) findViewById(R.id.tv_totalfee);
+        mIssueFeeTv = (TextView) findViewById(R.id.tv_issuefee);
+        mIssueFeeTv.setText(String.format(
                 getString(R.string.activate_card_fee), mActivateFee / 100));
-        mBottomBar.setSingleButtonWithDesButtonEnable(false);
-        mBottomBar.setOnBottomBarClickListener(new OnBottomBarClickListener() {
-
-            @Override
-            public boolean onSingleButtonWithDecClick() {
-                if (WalletErrToast.checkAll(CardIssuePrepareActivity.this)) {
-                    return false;
-                }
-                int payType = 0;
-
-                int payScene = isNewLntSupport ? E_PAY_SCENE._EPS_OPEN_CARD_ONLY
-                        : E_PAY_SCENE._EPS_OPEN_CARD;
-                ShowLoadingActivity.launchLoading(
-                        mContext,
-                        mCard.getCardType(),
-                        mCard.getAID(),
-                        payScene,
-                        payType,
-                        mActivateFee,
-                        mActivateFee + mChargeValue,
-                        ShowLoadingActivity.LOADING_TYPE_ACTIVATE_CARD, false);
-                finish();
-                return false;
-            }
-
-            @Override
-            public boolean onSingleButtonClick() {
-                return false;
-            }
-
-            @Override
-            public boolean onCoupleRightButtonClick() {
-                return false;
-            }
-
-            @Override
-            public boolean onCoupleLeftButtonClick() {
-                return false;
-            }
-        });
-
-        mBottomBar.setSingleButtonWithDesButtonEnable(true);
-
-        PayValueSelect mPayValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
-        TextView chargeLabelNoticeTv = (TextView) findViewById(R.id.denomination_notice);
+        PayValueSelect payValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
         if (!isNewLntSupport) {
-            mPayValueSelect.setPayRechargeAmount(mPayRechargeAmount);
-            mPayValueSelect.setOnSelectChangeListener(new OnSelectChangeListener() {
+            payValueSelect.setPayRechargeAmount(mPayRechargeAmount);
+            payValueSelect.setOnSelectChangeListener(new OnSelectChangeListener() {
                 @Override
                 public void onSelectChange(int which) {
                     onSelected(which);
                 }
             });
-            mPayValueSelect.setSelect(OnSelectChangeListener.RIGHT_SELECTED);
+            payValueSelect.setSelect(OnSelectChangeListener.RIGHT_SELECTED);
         } else {
             onSelected(0);
-            chargeLabelNoticeTv.setVisibility(View.GONE);
-            mPayValueSelect.setVisibility(View.GONE);
+            findViewById(R.id.denomination_notice).setVisibility(View.GONE);
+            payValueSelect.setVisibility(View.GONE);
         }
 
         mSelectCityLayout = (SimpleCardListItem) findViewById(
@@ -230,12 +176,16 @@ public class CardIssuePrepareActivity extends TwsActivity {
             }
         });
 
-        ViewGroup layCitySelect = (ViewGroup) findViewById(R.id.wallet_city_lay);
-        if (CONFIG.LINGNANTONG.mAID.equals(mCard.getAID())) {
-            layCitySelect.setVisibility(View.VISIBLE);
-        } else {
-            layCitySelect.setVisibility(View.GONE);
-        }
+        findViewById(R.id.wallet_city_lay)
+                .setVisibility(isNewLntSupport ? View.VISIBLE : View.GONE);
+        Button confirm = (Button) findViewById(R.id.confirm);
+        confirm.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                goPayChoosePage(mActivateFee + mChargeValue - mActivityAmount);
+            }
+        });
     }
 
     private boolean isLingNanTongNewSupport() {
@@ -258,8 +208,15 @@ public class CardIssuePrepareActivity extends TwsActivity {
                 break;
         }
 
-        mBottomBar.setSingleButtonWithDesMainDes("¥"
+        mTotalFeeTv.setText("¥"
                 + Utils.getDisplayBalance(mActivateFee + mChargeValue - mActivityAmount));
+    }
+
+    private void goPayChoosePage(long chargeVal) {
+        Intent intent = new Intent(this, PayChooseActivity.class);
+        intent.putExtra(PayChooseActivity.PAY_AMOUNT, chargeVal);
+        intent.putExtra(PayChooseActivity.PAY_DESC, mCard.getCardName());
+        startActivityForResult(intent, CODE_REQ_CHOOSE_PAY);
     }
 
     @Override
@@ -281,9 +238,29 @@ public class CardIssuePrepareActivity extends TwsActivity {
                     }
                 }
                 break;
+            case CODE_REQ_CHOOSE_PAY:
+                if (resultCode == RESULT_OK) {
+                    goIssuePageInternal(data.getIntExtra(PayChooseActivity.PAY_TYPE, 0),
+                            data.getLongExtra(PayChooseActivity.PAY_AMOUNT, 0L));
+                } else {
+                    Toast.makeText(WalletApp.getHostAppContext(), "cancel pay", Toast.LENGTH_LONG)
+                            .show();
+                }
             default:
                 break;
         }
+    }
+
+    private void goIssuePageInternal(int payType, long totalFee) {
+        Intent intent = new Intent(this, BusinessLoadingActivity.class);
+        int scene = isLingNanTongNewSupport() ? E_PAY_SCENE._EPS_OPEN_CARD_ONLY
+                : E_PAY_SCENE._EPS_OPEN_CARD;
+        OrderBean bean = OrderBean.genNewInstance(mCard.getAID(), payType,
+                scene, mActivateFee,
+                totalFee, false);
+        intent.putExtra(BusinessLoadingActivity.KEY_ORDER_BEAN, bean);
+        startActivity(intent);
+        finish();
     }
 
     private void goSelectCity() {
