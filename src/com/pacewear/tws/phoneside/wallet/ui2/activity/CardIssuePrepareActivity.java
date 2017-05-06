@@ -21,14 +21,17 @@ import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICardInner.CONFIG;
+import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.common.Utils.WalletCity;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleCardListItem;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView;
 import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
@@ -145,8 +148,11 @@ public class CardIssuePrepareActivity extends TwsActivity {
         setContentView(R.layout.wallet2_activity_cardissue);
         mTotalFeeTv = (TextView) findViewById(R.id.tv_totalfee);
         mIssueFeeTv = (TextView) findViewById(R.id.tv_issuefee);
+        mTotalFeeTv.setTypeface(FontsOverride.getDigitFont(mContext));
         mIssueFeeTv.setText(String.format(
                 getString(R.string.activate_card_fee), mActivateFee / 100));
+        TrafficCardView cardView = (TrafficCardView) findViewById(R.id.wallet_card_detail_card);
+        cardView.attachCard(mCard, BaseCardView.SENCE_SINGLE);
         PayValueSelect payValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
         if (!isNewLntSupport) {
             payValueSelect.setPayRechargeAmount(mPayRechargeAmount);

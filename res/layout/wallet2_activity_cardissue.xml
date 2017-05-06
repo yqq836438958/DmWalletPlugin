@@ -5,10 +5,9 @@
 
     <com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView
         android:id="@+id/wallet_card_detail_card"
-        android:layout_width="320dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
         android:id="@+id/wallet_city_lay"
@@ -40,11 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/wallet_card_detail_card"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
         android:text="@string/denomination_notice"
         android:textColor="@color/wallet_dark"
         android:textSize="14sp" />
 
-    <com.pacewear.tws.phoneside.wallet.ui.widget.PayValueSelect
+    <com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect
         android:id="@+id/pay_value_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:background="#FFFAFAFA" >
+        android:background="#FFFAFAFA"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
 
         <TextView
             android:id="@+id/tv_totalfee"

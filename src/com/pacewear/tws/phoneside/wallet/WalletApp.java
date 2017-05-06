@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.sdkadapter.SdkAdapter;
 import com.pacewear.tws.phoneside.wallet.watch.WatchBaseHandler;
 import com.tencent.tws.framework.common.CommandHandler;
@@ -37,12 +38,22 @@ public class WalletApp extends Application {
         sGlobalCtx = ctx;
         registerCommandHandler();
         SdkAdapter.init();
-//        x.Ext.init(this); // TODO 后续由lntsdk去实现
+        loadCustFonts();
+        // x.Ext.init(this); // TODO 后续由lntsdk去实现
     }
-    public static Context getHostAppContext(){
+
+    private void loadCustFonts() {
+//        FontsOverride.setDefaultFont(this, "DEFAULT", "Akrobat-SemiBold.ttf");
+//        FontsOverride.setDefaultFont(this, "MONOSPACE", "Akrobat-SemiBold.ttf");
+//        FontsOverride.setDefaultFont(this, "SERIF", "Akrobat-SemiBold.ttf");
+//        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Akrobat-SemiBold.ttf");
+    }
+
+    public static Context getHostAppContext() {
         return HostProxy.getApplication().getApplicationContext();
     }
-    public static Context getAppContext(){
+
+    public static Context getAppContext() {
         return sGlobalCtx;
     }
 

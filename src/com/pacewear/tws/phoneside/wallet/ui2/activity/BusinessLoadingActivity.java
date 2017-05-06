@@ -5,6 +5,8 @@ import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.ImageView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
@@ -17,10 +19,10 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
+import com.tencent.tws.assistant.app.ActionBar;
 
 public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICallback {
     private boolean mIsTopupInvoke = false;
-    private String mAid = null;
     private OrderBean mOrderBean = null;
     private boolean mIsFirstIn = true;
     private Handler mUIHandler = null;
@@ -37,12 +39,22 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet2_activity_loading);
-
         mUIHandler = new Handler();
         mOrderBean = (OrderBean) getIntent().getSerializableExtra(KEY_ORDER_BEAN);
+        initViews();
         if (!startBusisnessInternal(mOrderBean)) {
             finish();
         }
+        WalletHandlerManager.getInstance().register(mOrderBean.getCardInstanceId(),
+                ACTVITY_SCENE.SCENE_ISSE_TOPUP,
+                this);
+    }
+
+    private void initViews() {
+        getTwsActionBar().hide();
+        ImageView cardBg = (ImageView) findViewById(R.id.wallet2_loading_img);
+        ActionBar actionBar = getTwsActionBar();
+        actionBar.setTitle(R.string.wallet_payment);
     }
 
     @Override
@@ -75,10 +87,12 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
 
     @Override
     public void onUIUpdate(MODULE_CALLBACK module, final int ret, boolean forUpdateUI) {
+        Log.d("yqq", "onupdate:"+ret);
         mUIHandler.removeCallbacks(mHandleResumeEvent);
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
+                Log.d("yqq", "gotoresultpage");
                 gotoResultPage(ret);
             }
         });
@@ -87,7 +101,7 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
     private void onHandleResumeEvent() {
         if (PayManager.getInstanceInner().isPaying()) {
             PayManager.getInstanceInner().cancelPay();
-            ICard card = CardManager.getInstance().getCard(mAid);
+            ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
             IOrder order = OrderManager.getInstance()
                     .getLastOrder(card.getAID());
             if (order == null || order.isInValidOrder()) {
@@ -101,7 +115,8 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
 
     private void gotoResultPage(int result) {
         Intent intent = new Intent(this, BusinessResultActivity.class);
-        intent.putExtra("ret", result);
+        intent.putExtra(BusinessLoadingActivity.KEY_EXE_RESULT, result);
+        intent.putExtra(KEY_ORDER_BEAN, mOrderBean);
         startActivity(intent);
         finish();
     }

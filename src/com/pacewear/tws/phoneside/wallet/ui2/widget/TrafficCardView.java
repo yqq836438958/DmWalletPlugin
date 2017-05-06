@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.ITrafficCard;
+import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 
 public class TrafficCardView extends BaseCardView {
@@ -31,6 +32,7 @@ public class TrafficCardView extends BaseCardView {
     @Override
     protected void onPostInit() {
         mTrafficCardBalance = (TextView) findViewById(R.id.traffic_card_balance);
+        mTrafficCardBalance.setTypeface(FontsOverride.getDigitFont(mContext));
     }
 
     @Override

@@ -15,8 +15,6 @@ import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.bean.ModuleBean;
 import com.pacewear.tws.phoneside.wallet.launcher.ModuleManager;
 import com.pacewear.tws.phoneside.wallet.launcher.ModuleManager.IMouduleCallback;
-import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
-import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
 import com.tencent.tws.assistant.app.ActionBar;
@@ -38,7 +36,6 @@ public class MainActivity extends TwsActivity implements IMouduleCallback {
 
     @Override
     protected void onDestroy() {
-        WalletHandlerManager.getInstance().unregister(ACTVITY_SCENE.SCENE_SYNCALL);
         super.onDestroy();
     }
 

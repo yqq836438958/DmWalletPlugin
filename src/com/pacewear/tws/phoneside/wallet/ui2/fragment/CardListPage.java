@@ -4,6 +4,7 @@ package com.pacewear.tws.phoneside.wallet.ui2.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class CardListPage extends CardListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        Log.d("yqq", "oncreateview");
         View view = inflater.inflate(R.layout.wallet2_view_cardlist_normal,
                 container, false);
         ListView lView = (ListView) view.findViewById(R.id.listView);
@@ -57,20 +59,25 @@ public class CardListPage extends CardListFragment {
 
     @Override
     protected boolean onUpdate() {
+        Log.d("yqq", "onupdate");
+        updateCardListInternal();
         return CardManager.getInstance().isReady();
     }
 
     @Override
     public void onResume() {
+        Log.d("yqq", "onresume");
         super.onResume();
         updateCardListInternal();
     }
 
     private void updateCardListInternal() {
+        Log.d("yqq", "updateCardListInternal");
         mListCard.clear();
         List<ICard> list = CardManager.getInstance().getCard(mType);
         String whiteList = Utils.getCacheWhiteList();
         if (list != null && list.size() > 0) {
+            Log.d("yqq", "updateCardListInternal.....2");
             int size = list.size();
             ICard card = null;
             IOrder order = null;

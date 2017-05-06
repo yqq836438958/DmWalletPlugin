@@ -33,13 +33,18 @@ public class TrafficCardActivity extends TwsActivity implements OnWalletUICallba
     private boolean mIs3rdIssueCard = false;
 
     @Override
-    public void onCreate(Bundle args) {
+    protected void onCreate(Bundle args) {
         super.onCreate(args);
         setContentView(R.layout.wallet2_home);
         init();
-        WalletHandlerManager.getInstance().requestFocus(ACTVITY_SCENE.SCENE_SYNCALL);
         onPostCreate();
         loadIntentIfNeed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WalletHandlerManager.getInstance().requestFocus(ACTVITY_SCENE.SCENE_SYNCALL);
     }
 
     @Override
@@ -93,6 +98,7 @@ public class TrafficCardActivity extends TwsActivity implements OnWalletUICallba
         CardManager.getInstance().forceUpdate(false);
         OrderManager.getInstance().forceSyncTrafficConfig(true);
         OrderManager.getInstance().forceSyncOrder(true);
+        WalletHandlerManager.getInstance().register(null, ACTVITY_SCENE.SCENE_SYNCALL, this);
     }
 
     private boolean isBeiJingIssueCardOk() {

@@ -64,6 +64,10 @@
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.TrafficCardActivity"
             android:screenOrientation="portrait" >
         </activity>
+		<activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.SetDefaultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.AddCardActivity"
             android:screenOrientation="portrait" >

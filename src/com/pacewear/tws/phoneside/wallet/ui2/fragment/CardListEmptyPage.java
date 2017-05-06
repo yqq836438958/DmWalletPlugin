@@ -2,6 +2,12 @@
 package com.pacewear.tws.phoneside.wallet.ui2.fragment;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
+import com.pacewear.tws.phoneside.wallet.card.ICardManager;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.present.ICardModulePresent;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.AddCardActivity;
 
@@ -49,7 +55,23 @@ public class CardListEmptyPage extends CardListFragment {
 
     @Override
     protected boolean onUpdate() {
-        // TODO Auto-generated method stub
-        return false;
+        ICardManager manager = CardManager.getInstance();
+        if (!manager.isReady()) {
+            return false;
+        }
+        ICard[] cards = manager.getCard();
+        boolean isEmpty = true;
+        for (ICard card : cards) {
+            if (card.getInstallStatus() == INSTALL_STATUS.PERSONAL) {
+                isEmpty = false;
+                break;
+            }
+            IOrder order = OrderManager.getInstance().getLastOrder(card.getAID());
+            if (order != null && (order.isIssueFail() || order.isCardTopFail())) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
     }
 }

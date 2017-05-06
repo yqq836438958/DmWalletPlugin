@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,8 +20,8 @@ import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.BusinessContext;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.Result;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
-import com.tencent.tws.assistant.widget.TwsButton;
 
 import TRom.E_PAY_SCENE;
 import TRom.E_PAY_TYPE;
@@ -36,7 +37,7 @@ public class BusinessResultActivity extends TwsActivity {
     private TextView mTitle;
     private TextView mDesc;
     private TextView mRefundTip;
-    private TwsButton mButton;
+    private Button mButton;
     private OrderBean mOrderBean = null;
     private View.OnClickListener mCloseEvent = new OnClickListener() {
 
@@ -75,13 +76,14 @@ public class BusinessResultActivity extends TwsActivity {
         mIcon = (ImageView) findViewById(R.id.wallet_result_ic);
         mTitle = (TextView) findViewById(R.id.wallet_result_caption);
         mDesc = (TextView) findViewById(R.id.wallet_result_description);
-        mButton = (TwsButton) findViewById(R.id.wallet_operation_result_close);
+        mButton = (Button) findViewById(R.id.wallet_operation_result_close);
         mRefundTip = (TextView) findViewById(R.id.wallet_operation_refund);
     }
 
     private void init() {
         Intent intent = getIntent();
         if (intent == null) {
+            finish();
             return;
         }
         mOrderBean = (OrderBean) intent
@@ -89,12 +91,24 @@ public class BusinessResultActivity extends TwsActivity {
         int resultType = intent.getIntExtra(BusinessLoadingActivity.KEY_EXE_RESULT, 0);
         boolean exeSuc = (resultType == RESULT_SUCCESS);
         boolean orderCanRetry = !exeSuc && !isOrderInValid();
+        ActionBar actionBar = getTwsActionBar();
+        actionBar.setTitle("");
+        Button actionLeftBt = (Button) actionBar.getCloseView(false);
+        actionLeftBt.setText(getResources().getString(R.string.wallet_select_default_cancel));
+        actionLeftBt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
+        if (exeSuc) {
+            actionBar.hide();
+        }
         mIcon.setImageResource(exeSuc ? R.drawable.wallet_operate_success
                 : R.drawable.wallet_operate_failed);
         Result tilteResult = new BusinessResultHandler().invoke(getBusinessContext(resultType));
         mTitle.setText(tilteResult.getTitleRes());
         mDesc.setText(R.string.wallet_operation_failed_tip);
-        UIHelper.setTwsButton(mButton, 14);
         mButton.setText((orderCanRetry)
                 ? getString(R.string.wallet_result_retry)
                 : getString(R.string.wallet_operation_result_close));
