@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
@@ -26,6 +27,8 @@ public class SimpleCardListItem extends FrameLayout {
     private TextView mItemText = null;
 
     private ImageView mItemSelected = null;
+
+    private ProgressBar mItemLoading = null;
 
     protected ICard mCardAttached = null;
 
@@ -47,6 +50,7 @@ public class SimpleCardListItem extends FrameLayout {
         mItemIcon = (ImageView) findViewById(R.id.simple_list_item_icon);
         mItemText = (TextView) findViewById(R.id.simple_list_item_text);
         mItemSelected = (ImageView) findViewById(R.id.simple_list_item_selected);
+        mItemLoading = (ProgressBar) findViewById(R.id.simple_list_item_loading);
     }
 
     public final void attachCard(ICard card) {
@@ -72,13 +76,20 @@ public class SimpleCardListItem extends FrameLayout {
     }
 
     public void setRightBitmap(int resId) {
-        mItemSelected.setImageResource(resId);
-        mItemSelected.setVisibility(View.VISIBLE);
+        if (resId != 0) {
+            mItemSelected.setImageResource(resId);
+            mItemSelected.setVisibility(VISIBLE);
+            mItemLoading.setVisibility(GONE);
+        } else {
+            mItemSelected.setVisibility(GONE);
+            mItemLoading.setVisibility(GONE);
+        }
     }
 
     public final boolean setItemSelect(boolean selected) {
         if (selected) {
-            mItemSelected.setVisibility(View.VISIBLE);
+            mItemSelected.setVisibility(VISIBLE);
+            mItemLoading.setVisibility(GONE);
         } else {
             mItemSelected.setVisibility(View.GONE);
         }
@@ -86,4 +97,12 @@ public class SimpleCardListItem extends FrameLayout {
         return true;
     }
 
+    public void showItemLoading() {
+        mItemLoading.setVisibility(VISIBLE);
+        mItemSelected.setVisibility(GONE);
+    }
+
+    public void hideItemLoading() {
+        mItemLoading.setVisibility(GONE);
+    }
 }

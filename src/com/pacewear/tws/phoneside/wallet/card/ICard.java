@@ -143,6 +143,11 @@ public interface ICard {
      * @return
      */
     public int getCardDisableBg();
+
+    public int getCardLiteBg();
+
+    public int getCardDisableLiteBg();
+
     /**
      * getExtra_Info
      * 

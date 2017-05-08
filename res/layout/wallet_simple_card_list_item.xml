@@ -33,4 +33,14 @@
         android:src="@drawable/wallet_simple_list_item_selected"
         android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/simple_list_item_loading"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:indeterminateDrawable="@drawable/tws_common_little_progress_bar_bg"
+        android:indeterminateDuration="1000"
+        android:visibility="gone" />
+
 </RelativeLayout>

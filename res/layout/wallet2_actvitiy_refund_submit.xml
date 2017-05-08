@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="提交你的信息，以便客服验证和退款。" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wallet_edittext_bg"
+        android:ems="10"
+        android:hint="输入姓名"
+        android:paddingLeft="16sp"
+        android:textColorHint="#33000000"
+        android:textSize="16sp" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wallet_edittext_bg"
+        android:ems="10"
+        android:hint="输入号码"
+        android:paddingLeft="16sp"
+        android:textColorHint="#33000000"
+        android:textSize="16sp" >
+    </EditText>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/phone"
+        android:layout_below="@+id/phone"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wallet_refund_submit_disable"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</RelativeLayout>

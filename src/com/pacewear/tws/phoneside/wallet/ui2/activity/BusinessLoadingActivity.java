@@ -55,6 +55,9 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
         ImageView cardBg = (ImageView) findViewById(R.id.wallet2_loading_img);
         ActionBar actionBar = getTwsActionBar();
         actionBar.setTitle(R.string.wallet_payment);
+        ImageView cardbg = (ImageView) findViewById(R.id.wallet2_loading_img);
+        ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
+        cardbg.setImageResource(card.getCardLiteBg());
     }
 
     @Override
@@ -87,7 +90,7 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
 
     @Override
     public void onUIUpdate(MODULE_CALLBACK module, final int ret, boolean forUpdateUI) {
-        Log.d("yqq", "onupdate:"+ret);
+        Log.d("yqq", "onupdate:" + ret);
         mUIHandler.removeCallbacks(mHandleResumeEvent);
         mUIHandler.post(new Runnable() {
             @Override

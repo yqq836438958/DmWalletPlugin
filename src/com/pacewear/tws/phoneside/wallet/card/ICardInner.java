@@ -32,7 +32,12 @@ public interface ICardInner extends ICard {
                 R.drawable.panel_card_shenzhen,
                 // Card Balance TextColor
                 // TODO
-                R.drawable.panel_card_shenzhen,
+                R.drawable.panel_card_shenzhen_failed,
+                // Card Bg
+                R.drawable.panel_card_shenzhen_little,
+                // Card Balance TextColor
+                // TODO
+                R.drawable.panel_card_shenzhen_little_failed,
                 // class
                 TrafficCard.class),
 
@@ -52,6 +57,11 @@ public interface ICardInner extends ICard {
                 R.drawable.panel_card_beijing,
                 // Card Balance TextColor
                 R.drawable.panel_card_beijing_failed,
+                // Card Bg
+                R.drawable.panel_card_beijing_little,
+                // Card Balance TextColor
+                // TODO
+                R.drawable.panel_card_beijing_little_failed,
                 // class
                 TrafficCard.class),
 
@@ -71,6 +81,10 @@ public interface ICardInner extends ICard {
                 R.drawable.panel_card_lingnantong,
                 // Card Balance TextColor
                 R.drawable.panel_card_lingnantong_failed,
+                R.drawable.panel_card_lingnantong_little,
+                // Card Balance TextColor
+                // TODO
+                R.drawable.panel_card_lingnantong_little_failed,
                 // class
                 TrafficCard.class),;
 
@@ -99,14 +113,21 @@ public interface ICardInner extends ICard {
 
         public int mCardDisableRes = 0;
 
+        public int mCardLiteBgRes = 0;
+
+        public int mCardLiteDisableRes = 0;
+
         private CONFIG(String aid, CARD_TYPE type, int cardNameRes, int cardIconRes,
-                int cardBgRes, int cardDisableBgRes, Class<? extends Card> cls) {
+                int cardBgRes, int cardDisableBgRes, int cardLiteBgRes, int cardDisableLiteBgRes,
+                Class<? extends Card> cls) {
             mAID = aid;
             mType = type;
             mCardNameRes = cardNameRes;
             mCardIconRes = cardIconRes;
             mCardBgRes = cardBgRes;
             mCardDisableRes = cardDisableBgRes;
+            mCardLiteBgRes = cardLiteBgRes;
+            mCardLiteDisableRes = cardDisableLiteBgRes;
             mClass = cls;
         }
 

@@ -14,7 +14,7 @@ import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
-import com.pacewear.tws.phoneside.wallet.common.UIHelper;
+import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.BusinessContext;
@@ -33,7 +33,8 @@ public class BusinessResultActivity extends TwsActivity {
     public static final String EXTRA_RESULT_TYPE = "EXTRA_RESULT_TYPE";
     public static final int RESULT_SUCCESS = 0;
     public static final int RESULT_FAILED = -1;
-    private ImageView mIcon;
+    private ImageView mTopupResultIcon;
+    private ImageView mIssueResultIcon;
     private TextView mTitle;
     private TextView mDesc;
     private TextView mRefundTip;
@@ -73,7 +74,8 @@ public class BusinessResultActivity extends TwsActivity {
     }
 
     private void initViews() {
-        mIcon = (ImageView) findViewById(R.id.wallet_result_ic);
+        mTopupResultIcon = (ImageView) findViewById(R.id.wallet_result_ic);
+        mIssueResultIcon = (ImageView) findViewById(R.id.wallet_issue_result_ic);
         mTitle = (TextView) findViewById(R.id.wallet_result_caption);
         mDesc = (TextView) findViewById(R.id.wallet_result_description);
         mButton = (Button) findViewById(R.id.wallet_operation_result_close);
@@ -104,8 +106,15 @@ public class BusinessResultActivity extends TwsActivity {
         if (exeSuc) {
             actionBar.hide();
         }
-        mIcon.setImageResource(exeSuc ? R.drawable.wallet_operate_success
+        mTopupResultIcon.setImageResource(exeSuc ? R.drawable.wallet_operate_success
                 : R.drawable.wallet_operate_failed);
+        mTopupResultIcon.setVisibility(
+                mOrderBean.getPaySene() == E_PAY_SCENE._EPS_STAT ? View.VISIBLE : View.GONE);
+        mIssueResultIcon.setVisibility(
+                mOrderBean.getPaySene() != E_PAY_SCENE._EPS_STAT ? View.VISIBLE : View.GONE);
+        ImageView cardbg = (ImageView) findViewById(R.id.wallet_issue_result_ic);
+        ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
+        cardbg.setImageResource(exeSuc ? card.getCardLiteBg() : card.getCardDisableLiteBg());
         Result tilteResult = new BusinessResultHandler().invoke(getBusinessContext(resultType));
         mTitle.setText(tilteResult.getTitleRes());
         mDesc.setText(R.string.wallet_operation_failed_tip);

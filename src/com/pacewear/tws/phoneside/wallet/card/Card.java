@@ -401,6 +401,16 @@ public abstract class Card implements ICard, ICardInner {
     }
 
     @Override
+    public int getCardLiteBg() {
+        return mConfig.mCardLiteBgRes;
+    }
+
+    @Override
+    public int getCardDisableLiteBg() {
+        return mConfig.mCardLiteDisableRes;
+    }
+
+    @Override
     public String getExtra_Info() {
         StringBuilder builder = new StringBuilder();
         boolean isEmpty = true;

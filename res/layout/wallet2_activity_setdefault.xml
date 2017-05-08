@@ -9,4 +9,16 @@
         android:layout_height="wrap_content" >
     </ListView>
 
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lv_cardlist"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="默认卡是手表上的默认支付交通卡，你也可以在手表的交通卡应用中设置默认卡。"
+        android:textColor="@color/wallet_gray"
+        android:textSize="12sp" />
+
 </RelativeLayout>
