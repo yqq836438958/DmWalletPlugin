@@ -1,7 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,9 +18,8 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
-import com.tencent.tws.assistant.app.ActionBar;
 
-public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICallback {
+public class BusinessLoadingActivity extends TwsWalletActivity implements OnWalletUICallback {
     private boolean mIsTopupInvoke = false;
     private OrderBean mOrderBean = null;
     private boolean mIsFirstIn = true;
@@ -51,10 +49,7 @@ public class BusinessLoadingActivity extends TwsActivity implements OnWalletUICa
     }
 
     private void initViews() {
-        getTwsActionBar().hide();
-        ImageView cardBg = (ImageView) findViewById(R.id.wallet2_loading_img);
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(R.string.wallet_payment);
+        hideActionBar();
         ImageView cardbg = (ImageView) findViewById(R.id.wallet2_loading_img);
         ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
         cardbg.setImageResource(card.getCardLiteBg());

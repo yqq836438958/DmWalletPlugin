@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.transaction.CardTransactItem;
 
@@ -28,7 +29,7 @@ public class TransactionView extends RelativeLayout {
 
     public TransactionView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        LayoutInflater.from(context).inflate(R.layout.wallet_cardtransact_views, this);
+        LayoutInflater.from(context).inflate(R.layout.wallet2_cardtransact_views, this);
         initViews();
         init(context);
     }
@@ -100,10 +101,11 @@ public class TransactionView extends RelativeLayout {
             if (contentView == null) {
                 holder = new ViewHolder();
                 contentView = LayoutInflater.from(mContext)
-                        .inflate(R.layout.wallet_cardtransact_item, viewGroup, false);
+                        .inflate(R.layout.wallet2_cardtransact_item, viewGroup, false);
                 holder.tvTime = (TextView) contentView.findViewById(R.id.wallet_tv_time);
                 holder.tvType = (TextView) contentView.findViewById(R.id.wallet_tv_type);
                 holder.tvAmount = (TextView) contentView.findViewById(R.id.wallet_tv_amount);
+                holder.tvAmount.setTypeface(FontsOverride.getDigitFont(mContext));
                 contentView.setTag(holder);
             } else {
                 holder = (ViewHolder) contentView.getTag();

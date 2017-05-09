@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 这里配置sharedUserId的作用，是为了告诉宿主程序，这个插件需要依赖宿主程序的class和资源
-如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
+如果不配置这个参数，表示这个插件是一个独立插件，即本身可以独立安装运行
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pacewear.tws.phoneside.wallet"
@@ -64,7 +64,7 @@
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.TrafficCardActivity"
             android:screenOrientation="portrait" >
         </activity>
-		<activity
+        <activity
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.SetDefaultActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -76,7 +76,7 @@
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.TrafficCardDetailActivity"
             android:screenOrientation="portrait" >
         </activity>
-                <activity
+        <activity
             android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.CardIssuePrepareActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -97,12 +97,24 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.HelpActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.RefundSubmitActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.RefundResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity"
             android:label="@string/wallet_city_select"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pacewear.tws.phoneside.wallet.ui.CardTransactActivity"
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.CardTransactActivity"
             android:label="@string/wallet_transact_label"
             android:screenOrientation="portrait" >
         </activity>
@@ -111,7 +123,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity"
+            android:name="com.pacewear.tws.phoneside.wallet.ui2.activity.PhoneVerifyActivity"
             android:label="@string/wallet_infoverify"
             android:screenOrientation="portrait" >
         </activity>
@@ -119,7 +131,7 @@
             android:name="com.pacewear.tws.phoneside.wallet.tsm.TsmTestActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <!-- LING NAN TONG SDK-->
+        <!-- LING NAN TONG SDK -->
         <activity
             android:name="com.lnt.rechargelibrary.RechargeActivity"
             android:screenOrientation="portrait" >

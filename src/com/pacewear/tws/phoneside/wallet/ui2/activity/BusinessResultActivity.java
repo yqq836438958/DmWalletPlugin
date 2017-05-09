@@ -1,7 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,14 +19,12 @@ import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.BusinessContext;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.Result;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
-import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
 
 import TRom.E_PAY_SCENE;
-import TRom.E_PAY_TYPE;
 import qrom.component.log.QRomLog;
 
-public class BusinessResultActivity extends TwsActivity {
+public class BusinessResultActivity extends TwsWalletActivity {
     public static final String TAG = BusinessResultActivity.class
             .getSimpleName();
     public static final String EXTRA_RESULT_TYPE = "EXTRA_RESULT_TYPE";
@@ -93,18 +90,10 @@ public class BusinessResultActivity extends TwsActivity {
         int resultType = intent.getIntExtra(BusinessLoadingActivity.KEY_EXE_RESULT, 0);
         boolean exeSuc = (resultType == RESULT_SUCCESS);
         boolean orderCanRetry = !exeSuc && !isOrderInValid();
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle("");
-        Button actionLeftBt = (Button) actionBar.getCloseView(false);
-        actionLeftBt.setText(getResources().getString(R.string.wallet_select_default_cancel));
-        actionLeftBt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
         if (exeSuc) {
-            actionBar.hide();
+            hideActionBar();
+        } else {
+            setActionBar("", new LeftCancleRightHelpStagy());
         }
         mTopupResultIcon.setImageResource(exeSuc ? R.drawable.wallet_operate_success
                 : R.drawable.wallet_operate_failed);

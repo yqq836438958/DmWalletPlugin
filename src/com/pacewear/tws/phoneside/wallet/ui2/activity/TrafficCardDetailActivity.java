@@ -25,9 +25,6 @@ import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.ui.CardTransactActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ChargeCardActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
@@ -185,17 +182,6 @@ public class TrafficCardDetailActivity extends TwsActivity
         }
         if (mOrder != null && mOrder.isCardTopFail()) {
             // 充值失败，点击继续充值 todo
-            ShowLoadingActivity.launchLoading(
-                    mContext,
-                    mCard.getCardType(),
-                    mCard.getAID(),
-                    mOrder.getOrderReqParam().getEPayScene(),
-                    mOrder.getOrderReqParam()
-                            .getEPayType(),
-                    mOrder.getOrderReqParam()
-                            .getITotalFee(),
-                    ShowLoadingActivity.LOADING_TYPE_CHARGE_CARD,
-                    true);
             return;
         }
         String today = Utils.getCurrentTime();

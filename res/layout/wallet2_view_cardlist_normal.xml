@@ -6,15 +6,16 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:divider="@null" >
     </ListView>
 
     <RelativeLayout
         android:id="@+id/cardlist_bottom"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#FFFAFAFA"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:background="#FFFAFAFA" >
 
         <ImageView
             android:id="@+id/imageView1"

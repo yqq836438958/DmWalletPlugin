@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/wallet_overall_background" >
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/wallet_result_ic"
@@ -11,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="174dp"
+        android:layout_marginTop="106dp"
         android:src="@drawable/wallet_operate_success"
         android:visibility="gone" />
 
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="174dp"
+        android:layout_marginTop="106dp"
         android:src="@drawable/panel_card_lingnantong_little" />
 
     <TextView
@@ -29,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="354dp"
+        android:layout_marginTop="274dp"
         android:gravity="center"
         android:text="开卡成功"
         android:textColor="@color/wallet_black"

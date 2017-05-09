@@ -68,7 +68,7 @@
         android:layout_height="48dp"
         android:layout_centerVertical="true"
         android:background="#80000000"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/card_fail_tip"

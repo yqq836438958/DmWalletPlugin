@@ -15,22 +15,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.card.ICardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
-import com.pacewear.tws.phoneside.wallet.order.Order;
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.present.ICardModulePresent;
+import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessLoadingActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.SetDefaultActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.TrafficCardDetailActivity;
-import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseViewChain.BaseViewHandler;
 import com.tencent.tws.pay.PayNFCConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseCardView extends FrameLayout {
     public static final int SENCE_LIST = 0;
     public static final int SENCE_SINGLE = 1;
+    public static final int SENCE_ONLYBG = 2;
     protected final Context mContext;
     private ImageView mWalletCard = null;
     private RelativeLayout mNetFaceShade = null;
@@ -40,10 +43,10 @@ public abstract class BaseCardView extends FrameLayout {
     private ProgressBar mLoadingSpinner = null;
     private Button mDefaultTag = null;
     protected ICard mCardAttached = null;
-    private Order mOrder = null;
+    private IOrder mOrder = null;
     // private ICardModulePresent mCardModulePresent = null;
-    private BaseViewChain mCardViewChain = null;
     private int mDisplayScene = SENCE_LIST;
+    private List<BaseViewHandler> mBaseViewHandlers = new ArrayList<BaseViewHandler>();
 
     public BaseCardView(Context context) {
         this(context, null);
@@ -64,13 +67,12 @@ public abstract class BaseCardView extends FrameLayout {
         LayoutInflater.from(mContext).inflate(getFlatLayout(), this);
         initView();
         onPostInit();
-        mCardViewChain = new BaseViewChain();
-        mCardViewChain.add(mCardLoading);
-        mCardViewChain.add(mCardInfoSyncFail);
-        mCardViewChain.add(mCardRefunding);
-        mCardViewChain.add(mCardIssueFail);
-        mCardViewChain.add(mCardTopupFail);
-        mCardViewChain.add(mCardNormal);
+        mBaseViewHandlers.add(mCardLoading);
+        mBaseViewHandlers.add(mCardRefunding);
+        mBaseViewHandlers.add(mCardIssueFail);
+        mBaseViewHandlers.add(mCardTopupFail);
+        mBaseViewHandlers.add(mCardNormal);
+        mBaseViewHandlers.add(mCardInfoSyncFail);
     }
 
     protected void initView() {
@@ -96,7 +98,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return mOrder != null && mOrder.isIssueFail();
+            return mOrder != null && mOrder.isIssueFail() && mDisplayScene != SENCE_ONLYBG;
         }
 
         @Override
@@ -119,7 +121,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return mOrder != null && mOrder.isCardTopFail();
+            return mOrder != null && mOrder.isCardTopFail() && mDisplayScene != SENCE_ONLYBG;
         }
     };
 
@@ -133,7 +135,9 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return !mCardAttached.isReady();
+            ICardManager cardManager = CardManager.getInstance();
+            return (!cardManager.isReady() && !cardManager.isInSyncProcess())
+                    && mDisplayScene != SENCE_ONLYBG;
         }
     };
 
@@ -148,7 +152,7 @@ public abstract class BaseCardView extends FrameLayout {
         @Override
         public boolean isConditionReady() {
             // TODO Auto-generated method stub
-            return false;
+            return mDisplayScene != SENCE_ONLYBG;
         }
     };
 
@@ -163,8 +167,9 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return CardManager.getInstance().isInSyncProcess()
-                    || OrderManager.getInstance().isInOrderSyncProcess();
+            return (CardManager.getInstance().isInSyncProcess()
+                    || OrderManager.getInstance().isInOrderSyncProcess())
+                    && mDisplayScene != SENCE_ONLYBG;
         }
     };
     // 退款中
@@ -178,7 +183,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return false;
+            return /* mDisplayScene != SENCE_ONLYBG */ false;
         }
     };
 
@@ -192,7 +197,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return true;
+            return mCardAttached.isReady() || (mDisplayScene == SENCE_ONLYBG);
         }
     };
     private OnClickListener jumpDetailPage = new OnClickListener() {
@@ -209,8 +214,10 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onClick(View v) {
-            // TODO Auto-generated method stub
-
+            Intent intent = new Intent(mContext, BusinessLoadingActivity.class);
+            intent.putExtra(BusinessLoadingActivity.KEY_ORDER_BEAN,
+                    OrderBean.genByLastOrder(mCardAttached.getAID(), mOrder));
+            mContext.startActivity(intent);
         }
     };
 
@@ -219,8 +226,18 @@ public abstract class BaseCardView extends FrameLayout {
         mDisplayScene = scene;
         changeCardBackgroud(true);
         showDefaultCardTag();
-        mCardViewChain.invoke();
+        mOrder = OrderManager.getInstance().getLastOrder(card.getAID());
+        invokeCardViewHandler();
         onUpdate(scene);
+    }
+
+    private void invokeCardViewHandler() {
+        for (BaseViewHandler viewHandler : mBaseViewHandlers) {
+            if (viewHandler.isConditionReady()) {
+                viewHandler.onHandle();
+                break;
+            }
+        }
     }
 
     private void showNetShadeText(int resId) {
@@ -278,4 +295,10 @@ public abstract class BaseCardView extends FrameLayout {
     protected abstract void onPostInit();
 
     protected abstract void onUpdate(int scene);
+
+    interface BaseViewHandler {
+        public boolean isConditionReady();
+
+        public void onHandle();
+    }
 }

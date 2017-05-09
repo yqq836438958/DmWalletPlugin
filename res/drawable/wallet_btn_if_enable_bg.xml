@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+ <item android:drawable="@drawable/button_pressed" android:state_enabled="true" android:state_pressed="true" android:state_window_focused="false"/>
+ pressed,enable等多个属性
+    <item android:drawable="@drawable/button_focused" android:state_focused="true"/>
+ focused
+    <item android:drawable="@drawable/button_focused" android:state_hovered="true"/>
+    -->
+    <!-- hovered -->
+    <item android:drawable="@drawable/wallet_common_button_disable" android:state_enabled="false"/>
+    <item android:drawable="@drawable/wallet_common_button_normal"/>
+    <!-- default -->
+
+</selector>

@@ -1,7 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +16,12 @@ import com.pacewear.tws.phoneside.wallet.launcher.ModuleManager;
 import com.pacewear.tws.phoneside.wallet.launcher.ModuleManager.IMouduleCallback;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
-import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
 
 import java.util.List;
 
 //plan 2.0
-public class MainActivity extends TwsActivity implements IMouduleCallback {
+public class MainActivity extends TwsWalletActivity implements IMouduleCallback {
     private ModuleListAdapter mAdapter = null;
 
     @Override
@@ -44,8 +42,7 @@ public class MainActivity extends TwsActivity implements IMouduleCallback {
     }
 
     private void initViews() {
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(R.string.nfc_wallet);
+        setActionBar(R.string.nfc_wallet, new NormalStagy());
         ListView listView = (ListView) findViewById(R.id.module_list);
         mAdapter = new ModuleListAdapter(null);
         listView.setAdapter(mAdapter);

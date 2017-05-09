@@ -1,19 +1,14 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
@@ -26,26 +21,23 @@ import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.common.Utils.WalletCity;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity;
-import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView;
 import com.qq.taf.jce.JceStruct;
-import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.pay.PayNFCConstants;
 
 import java.util.ArrayList;
 
 import TRom.E_PAY_SCENE;
-import TRom.E_PAY_TYPE;
 import TRom.PayConfig;
 import TRom.PayRechargeAmount;
 import qrom.component.log.QRomLog;
 
-public class CardIssuePrepareActivity extends TwsActivity {
+public class CardIssuePrepareActivity extends TwsWalletActivity {
 
     public static final String TAG = "ActivateCardActivity";
 
@@ -58,8 +50,6 @@ public class CardIssuePrepareActivity extends TwsActivity {
     ArrayList<PayRechargeAmount> mPayRechargeAmount = null;
 
     private Context mContext = null;
-
-    private static final int PAY_CHANNEL_WECHAT = 0;
 
     // 开卡费(单位元)
     private long mActivateFee = 0;
@@ -131,19 +121,8 @@ public class CardIssuePrepareActivity extends TwsActivity {
         }
         loadUserCityInfo();
         final boolean isNewLntSupport = isLingNanTongNewSupport();
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(getString(R.string.activate_card_title,
-                mCard.getCardName()));
-
-        Button actionLeftBt = (Button) actionBar.getCloseView(false);
-        actionLeftBt.setText(getResources().getString(
-                R.string.wallet_select_default_cancel));
-        actionLeftBt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
+        setActionBar(getString(R.string.activate_card_title,
+                mCard.getCardName()), new LeftCancleRightHelpStagy());
 
         setContentView(R.layout.wallet2_activity_cardissue);
         mTotalFeeTv = (TextView) findViewById(R.id.tv_totalfee);

@@ -1,7 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,18 +16,20 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
+import com.pacewear.tws.phoneside.wallet.ui2.activity.TwsWalletActivity.NormalStagy;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListErrPage;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListFragment;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListPage;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListFragment.FragmentController;
 import com.tencent.tws.assistant.app.ActionBar;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListLoadingPage;
+import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListNoConnectPage;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListNotSupportPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrafficCardActivity extends TwsActivity implements OnWalletUICallback {
+public class TrafficCardActivity extends TwsWalletActivity implements OnWalletUICallback {
     private FragmentController mController = null;
     private boolean mIs3rdIssueCard = false;
 
@@ -73,9 +74,9 @@ public class TrafficCardActivity extends TwsActivity implements OnWalletUICallba
     }
 
     private void init() {
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(R.string.nfc_traffic_card);
+        setActionBar(R.string.nfc_traffic_card, new RightHelpStagy());
         List<CardListFragment> list = new ArrayList<CardListFragment>();
+        list.add(new CardListNoConnectPage());
         list.add(new CardListNotSupportPage());
         list.add(new CardListLoadingPage());
         list.add(new CardListErrPage());

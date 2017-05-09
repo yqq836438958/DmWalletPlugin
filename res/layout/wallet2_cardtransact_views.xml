@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp" >
+
+    <ListView
+        android:id="@+id/wallet_lv_transact"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:cacheColorHint="@null"
+        android:divider="@color/wallet_listview_divider_color"
+        android:dividerHeight="@dimen/wallet_listview_divider_height"
+        android:listSelector="#00000000" />
+
+    <TextView
+        android:id="@+id/wallet_tv_transact_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/wallet_transact_empty"
+        android:textColor="#7fffffff"
+        android:textSize="14sp" />
+
+    <ProgressBar
+        android:id="@+id/wallet_transact_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/tws_common_progress_bar_bg"
+        android:indeterminateDuration="700"
+        android:maxHeight="48dp"
+        android:maxWidth="48dp"
+        android:minHeight="12dp"
+        android:minWidth="12dp" />
+
+</RelativeLayout>

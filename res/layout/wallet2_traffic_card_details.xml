@@ -73,11 +73,6 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/wallet_listview_divider_height"
-                    android:background="@color/wallet_listview_divider_color" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -112,11 +107,6 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/wallet_listview_divider_height"
-                    android:background="@color/wallet_listview_divider_color" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -149,11 +139,6 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:visibility="visible" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/wallet_listview_divider_height"
-                    android:background="@color/wallet_listview_divider_color" />
 
                 <TextView
                     android:layout_width="wrap_content"

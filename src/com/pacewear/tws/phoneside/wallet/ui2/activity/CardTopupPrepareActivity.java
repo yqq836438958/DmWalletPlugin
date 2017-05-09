@@ -2,8 +2,6 @@
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
 import android.app.Activity;
-import android.app.TwsActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,19 +24,17 @@ import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView;
 import com.qq.taf.jce.JceStruct;
-import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.assistant.widget.Toast;
 import com.tencent.tws.pay.PayNFCConstants;
 
 import java.util.ArrayList;
 
 import TRom.E_PAY_SCENE;
-import TRom.E_PAY_TYPE;
 import TRom.PayConfig;
 import TRom.PayRechargeAmount;
 import qrom.component.log.QRomLog;
 
-public class CardTopupPrepareActivity extends TwsActivity {
+public class CardTopupPrepareActivity extends TwsWalletActivity {
 
     public static final String TAG = CardTopupPrepareActivity.class.getSimpleName();
 
@@ -95,19 +91,8 @@ public class CardTopupPrepareActivity extends TwsActivity {
             finish();
             return;
         }
-
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(getString(R.string.charge_card_title, mCard.getCardName()));
-
-        Button actionLeftBt = (Button) actionBar.getCloseView(false);
-        actionLeftBt.setText(getResources().getString(
-                R.string.wallet_select_default_cancel));
-        actionLeftBt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
+        setActionBar(getString(R.string.charge_card_title, mCard.getCardName()),
+                new LeftCancleStagy());
 
         setContentView(R.layout.wallet2_activity_cardtopup);
         TrafficCardView cardView = (TrafficCardView) findViewById(R.id.wallet_topup_card_panel);

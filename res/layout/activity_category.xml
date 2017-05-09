@@ -7,7 +7,14 @@
     <ListView
         android:id="@+id/module_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wallet_listview_divider_height"
+        android:layout_below="@+id/module_list"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/wallet_listview_divider_color" />
 
 </RelativeLayout>

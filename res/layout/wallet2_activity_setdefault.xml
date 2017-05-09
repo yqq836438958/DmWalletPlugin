@@ -10,10 +10,19 @@
     </ListView>
 
     <TextView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wallet_listview_divider_height"
+        android:layout_below="@+id/lv_cardlist"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/wallet_listview_divider_color" />
+
+    <TextView
         android:id="@+id/tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lv_cardlist"
+        android:layout_below="@id/divider"
         android:layout_marginTop="16dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"

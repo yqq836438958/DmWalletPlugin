@@ -1,7 +1,6 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
-import android.app.TwsActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.pacewear.tws.phoneside.wallet.R;
-import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
@@ -20,14 +18,12 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SC
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
-import com.tencent.tws.assistant.app.ActionBar;
-import com.tencent.tws.assistant.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // plan 2.0
-public class SetDefaultActivity extends TwsActivity implements OnWalletUICallback {
+public class SetDefaultActivity extends TwsWalletActivity implements OnWalletUICallback {
     private CardListAdapter mCardListAdapter = null;
     private boolean isLoading = false;
     private int mLastClickIndex = -1;
@@ -39,8 +35,7 @@ public class SetDefaultActivity extends TwsActivity implements OnWalletUICallbac
         ListView listView = (ListView) findViewById(R.id.lv_cardlist);
         mCardListAdapter = new CardListAdapter(getPersonalCards());
         listView.setAdapter(mCardListAdapter);
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(R.string.wallet_set_default_card);
+        setActionBar(R.string.wallet_set_default_card, new LeftCancleStagy());
         WalletHandlerManager.getInstance().register("", ACTVITY_SCENE.SCENE_SWITCHCARD, this);
     }
 
@@ -105,10 +100,6 @@ public class SetDefaultActivity extends TwsActivity implements OnWalletUICallbac
             return item;
         }
 
-        private void hideAllItemRightRes(SimpleCardListItem item) {
-            item.hideItemLoading();
-            item.setRightBitmap(0);
-        }
     }
 
     @Override

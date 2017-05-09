@@ -33,9 +33,11 @@ public class ModuleManager {
                 R.string.wallet_launcher_trafficcard,
                 "com.pacewear.tws.phoneside.wallet.ui2.activity.TrafficCardActivity"));
         // TODO ADD OTHER LAUNCHER
-        list.add(new ModuleBean(R.drawable.ic_bank_card, R.string.wallet_launcher_bankcard, ""));
+        list.add(new ModuleBean(R.drawable.ic_bank_card, R.string.wallet_launcher_bankcard,
+                "com.pacewear.tws.phoneside.wallet.ui2.activity.PhoneVerifyActivity"));
         list.add(
-                new ModuleBean(R.drawable.ic_campus_card, R.string.wallet_launcher_schoolcard, ""));
+                new ModuleBean(R.drawable.ic_campus_card, R.string.wallet_launcher_schoolcard,
+                        "com.pacewear.tws.phoneside.wallet.ui2.activity.RefundSubmitActivity"));
         callback.onCallback(list);
     }
 

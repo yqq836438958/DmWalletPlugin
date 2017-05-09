@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tws="http://schemas.android.com/apk/res/com.tencent.tws.gdevicemanager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp" >
+
+    <EditText
+        android:id="@+id/wallet_phonenum_val"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wallet_edittext_bg"
+        android:hint="输入手机号"
+        android:includeFontPadding="false"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingLeft="16sp"
+        android:text=""
+        android:textColor="@color/wallet_black"
+        android:textColorHint="#33000000"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/wallet_verifycode_lay"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/wallet_phonenum_val"
+        android:layout_marginTop="20dp" >
+
+        <EditText
+            android:id="@+id/wallet_verifycode_val"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/wallet_edittext_bg"
+            android:hint="输入验证码"
+            android:includeFontPadding="false"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingLeft="16sp"
+            android:text=""
+            android:textColor="@color/wallet_black"
+            android:textColorHint="#33000000"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="198dp"
+            android:src="@drawable/line_input" />
+
+        <com.pacewear.tws.phoneside.wallet.ui2.widget.TimerButton
+            android:id="@+id/wallet_verify_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imageView1" >
+        </com.pacewear.tws.phoneside.wallet.ui2.widget.TimerButton>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/phone_submit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/wallet_verifycode_lay"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wallet_btn_if_enable_bg"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</RelativeLayout>

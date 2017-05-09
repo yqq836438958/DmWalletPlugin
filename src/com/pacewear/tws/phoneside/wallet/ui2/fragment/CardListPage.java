@@ -95,7 +95,10 @@ public class CardListPage extends CardListFragment {
                 }
             }
         }
-
+        if (mAddNewCardLayout != null) {
+            mAddNewCardLayout.setVisibility(
+                    Utils.getWhiteListSize() > mListCard.size() ? View.VISIBLE : View.GONE);
+        }
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }

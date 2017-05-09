@@ -2,20 +2,15 @@
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
 import android.app.Activity;
-import android.app.TwsActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
@@ -31,14 +26,12 @@ import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
-import com.tencent.tws.assistant.app.ActionBar;
 import com.tencent.tws.pay.PayNFCConstants;
-import com.tencent.tws.phoneside.phoneverify.PhoneVerifyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddCardActivity extends TwsActivity {
+public class AddCardActivity extends TwsWalletActivity {
     public static final String TAG = AddCardActivity.class.getSimpleName();
 
     private CARD_TYPE mType = CARD_TYPE.TRAFFIC_CARD;
@@ -70,33 +63,10 @@ public class AddCardActivity extends TwsActivity {
             mType = CARD_TYPE.values()[_type];
         }
 
-        setContentView(R.layout.wallet_select_add_card);
+        setContentView(R.layout.wallet2_select_add_card);
         mListView = (ListView) findViewById(R.id.card_list);
 
-        TextView tip = (TextView) findViewById(R.id.wallet_select_add_card_tip);
-
-        ActionBar actionBar = getTwsActionBar();
-        switch (mType) {
-            case TRAFFIC_CARD:
-                actionBar.setTitle(getString(R.string.select_add_traffic_card_title));
-                tip.setText(R.string.select_add_traffic_card_tip);
-                break;
-            case BANK_CARD:
-                actionBar.setTitle(getString(R.string.select_add_bank_card_title));
-                tip.setText(R.string.select_add_bank_card_tip);
-                break;
-            default:
-                return;
-        }
-
-        Button actionLeftBt = (Button) actionBar.getCloseView(false);
-        actionLeftBt.setText(getResources().getString(R.string.wallet_select_default_cancel));
-        actionLeftBt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
+        setActionBar(R.string.select_add_traffic_card_title,new LeftCancleRightHelpStagy());
 
         ArrayList<ICard> cards = CardManager.getInstanceInner().getCard(mType);
 

@@ -8,17 +8,21 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.DisplayUtil;
 import com.pacewear.tws.phoneside.wallet.common.UIHelper;
-import com.tencent.tws.assistant.widget.TwsButton;
 
-public class TimerButton extends TwsButton implements OnClickListener {
+public class TimerButton extends TextView implements OnClickListener {
     private long lenght = 60 * 1000;
     private String textafter = null;
     private String textbefore = null;
@@ -29,7 +33,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
     private OnClickListener mOnclickListener = null;
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
-    private long mLeftTime;
+    private long mLeftTime = 0;
 
     public TimerButton(Context context) {
         this(context, null);
@@ -40,7 +44,9 @@ public class TimerButton extends TwsButton implements OnClickListener {
         textInit = context.getString(R.string.wallet_get_verify);
         textbefore = context.getString(R.string.wallet_reget_verify_reset);
         textafter = context.getString(R.string.wallet_reget_verify);
-        // setTextNoPadding();
+        getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        this.setGravity(Gravity.CENTER);
+        this.setTextSize(14);
         setText(textInit);
         setOnClickListener(this);
     }
@@ -51,7 +57,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
             TimerButton.this.setText(getAfterBtnText(mLeftTime / 1000));
             mLeftTime -= 1000;
             if (mLeftTime < 0) {
-                UIHelper.setTwsButtonEnable(TimerButton.this, true);
+                setButtonEnableInternal(true);
                 TimerButton.this.setText(textbefore);
                 clearTimer();
             }
@@ -99,7 +105,7 @@ public class TimerButton extends TwsButton implements OnClickListener {
         initTimer();
         this.setText(getAfterBtnText(mLeftTime / 1000));
         mTimer.schedule(mTimerTask, 0, 1000);
-        UIHelper.setTwsButtonEnable(TimerButton.this, false);
+        setButtonEnableInternal(false);
     }
 
     public void onDestroy() {
@@ -121,8 +127,21 @@ public class TimerButton extends TwsButton implements OnClickListener {
             this.mLeftTime = Math.abs(time);
             mTimer.schedule(mTimerTask, 0, 1000);
             this.setText(getAfterBtnText(0));
-            UIHelper.setTwsButtonEnable(TimerButton.this, false);
+            setButtonEnableInternal(false);
         }
+    }
+
+    public void setButtonEnable(boolean enable) {
+        boolean idleState = (mLeftTime <= 0);
+        setButtonEnableInternal(enable && idleState);
+    }
+
+    private void setButtonEnableInternal(boolean enable) {
+        super.setEnabled(enable);
+        // int colorGreen = getResources().getColor(R.color.wallet_green);
+        // int colorLightGray = getResources().getColor(R.color.wallet_light_gray);
+        // setTextColor(enable ? colorGreen : colorLightGray);
+        setTextColor(enable ? Color.parseColor("#FF00BB00") : Color.parseColor("#33000000"));
     }
 
     private String getAfterBtnText(long ms) {

@@ -3,7 +3,11 @@ package com.pacewear.tws.phoneside.wallet.bean;
 
 import android.R.integer;
 
+import com.pacewear.tws.phoneside.wallet.order.IOrder;
+
 import java.io.Serializable;
+
+import TRom.OrderReqParam;
 
 public class OrderBean implements Serializable {
 
@@ -56,6 +60,18 @@ public class OrderBean implements Serializable {
         bean.iPaySene = scene;
         bean.lIssueFee = actFee;
         bean.lTopupFee = chargeFee;
+        return bean;
+    }
+
+    public static OrderBean genByLastOrder(String aid, IOrder order) {
+        OrderBean bean = new OrderBean();
+        OrderReqParam reqParam = order.getOrderReqParam();
+        bean.sAid = aid;
+        bean.iPayType = reqParam.getEPayType();
+        bean.iPaySene = reqParam.getEPayScene();
+        bean.lIssueFee = reqParam.getIOpenCardFee();
+        bean.lTopupFee = reqParam.getITotalFee();
+        bean.bRetry = true;
         return bean;
     }
 }

@@ -2,7 +2,6 @@
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
 import android.app.Activity;
-import android.app.TwsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,16 +15,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.pacewear.tws.phoneside.wallet.R;
+import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.pay.PayBean;
 import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
-import com.tencent.tws.assistant.app.ActionBar;
 
 import java.util.List;
 
-public class PayChooseActivity extends TwsActivity {
+public class PayChooseActivity extends TwsWalletActivity {
     private int mSelectPayType = 0;
     public static final String PAY_TYPE = "pay_type";
     public static final String PAY_AMOUNT = "pay_amount";
@@ -35,8 +34,7 @@ public class PayChooseActivity extends TwsActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet2_activity_paychoose);
-        ActionBar actionBar = getTwsActionBar();
-        actionBar.setTitle(R.string.wallet_payment);
+        setActionBar(R.string.wallet_payment);
         Intent intent = getIntent();
         ListView payList = (ListView) findViewById(R.id.lv_paychoose_list);
         Button confirm = (Button) findViewById(R.id.btn_paychoose_confirm);
@@ -46,6 +44,7 @@ public class PayChooseActivity extends TwsActivity {
                 PayManager.getInstanceInner().getPayBeans());
         payList.setAdapter(paySelectAdapter);
         final long lAmount = intent.getLongExtra(PAY_AMOUNT, 0L);
+        payMoney.setTypeface(FontsOverride.getDigitFont(PayChooseActivity.this));
         payMoney.setText("￥" + Utils.getDisplayBalance(lAmount));
         desc.setText(intent.getStringExtra(PAY_DESC));
         confirm.setOnClickListener(new OnClickListener() {

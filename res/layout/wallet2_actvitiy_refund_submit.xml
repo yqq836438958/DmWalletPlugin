@@ -32,16 +32,18 @@
         android:id="@+id/phone"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignLeft="@+id/name"
-        android:layout_below="@+id/name"
+        android:layout_below="@id/name"
         android:layout_marginTop="20dp"
         android:background="@drawable/wallet_edittext_bg"
-        android:ems="10"
-        android:hint="输入号码"
+        android:hint="输入手机号"
+        android:includeFontPadding="false"
+        android:inputType="phone"
+        android:maxLength="11"
         android:paddingLeft="16sp"
+        android:text=""
+        android:textColor="@color/wallet_black"
         android:textColorHint="#33000000"
-        android:textSize="16sp" >
-    </EditText>
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/submit"
@@ -50,7 +52,7 @@
         android:layout_alignLeft="@+id/phone"
         android:layout_below="@+id/phone"
         android:layout_marginTop="20dp"
-        android:background="@drawable/wallet_refund_submit_disable"
+        android:background="@drawable/wallet_btn_if_enable_bg"
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="16sp" />

@@ -29,6 +29,7 @@ public abstract class WalletBaseHandler {
     protected String mSceneAID = "";
     protected ACTVITY_SCENE[] mWhiteListScenes;
     protected MODULE_CALLBACK mCurModule;
+    private static Object sLockObj = new Object();
 
     public static interface OnWalletUICallback {
         public void onUIUpdate(MODULE_CALLBACK module, int ret, boolean forUpdateUI);
@@ -71,14 +72,18 @@ public abstract class WalletBaseHandler {
         if (!isInWhiteList(scene)) {
             return;
         }
-        mSceneAID = (aid == null) ? "" : aid;
-        if (!mUiCallbackMaps.containsValue(callback)) {
-            mUiCallbackMaps.put(scene, callback);
+        synchronized (sLockObj) {
+            mSceneAID = (aid == null) ? "" : aid;
+            if (!mUiCallbackMaps.containsValue(callback)) {
+                mUiCallbackMaps.put(scene, callback);
+            }
         }
     }
 
     public final void unregistCallback(ACTVITY_SCENE scene) {
-        mUiCallbackMaps.remove(scene);
+        synchronized (sLockObj) {
+            mUiCallbackMaps.remove(scene);
+        }
     }
 
     private void handleScene() {
@@ -96,16 +101,18 @@ public abstract class WalletBaseHandler {
     }
 
     private void postResultToUI() {
-        Iterator iter = mUiCallbackMaps.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            ACTVITY_SCENE scene = (ACTVITY_SCENE) entry.getKey();
-            OnWalletUICallback callback = (OnWalletUICallback) entry.getValue();
-            if (scene == mCurSence) {
-                if (callback != null) {
-                    callback.onUIUpdate(mCurModule, mEventResult, mForceUpdateUI);
+        synchronized (sLockObj) {
+            Iterator iter = mUiCallbackMaps.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry entry = (Map.Entry) iter.next();
+                ACTVITY_SCENE scene = (ACTVITY_SCENE) entry.getKey();
+                OnWalletUICallback callback = (OnWalletUICallback) entry.getValue();
+                if (scene == mCurSence) {
+                    if (callback != null) {
+                        callback.onUIUpdate(mCurModule, mEventResult, mForceUpdateUI);
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
