@@ -20,7 +20,6 @@ import com.pacewear.tws.phoneside.wallet.common.FontsOverride;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.common.Utils.WalletCity;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
-import com.pacewear.tws.phoneside.wallet.ui.SelectCityActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.PayValueSelect.OnSelectChangeListener;
@@ -131,7 +130,7 @@ public class CardIssuePrepareActivity extends TwsWalletActivity {
         mIssueFeeTv.setText(String.format(
                 getString(R.string.activate_card_fee), mActivateFee / 100));
         TrafficCardView cardView = (TrafficCardView) findViewById(R.id.wallet_card_detail_card);
-        cardView.attachCard(mCard, BaseCardView.SENCE_SINGLE);
+        cardView.attachCard(mCard, BaseCardView.SENCE_LITE);
         PayValueSelect payValueSelect = (PayValueSelect) findViewById(R.id.pay_value_select);
         if (!isNewLntSupport) {
             payValueSelect.setPayRechargeAmount(mPayRechargeAmount);

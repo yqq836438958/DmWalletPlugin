@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,9 @@ import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard.ACTIVATION_STATUS;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
+import com.pacewear.tws.phoneside.wallet.order.IOrderManager;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessLoadingActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.SetDefaultActivity;
@@ -33,7 +36,7 @@ import java.util.List;
 public abstract class BaseCardView extends FrameLayout {
     public static final int SENCE_LIST = 0;
     public static final int SENCE_SINGLE = 1;
-    public static final int SENCE_ONLYBG = 2;
+    public static final int SENCE_LITE = 2;
     protected final Context mContext;
     private ImageView mWalletCard = null;
     private RelativeLayout mNetFaceShade = null;
@@ -67,12 +70,15 @@ public abstract class BaseCardView extends FrameLayout {
         LayoutInflater.from(mContext).inflate(getFlatLayout(), this);
         initView();
         onPostInit();
+        mBaseViewHandlers.add(mCardLiteDisplay);
         mBaseViewHandlers.add(mCardLoading);
-        mBaseViewHandlers.add(mCardRefunding);
+        mBaseViewHandlers.add(mCardIssueRefunding);
+        mBaseViewHandlers.add(mCardTopupRefunding);
         mBaseViewHandlers.add(mCardIssueFail);
         mBaseViewHandlers.add(mCardTopupFail);
         mBaseViewHandlers.add(mCardNormal);
         mBaseViewHandlers.add(mCardInfoSyncFail);
+        mBaseViewHandlers.add(mNetError);
     }
 
     protected void initView() {
@@ -93,39 +99,55 @@ public abstract class BaseCardView extends FrameLayout {
         });
     }
 
-    // 开卡失败显示界面
-    private BaseViewHandler mCardIssueFail = new BaseViewHandler() {
+    private BaseViewHandler mCardLiteDisplay = new BaseViewHandler() {
+
+        @Override
+        public void onHandle() {
+            showNormal();
+            setOnClickEvent(null);
+        }
 
         @Override
         public boolean isConditionReady() {
-            return mOrder != null && mOrder.isIssueFail() && mDisplayScene != SENCE_ONLYBG;
+            return mDisplayScene == SENCE_LITE;
+        }
+    };
+    // 开卡失败显示界面
+    private BaseViewHandler mCardIssueFail = new BaseViewHandler(BaseViewHandler.ISSUEFAIL) {
+
+        @Override
+        public boolean isConditionReady() {
+            return mOrder != null && mOrder.isIssueFail();
         }
 
         @Override
         public void onHandle() {
-            showNetShadeText(R.string.activate_card_continue);
+            showNetShadeText(R.string.wallet_issue_fail_tip);
             changeCardBackgroud(false);
+            showDefaultCardTag(false);
             setOnClickEvent(jumpContinueIssue);
         }
 
     };
 
     // 充值失败显示界面
-    private BaseViewHandler mCardTopupFail = new BaseViewHandler() {
+    private BaseViewHandler mCardTopupFail = new BaseViewHandler(BaseViewHandler.TOPUPFAIL) {
 
         @Override
         public void onHandle() {
-            showNetShadeText(R.string.charge_card_continue);
+            Log.d("yqq", "mCardTopupFail,onHandle,aid:" + mCardAttached.getAID());
+            showNetShadeText(R.string.wallet_topup_fail_tip);
             setOnClickEvent(jumpDetailPage);
         }
 
         @Override
         public boolean isConditionReady() {
-            return mOrder != null && mOrder.isCardTopFail() && mDisplayScene != SENCE_ONLYBG;
+            Log.d("yqq", "mCardTopupFail isConditionReady,aid:" + mCardAttached.getAID());
+            return mOrder != null && mOrder.isCardTopFail();
         }
     };
 
-    private BaseViewHandler mCardInfoSyncFail = new BaseViewHandler() {
+    private BaseViewHandler mCardInfoSyncFail = new BaseViewHandler(BaseViewHandler.CARD_FAIL) {
 
         @Override
         public void onHandle() {
@@ -136,23 +158,22 @@ public abstract class BaseCardView extends FrameLayout {
         @Override
         public boolean isConditionReady() {
             ICardManager cardManager = CardManager.getInstance();
-            return (!cardManager.isReady() && !cardManager.isInSyncProcess())
-                    && mDisplayScene != SENCE_ONLYBG;
+            return (!cardManager.isReady() && !cardManager.isInSyncProcess());
         }
     };
 
-    private BaseViewHandler mNetError = new BaseViewHandler() {
+    private BaseViewHandler mNetError = new BaseViewHandler(BaseViewHandler.NET_FAIL) {
 
         @Override
         public void onHandle() {
-            // TODO Auto-generated method stub
-
+            showNetShadeText(R.string.wallet_sync_err_network);
+            setOnClickEvent(jumpDetailPage);
         }
 
         @Override
         public boolean isConditionReady() {
-            // TODO Auto-generated method stub
-            return mDisplayScene != SENCE_ONLYBG;
+            IOrderManager orderManager = OrderManager.getInstance();
+            return !orderManager.isOrderReady();
         }
     };
 
@@ -161,19 +182,23 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardLoading！！！,aid:" + mCardAttached.getAID());
             showLoading();
             setOnClickEvent(null);
         }
 
         @Override
         public boolean isConditionReady() {
-            return (CardManager.getInstance().isInSyncProcess()
-                    || OrderManager.getInstance().isInOrderSyncProcess())
-                    && mDisplayScene != SENCE_ONLYBG;
+            boolean isLoading = (CardManager.getInstance().isInSyncProcess()
+                    || OrderManager.getInstance().isInOrderSyncProcess()
+                    || !EnvManager.getInstance().isCPLCReady());
+            Log.d("yqq",
+                    "mCardLoading！！！,aid:" + mCardAttached.getAID() + ",isloading..." + isLoading);
+            return isLoading;
         }
     };
     // 退款中
-    private BaseViewHandler mCardRefunding = new BaseViewHandler() {
+    private BaseViewHandler mCardTopupRefunding = new BaseViewHandler(BaseViewHandler.TOPUPFAIL) {
 
         @Override
         public void onHandle() {
@@ -183,11 +208,25 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return /* mDisplayScene != SENCE_ONLYBG */ false;
+            return mOrder != null && mOrder.isCardTopFail() && mOrder.isInRefunding();
         }
     };
+    private BaseViewHandler mCardIssueRefunding = new BaseViewHandler(BaseViewHandler.ISSUEFAIL) {
+        @Override
+        public void onHandle() {
+            showNetShadeText(R.string.wallet_cardlist_refunding);
+            changeCardBackgroud(false);
+            showDefaultCardTag(false);
+            setOnClickEvent(null);
+        }
 
-    private BaseViewHandler mCardNormal = new BaseViewHandler() {
+        @Override
+        public boolean isConditionReady() {
+            return mOrder != null && mOrder.isIssueFail()
+                    && mOrder.isInRefunding();
+        }
+    };
+    private BaseViewHandler mCardNormal = new BaseViewHandler(BaseViewHandler.NORMAL) {
 
         @Override
         public void onHandle() {
@@ -197,7 +236,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            return mCardAttached.isReady() || (mDisplayScene == SENCE_ONLYBG);
+            return mCardAttached.isReady();
         }
     };
     private OnClickListener jumpDetailPage = new OnClickListener() {
@@ -225,19 +264,22 @@ public abstract class BaseCardView extends FrameLayout {
         mCardAttached = card;
         mDisplayScene = scene;
         changeCardBackgroud(true);
-        showDefaultCardTag();
+        showDefaultCardTag(true);
         mOrder = OrderManager.getInstance().getLastOrder(card.getAID());
-        invokeCardViewHandler();
-        onUpdate(scene);
+        int type = invokeCardViewHandler();
+        onUpdate(type);
     }
 
-    private void invokeCardViewHandler() {
+    private int invokeCardViewHandler() {
+        int targetType = 0;
         for (BaseViewHandler viewHandler : mBaseViewHandlers) {
             if (viewHandler.isConditionReady()) {
                 viewHandler.onHandle();
+                targetType = viewHandler.getType();
                 break;
             }
         }
+        return targetType;
     }
 
     private void showNetShadeText(int resId) {
@@ -267,7 +309,7 @@ public abstract class BaseCardView extends FrameLayout {
         mLoadingSpinner.setVisibility(View.GONE);
     }
 
-    private void showDefaultCardTag() {
+    private void showDefaultCardTag(boolean showDefault) {
         boolean isDefault = mCardAttached.getActivationStatus() == ACTIVATION_STATUS.ACTIVATED;
         ICard[] cardList = CardManager.getInstance().getCard();
         int totalSize = (cardList != null) ? cardList.length : 0;
@@ -296,9 +338,28 @@ public abstract class BaseCardView extends FrameLayout {
 
     protected abstract void onUpdate(int scene);
 
-    interface BaseViewHandler {
-        public boolean isConditionReady();
+    protected abstract class BaseViewHandler {
+        public static final int NET_FAIL = 1;
+        public static final int CARD_FAIL = 2;
+        public static final int ISSUEFAIL = 3;
+        public static final int TOPUPFAIL = 4;
+        public static final int NORMAL = 5;
+        private int type = 0;
 
-        public void onHandle();
+        public BaseViewHandler(int type) {
+            this.type = type;
+        }
+
+        public BaseViewHandler() {
+
+        }
+
+        protected abstract boolean isConditionReady();
+
+        protected abstract void onHandle();
+
+        public final int getType() {
+            return type;
+        }
     }
 }

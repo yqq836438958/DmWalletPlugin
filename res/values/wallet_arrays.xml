@@ -55,6 +55,7 @@
 	<string-array name="wallet_card_detail_more">
         <item>Order Complaint</item>
         <item>Complaint Query</item>
+        <item>Common Question</item>
         <item>Cancel</item>
     </string-array>
 </resources>

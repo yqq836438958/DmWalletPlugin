@@ -17,6 +17,7 @@ import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SC
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.TwsWalletActivity.NormalStagy;
+import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListEmptyPage;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListErrPage;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListFragment;
 import com.pacewear.tws.phoneside.wallet.ui2.fragment.CardListPage;
@@ -45,6 +46,7 @@ public class TrafficCardActivity extends TwsWalletActivity implements OnWalletUI
     @Override
     protected void onResume() {
         super.onResume();
+        mController.update();
         WalletHandlerManager.getInstance().requestFocus(ACTVITY_SCENE.SCENE_SYNCALL);
     }
 
@@ -79,6 +81,7 @@ public class TrafficCardActivity extends TwsWalletActivity implements OnWalletUI
         list.add(new CardListNoConnectPage());
         list.add(new CardListNotSupportPage());
         list.add(new CardListLoadingPage());
+        list.add(new CardListEmptyPage());
         list.add(new CardListErrPage());
         list.add(new CardListPage());
         mController = new FragmentController(this, R.id.wallet_content, list);

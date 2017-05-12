@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import qrom.component.log.QRomLog;
 import TRom.BusCardStatusInfo;
 import TRom.E_PAY_ORDER_STATUS_APP;
+import TRom.E_PAY_REFUND_STATUS;
 import TRom.E_PAY_SCENE;
 import TRom.GetCardStatusRsp;
 import TRom.GetPayResultRsp;
@@ -62,6 +63,7 @@ public class Order implements IOrder, IOrderInner {
     private long mUniqueOrderCreatedID = -1;
     private int mRetryTimes = 0;
     private String mBusinessErrCode = "";
+    private boolean isRefunding = false;
 
     public Order(BusCardStatusInfo busCardStatusInfo) {
         mLocal = false;
@@ -69,7 +71,7 @@ public class Order implements IOrder, IOrderInner {
         mOrderReqParam = busCardStatusInfo.stOrderParam;
         mOrderRspParam = busCardStatusInfo.stOrderRspParam;
         mGetPayResultRspParam = busCardStatusInfo.stPayResultParam;
-
+        isRefunding = (busCardStatusInfo.ePayRefundStatus == E_PAY_REFUND_STATUS._E_PRS_REQUEST_REFUNDING);
         // TODO
         switch (mBackendOrderStatus) {
             case E_PAY_ORDER_STATUS_APP._E_OSA_OPENCARD_FAIL:
@@ -121,8 +123,8 @@ public class Order implements IOrder, IOrderInner {
         return handle;
     }
 
-    private void repeatStep(){
-        if(mCurrentOrderStep != null){
+    private void repeatStep() {
+        if (mCurrentOrderStep != null) {
             mCurrentOrderStep.onQuitStep();
             mCurrentOrderStep.onEnterStep();
         }
@@ -136,7 +138,7 @@ public class Order implements IOrder, IOrderInner {
 
         protected int mMaxRetryTimes = 0;
 
-        public OrderStep(ORDER_STEP step,int maxTrytimes){
+        public OrderStep(ORDER_STEP step, int maxTrytimes) {
             this(step);
             mMaxRetryTimes = maxTrytimes;
         }
@@ -146,14 +148,14 @@ public class Order implements IOrder, IOrderInner {
         }
 
         protected boolean canRetryBusiness() {
-            if(mCurRetryTimes < mMaxRetryTimes){
+            if (mCurRetryTimes < mMaxRetryTimes) {
                 mCurRetryTimes++;
                 return true;
             }
             return false;
         }
 
-        protected void clearRetryTimes(){
+        protected void clearRetryTimes() {
             mCurRetryTimes = 0;
         }
 
@@ -226,11 +228,12 @@ public class Order implements IOrder, IOrderInner {
                         String description) {
                     if (mUniqueReq == uniqueSeq) {
                         // Notify new order created failed.
-                        if(errorCode == Constants.WALLET_ACCOUNT_AUTH_FAILED && canRetryBusiness()){
+                        if (errorCode == Constants.WALLET_ACCOUNT_AUTH_FAILED
+                                && canRetryBusiness()) {
                             repeatStep();
                         } else {
                             OrderManager.getInstanceInner().notifyNewOrder(mUniqueOrderCreatedID,
-                                false, null);
+                                    false, null);
                             keepStep();
                             clearRetryTimes();
                         }
@@ -273,7 +276,8 @@ public class Order implements IOrder, IOrderInner {
                         boolean succeed = false;
                         boolean paySucceed = false;
                         GetPayResultRsp getPayResultRsp = (GetPayResultRsp) response;
-                        if (getPayResultRsp.iRet == 0 && getPayResultRsp.stPayResultRspParam != null) {
+                        if (getPayResultRsp.iRet == 0
+                                && getPayResultRsp.stPayResultRspParam != null) {
                             mGetPayResultRspParam = getPayResultRsp.stPayResultRspParam;
 
                             // TODO
@@ -369,7 +373,7 @@ public class Order implements IOrder, IOrderInner {
             final ICard card = CardManager.getInstance().getCard(aid);
             fillExtraInfoToParam(params, card);
             issueCard.putString(params.toString());
-            QRomLog.e(TAG, "invoke issuecard cmd"+params.toString());
+            QRomLog.e(TAG, "invoke issuecard cmd" + params.toString());
             boolean handled = issueCard.invoke(new IResult() {
 
                 @Override
@@ -394,12 +398,12 @@ public class Order implements IOrder, IOrderInner {
                             }
                             clearRetryTimes();
                         } else {
-                             if(canRetryBusiness()){
-                                 repeatStep();
-                             } else {
-                                 keepStep();
-                                 clearRetryTimes();
-                             }
+                            if (canRetryBusiness()) {
+                                repeatStep();
+                            } else {
+                                keepStep();
+                                clearRetryTimes();
+                            }
                         }
                     }
                 }
@@ -433,7 +437,7 @@ public class Order implements IOrder, IOrderInner {
             final ICard card = CardManager.getInstance().getCard(aid);
             fillExtraInfoToParam(params, card);
             cardTopup.putString(params.toString());
-            QRomLog.e(TAG, "invoke topup cmd:"+params.toString());
+            QRomLog.e(TAG, "invoke topup cmd:" + params.toString());
             boolean handled = cardTopup.invoke(new IResult() {
 
                 @Override
@@ -447,12 +451,12 @@ public class Order implements IOrder, IOrderInner {
                         } else {
                             mBusinessErrCode = parseErrorCode(ret, outputParams);
                         }
-                        // TODO 
+                        // TODO
                         if (topupSucceed || canIgnoreError(aid, false)) {
                             switchStep(mOrderFinishStep);
                             clearRetryTimes();
                         } else {
-                            if(canRetryBusiness()){
+                            if (canRetryBusiness()) {
                                 repeatStep();
                             } else {
                                 keepStep();
@@ -514,7 +518,7 @@ public class Order implements IOrder, IOrderInner {
                             clearRetryTimes();
                         } else {
                             // TODO 存疑的情况，或许需要人工服务、退款
-                            if(canRetryBusiness()){
+                            if (canRetryBusiness()) {
                                 repeatStep();
                             } else {
                                 keepStep();
@@ -681,12 +685,22 @@ public class Order implements IOrder, IOrderInner {
 
     private boolean canIgnoreError(String aid, boolean isIssueCard) {
         boolean canIgnore = false;
-            if (isIssueCard) {
-                canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_OPENCARD)
-                        || mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_PERSONAL);
-            } else {
-                canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_TOPUP);
+        if (isIssueCard) {
+            canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_OPENCARD)
+                    || mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_PERSONAL);
+        } else {
+            canIgnore = mBusinessErrCode.contains(Constants.WALLET_BEIJING_DUPLITE_TOPUP);
         }
         return canIgnore;
+    }
+
+    @Override
+    public boolean isInRefunding() {
+        return isRefunding;
+    }
+
+    @Override
+    public void setInRefunding(boolean isInRefunding) {
+        this.isRefunding = isInRefunding;
     }
 }

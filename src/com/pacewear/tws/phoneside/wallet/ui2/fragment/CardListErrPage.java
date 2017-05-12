@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
+import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
 
 public class CardListErrPage extends CardListFragment {
 
@@ -25,7 +26,11 @@ public class CardListErrPage extends CardListFragment {
 
             @Override
             public void onClick(View v) {
+                if (ClickFilter.isMultiClick()) {
+                    return;
+                }
                 CardManager.getInstance().forceUpdate(true);
+                refreshAllPage();
             }
         });
         return view;

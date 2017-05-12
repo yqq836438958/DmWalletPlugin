@@ -55,6 +55,7 @@
     <string-array name="wallet_card_detail_more">
         <item>订单投诉</item>
         <item>投诉查询</item>
+        <item>常见问题</item>
         <item>取消</item>
     </string-array>
 </resources>

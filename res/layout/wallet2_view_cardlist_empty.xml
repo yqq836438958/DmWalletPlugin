@@ -3,6 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="122dp"
+        android:src="@drawable/wallet2_empty_page" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/select_add_traffic_card_tip"
+        android:textColor="@color/wallet_dark"
+        android:textSize="14sp" />
+
     <Button
         android:id="@+id/wallet2_btn_issuecard"
         android:layout_width="288dp"
@@ -10,24 +29,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="68dp"
-        android:text="立即开通" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/wallet2_btn_issuecard"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="152dp"
-        android:text="开通交通卡后即可使用手表刷公交、地铁" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_above="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/wallet2_empty_page" />
+        android:background="@drawable/wallet_common_button_black"
+        android:text="立即开通"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
 </RelativeLayout>

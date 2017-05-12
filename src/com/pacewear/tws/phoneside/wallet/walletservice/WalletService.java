@@ -2,6 +2,7 @@
 package com.pacewear.tws.phoneside.wallet.walletservice;
 
 import com.pacewear.tws.phoneside.wallet.rpc.RPCMethod;
+import com.pacewear.tws.phoneside.wallet.uitest.Hook;
 import com.tencent.tws.proto.wallet.WatchNFCManager.MSG;
 import com.tencent.tws.proto.wallet.WatchNFCManager.MSG_RPC_PARAMS;
 
@@ -29,8 +30,10 @@ public abstract class WalletService extends RPCMethod<IResult> {
             QRomLog.e(TAG, "code:" + result.getIInt() + ",null output");
         }
         if (mListener != null) {
-            mListener.onResult(getSeqID(), result.getIInt(), outputParams, resultCode,
-                    result.getVBytes());
+            if (!Hook.getInstance().invoke(this, getSeqID(), outputParams)) {
+                mListener.onResult(getSeqID(), result.getIInt(), outputParams, resultCode,
+                        result.getVBytes());
+            }
         }
     }
 
@@ -38,7 +41,9 @@ public abstract class WalletService extends RPCMethod<IResult> {
     public final void onExecptionReal(MSG msg) {
         QRomLog.e(TAG, "onExecptionReal");
         if (mListener != null) {
-            mListener.onExecption(getSeqID(), msg.stMsgHeader.eState);
+            if (!Hook.getInstance().invoke(this, getSeqID(), new String[]{""})) {
+                mListener.onExecption(getSeqID(), msg.stMsgHeader.eState);
+            }
         }
     }
 }

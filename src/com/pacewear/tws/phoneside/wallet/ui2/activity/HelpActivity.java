@@ -1,6 +1,8 @@
 
 package com.pacewear.tws.phoneside.wallet.ui2.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
@@ -27,6 +29,9 @@ public class HelpActivity extends TwsWalletActivity {
 
         setContentView(R.layout.wallet_show_web_page);
         setActionBar(R.string.wallet_help_qa, new LeftCloseTextStagy());
+        /* getResources().getColor(R.color.wallet_green)) */
+//        getTwsActionBar().setBackgroundDrawable(
+//                new ColorDrawable(getResources().getColor(R.color.wallet_action_bar_background)));
         WebView webView = (WebView) findViewById(R.id.webview);
         String url = getIntent().getStringExtra(KEY_HELP);
         if (!TextUtils.isEmpty(url)) {
@@ -37,8 +42,8 @@ public class HelpActivity extends TwsWalletActivity {
             }
             webView.clearCache(true);
             webView.clearHistory();
-            webView.setBackgroundColor(
-                    getResources().getColor(R.color.wallet_action_bar_background));
+            // webView.setBackgroundColor(
+            // getResources().getColor(R.color.white));
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {

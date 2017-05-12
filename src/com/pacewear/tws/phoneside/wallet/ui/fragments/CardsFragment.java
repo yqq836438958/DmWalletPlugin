@@ -32,7 +32,7 @@ import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.ui.ErrorCardActivity;
 import com.pacewear.tws.phoneside.wallet.ui.SelectAddCardActivity;
-import com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity;
+//import com.pacewear.tws.phoneside.wallet.ui.ShowCardDetailsActivity;
 import com.pacewear.tws.phoneside.wallet.ui.ShowLoadingActivity;
 import com.pacewear.tws.phoneside.wallet.ui.ShowWebPageActivity;
 import com.pacewear.tws.phoneside.wallet.ui.widget.AddCard;
@@ -342,8 +342,8 @@ public class CardsFragment extends Fragment {
             } else {
                 // 正常情况，点击进入卡片详情
                 Intent intent = new Intent();
-                intent.setClass(mContext,
-                        ShowCardDetailsActivity.class);
+//                intent.setClass(mContext,
+//                        ShowCardDetailsActivity.class);
                 intent.putExtra(
                         PayNFCConstants.ExtraKeyName.EXTRA_INT_CARDTYPE,
                         mType.toValue());

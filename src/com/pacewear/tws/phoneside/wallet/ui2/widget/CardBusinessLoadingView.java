@@ -37,15 +37,20 @@ public class CardBusinessLoadingView extends RelativeLayout {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if (!hasFocus) {
-            mValueAnimator.pause();
-        } else {
-            mValueAnimator.resume();
-        }
+        super.onWindowFocusChanged(hasFocus);
+        // if (!hasFocus) {
+        // mValueAnimator.pause();
+        // } else {
+        // mValueAnimator.resume();
+        // }
     }
 
     public final void clear() {
         mValueAnimator.cancel();
+    }
+
+    public void attach(long duration) {
+
     }
 
     private void init(Context context) {

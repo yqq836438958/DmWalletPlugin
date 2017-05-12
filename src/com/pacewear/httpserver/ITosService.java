@@ -56,6 +56,7 @@ public interface ITosService {
 
     public static final int OPERTYPE_GET_PHONENUM = OPERTYPE_SEND_VERIFYCODE + 1;
 
+    public static final int OPERTYPE_REQUEST_REFUND = OPERTYPE_GET_PHONENUM+1;
     /**
      * getFunctionName
      * 

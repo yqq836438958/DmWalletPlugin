@@ -47,7 +47,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/wallet_button_blackbord_whitefill"
-        android:text="@string/charge_card_confirm_button"
+        android:text="@string/wallet_pay_now"
         android:textColor="@color/wallet_black"
         android:textSize="16sp" />
 

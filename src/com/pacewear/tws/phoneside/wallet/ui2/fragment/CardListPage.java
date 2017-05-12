@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
@@ -19,6 +21,7 @@ import com.pacewear.tws.phoneside.wallet.card.ICard;
 import com.pacewear.tws.phoneside.wallet.card.ICard.CARD_TYPE;
 import com.pacewear.tws.phoneside.wallet.card.ICard.INSTALL_STATUS;
 import com.pacewear.tws.phoneside.wallet.common.ButtonTouchStateListener;
+import com.pacewear.tws.phoneside.wallet.common.DisplayUtil;
 import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
@@ -26,6 +29,7 @@ import com.pacewear.tws.phoneside.wallet.ui2.activity.AddCardActivity;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.BaseCardView;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleViewCache;
 import com.pacewear.tws.phoneside.wallet.ui2.widget.TrafficCardView;
+import com.tencent.tws.assistant.support.v4.view.ViewPager.LayoutParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,7 @@ public class CardListPage extends CardListFragment {
         View view = inflater.inflate(R.layout.wallet2_view_cardlist_normal,
                 container, false);
         ListView lView = (ListView) view.findViewById(R.id.listView);
+        lView.addFooterView(getFootVew());
         mAdapter = new CardListAdapter();
         lView.setAdapter(mAdapter);
         mAddNewCardLayout = (RelativeLayout) view.findViewById(R.id.cardlist_bottom);
@@ -144,5 +149,10 @@ public class CardListPage extends CardListFragment {
         Intent intent = new Intent();
         intent.setClass(getActivity(), AddCardActivity.class);
         startActivity(intent);
+    }
+
+    private View getFootVew() {
+        return LayoutInflater.from(getActivity()).inflate(R.layout.wallet2_empty_view,
+                null);
     }
 }

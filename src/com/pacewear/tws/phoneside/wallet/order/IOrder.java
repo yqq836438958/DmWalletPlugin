@@ -57,6 +57,10 @@ public interface IOrder {
 
     public boolean isInValidOrder();
 
+    public boolean isInRefunding();
+
+    public void setInRefunding(boolean isInRefunding);
+
     /**
      * getRetryTime
      * 

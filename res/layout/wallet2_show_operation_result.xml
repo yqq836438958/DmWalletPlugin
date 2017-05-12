@@ -53,7 +53,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="68dp"
-        android:background="@color/wallet_black"
+        android:background="@drawable/wallet_common_button_black"
         android:gravity="center"
         android:text="关闭"
         android:textColor="#ffffffff" />
@@ -65,7 +65,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
-        android:text="申请退款"
+        android:text="@string/wallet_title_refunding"
         android:textColor="@color/wallet_gray"
         android:textSize="14sp"
         android:visibility="gone" />

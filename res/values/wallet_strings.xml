@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-     <!--  -->
+    <!--  -->
     <string name="nfc_traffic_card_beijing">Beijing All-purpose Card</string>
     <string name="nfc_traffic_card_shenzhen">Shenzhen All-purpose Card</string>
-	<string name="nfc_traffic_card_lingnan">Lingnan All-purpose Card</string>
+    <string name="nfc_traffic_card_lingnan">Lingnan All-purpose Card</string>
     <string name="nfc_bank_card_cmb_debit">CMB debit card</string>
     <string name="nfc_bank_card_cmb_crebit">CMB credit card</string>
     <string name="nfc_bank_card_cmb_wuxian">CMB Infinite card </string>
     <string name="wallet_usinghelp_title">Help</string>
-    <string name="wallet_trafficcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_traffic_card.html"</string>
+    <string name="wallet_trafficcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_traffic_card_2.0.html"</string>
     <string name="wallet_bankcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_bank_card.html"</string>
 
     <!-- nfcwallet begin -->
@@ -41,8 +41,7 @@
     <string name="wallet_activate_card_query_failed">Successful card activation, failed to inquire the balance</string>
     <string name="wallet_topup_card_query_failed">Successful recharging,failed to inquire the balance</string>
     <string name="wallet_activate_loading">Activating card…</string>
-    
-    
+
     <!-- 充值 -->
     <string name="charge_card_title">%1$s recharging </string>
     <string name="charge_card_continue">Continue recharging</string>
@@ -57,8 +56,7 @@
     <string name="wallet_validity_tips">The card has exceeded the expiration date, unable to recharge</string>
     <string name="wallet_startdate_tips">The card is not up to date, unable to recharge</string>
     <string name="wallet_charge_loading">Recharing…</string>
-    
-    
+
     <!-- Wallet Home -->
     <string name="wallet_traffic_card_add">Add traffic card</string>
     <string name="wallet_traffic_card_tip">Off-line payment will be activated after adding watch </string>
@@ -85,8 +83,8 @@
     <string name="wallet_validity_label">Period of validity</string>
     <string name="wallet_num_label">Card number</string>
     <string name="wallet_jump_url">You can also use the <u>beijing yikatong APP</u> to recharge</string>
-    <string name="wallet_bjt_assist_tips">Also need to download beijing yikatong in the Pacewear market</string>
-	
+    <string name="wallet_bjt_assist_tips">You can use the <u>beijing yikatong APP</u> to recharge，Also need to download beijing yikatong in the Pacewear market</string>
+
     <!-- Select Default Card -->
     <string name="wallet_select_default_traffic_card_titile">Select default traffic card</string>
     <string name="wallet_select_default_bank_card_titile">Select default bank card</string>
@@ -101,14 +99,18 @@
     <string name="wallet_loading_charge_title">%1$s recharging</string>
     <string name="wallet_loading_circle_notice">Transmitting document...</string>
     <string name="wallet_loading_notice">It may take 1-3 minutes to finish this process under the current network condition, \n please wait patiently and use mobile to conduct other operations </string>
-
+    <string name="wallet_loading_notice1">开卡过程大致需要 1~5 分钟</string>
+    <string name="wallet_loading_topup_notice1">充值过程大致需要 1~5 分钟</string>
+    <string name="wallet_loading_notice2">请保持手机 Pacewear 与手表的连接</string>
+    <string name="wallet_loading_notice3">在开卡完成之前请勿离开本页面</string>
+    <string name="wallet_loading_topup_notice3">在充值完成之前请勿离开本页面</string>
     <!-- Payment result -->
     <string name="wallet_payment_result_finish">Finished</string>
     <string name="wallet_order_number">Order No.</string>
     <string name="wallet_result_retry">Retry</string>
     <string name="wallet_operation_result_close">Close</string>
     <string name="wallet_operation_failed_tip">Please make sure that watch is normally connected to mobile\n and that mobile network is under good condition </string>
-    <string name="wallet_errcode_desc">(%s)，Please contact customer service&lt;a href=&quot;tel:4007058885&quot;&gt;4007058885&lt;/a&gt;</string>
+    <string name="wallet_errcode_desc">(%s)，Please contact customer service</string>
     <string name="wallet_operation_current_balance">Current balance:%1$.2f yuan </string>
     <string name="wallet_operation_bind_succeed">Successful binding</string>
     <string name="wallet_operation_bind_failed">Successful binding</string>
@@ -116,7 +118,7 @@
     <string name="wallet_operation_charge_failed">Recharging failed</string>
 
     <!-- CMB -->
-   <string name="wallet_register_action_next_step">Next step</string>
+    <string name="wallet_register_action_next_step">Next step</string>
     <string name="wallet_register_step_title_input_card_info">Fill in bank card information</string>
     <string name="wallet_register_step_title_authentication">Identity verification</string>
     <string name="wallet_register_step_title_provision_confirm">Terms and Conditions</string>
@@ -166,33 +168,47 @@
     <string name="wallet_transact_consume">Consume</string>
     <string name="wallet_transact_empty">Unable check records</string>
 
-    <!--  开卡协议 -->
+    <!-- 开卡协议 -->
     <string name="wallet_agreement_title">Protocol</string>
     <string name="wallet_cancel">Cancel</string>
     <string name="wallet_confirm">Agree</string>
     <string name="wallet_lnt_agreement_rl">"http://3gimg.qq.com/trom_s/tosWatch/lingnantong_buscard.html"</string>
 
-	<!-- 手机验证 -->
-	<string name="wallet_infoverify">Validation</string>
-	<string name="wallet_next">Next</string>
-	<string name="wallet_phonenum">Phone</string>
-	<string name="wallet_verifycode">Code</string>
-	<string name="wallet_reget_verify">#S</string>
-	<string name="wallet_get_verify">Get code</string>
-	<string name="wallet_get_verify_fail">Failed code</string>
-	<string name="wallet_phone_error">Enter correct number</string>
-	<string name="wallet_verify_confirm_fail">Failed</string>
-	<string name="wallet_reget_verify_reset">To obtain</string>
-
-	<string name="wallet_login_download_qq">You have not installed QQ, please install it before trying again</string>
+    <!-- 手机验证 -->
+    <string name="wallet_infoverify">Validation</string>
+    <string name="wallet_next">Next</string>
+    <string name="wallet_phonenum">Phone</string>
+    <string name="wallet_verifycode">Code</string>
+    <string name="wallet_reget_verify">#S</string>
+    <string name="wallet_get_verify">Get code</string>
+    <string name="wallet_get_verify_fail">Failed code</string>
+    <string name="wallet_phone_error">Enter correct number</string>
+    <string name="wallet_verify_confirm_fail">Failed</string>
+    <string name="wallet_reget_verify_reset">To obtain</string>
+    <string name="wallet_login_download_qq">You have not installed QQ, please install it before trying again</string>
     <string name="wallet_login_download_mm">You have not installed WeChat, please install it before trying again</string>
     <!-- 主页 -->
-    <string name="wallet_launcher_trafficcard">交通卡</string>
-    <string name="wallet_launcher_doorcard">门禁卡</string>
-    <string name="wallet_launcher_bankcard">银行卡</string>
-    <string name="wallet_launcher_foodcard">饭卡</string>
-    <string name="wallet_launcher_schoolcard">校园一卡通</string>
+    <string name="wallet_launcher_trafficcard">Traffic Card</string>
+    <string name="wallet_launcher_doorcard">Door Card</string>
+    <string name="wallet_launcher_bankcard">Bank Card</string>
+    <string name="wallet_launcher_foodcard">Food </string>
+    <string name="wallet_launcher_schoolcard">School Card</string>
 
     <!-- 退款 -->
-    <string name="wallet_cardlist_refunding">退款中</string>
+    <string name="wallet_cardlist_refunding">Refunding</string>
+    <string name="wallet_title_refunding"><u>Request Refund</u></string>
+    <!-- 支付 -->
+    <string name="wallet_payment">Pay</string>
+    <string name="wallet_help_qa">Questions</string>
+    <!-- new 2.0 -->
+    <string name="wallet_issuecard_sucess">You can use # now</string>
+    <string name="wallet_refund_click_tip">Please wait for refund sucessfully</string>
+    <string name="wallet_touch_fresh">Touch the screen to reload</string>
+    <string name="wallet_topup_fail_tip">There is an unfinished order</string>
+    <string name="wallet_issue_fail_tip">Click to Retry</string>
+    <string name="wallet_pay_now">Pay Now</string>
+    <string name="wallet_setdefault_tip">The default card is the default payment card on the watch, you can also set the default card in the watch traffic card app</string>
+    <string name="wallet_refund_suc">Refund request submitted</string>
+    <string name="wallet_refund_tip">The payment will be refunded within 5 business days</string>
+
 </resources>

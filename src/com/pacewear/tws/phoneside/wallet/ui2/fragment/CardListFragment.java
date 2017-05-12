@@ -11,6 +11,15 @@ import java.util.List;
 
 public abstract class CardListFragment extends Fragment {
     private CardListFragment mNext = null;
+    private FragmentController mController = null;
+
+    private void attachController(FragmentController controller) {
+        mController = controller;
+    }
+
+    protected final void refreshAllPage() {
+        mController.update();
+    }
 
     CardListFragment update() {
         if (onUpdate()) {
@@ -67,9 +76,10 @@ public abstract class CardListFragment extends Fragment {
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (CardListFragment fragment : list) {
                 mChain.add(fragment);
+                fragment.attachController(this);
                 transaction.add(mLayoutId, fragment);
             }
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
 
         public final void update() {
@@ -82,7 +92,8 @@ public abstract class CardListFragment extends Fragment {
                     transaction.show(target);
                 }
             }
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
     }
+
 }

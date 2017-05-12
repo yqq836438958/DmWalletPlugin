@@ -16,6 +16,8 @@ import com.tencent.tws.framework.common.MsgDispatcher;
 import com.tencent.tws.framework.proxy.PluginCommandHandler;
 import com.tencent.tws.sharelib.util.HostProxy;
 
+import org.xutils.x;
+
 //import org.xutils.x;
 
 import tws.component.log.TwsLog;
@@ -39,14 +41,14 @@ public class WalletApp extends Application {
         registerCommandHandler();
         SdkAdapter.init();
         loadCustFonts();
-        // x.Ext.init(this); // TODO 后续由lntsdk去实现
+        x.Ext.init(this); // TODO 后续由lntsdk去实现
     }
 
     private void loadCustFonts() {
-//        FontsOverride.setDefaultFont(this, "DEFAULT", "Akrobat-SemiBold.ttf");
-//        FontsOverride.setDefaultFont(this, "MONOSPACE", "Akrobat-SemiBold.ttf");
-//        FontsOverride.setDefaultFont(this, "SERIF", "Akrobat-SemiBold.ttf");
-//        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Akrobat-SemiBold.ttf");
+        // FontsOverride.setDefaultFont(this, "DEFAULT", "Akrobat-SemiBold.ttf");
+        // FontsOverride.setDefaultFont(this, "MONOSPACE", "Akrobat-SemiBold.ttf");
+        // FontsOverride.setDefaultFont(this, "SERIF", "Akrobat-SemiBold.ttf");
+        // FontsOverride.setDefaultFont(this, "SANS_SERIF", "Akrobat-SemiBold.ttf");
     }
 
     public static Context getHostAppContext() {

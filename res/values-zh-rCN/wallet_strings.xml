@@ -9,7 +9,7 @@
     <string name="nfc_bank_card_cmb_crebit">招行信用卡</string>
     <string name="nfc_bank_card_cmb_wuxian">招行无限卡</string>
     <string name="wallet_usinghelp_title">使用帮助</string>
-    <string name="wallet_trafficcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_traffic_card.html"</string>
+    <string name="wallet_trafficcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_traffic_card_2.0.html"</string>
     <string name="wallet_bankcard_usinghelp_url">"http://3gimg.qq.com/trom_s/tosWatch/faq_bank_card.html"</string>
 
     <!-- nfcwallet begin -->
@@ -21,7 +21,7 @@
     <!-- 添加卡片选择界面 -->
     <string name="select_add_traffic_card_title">开通交通卡</string>
     <string name="select_add_bank_card_title">添加银行卡</string>
-    <string name="select_add_traffic_card_tip">开通交通卡后，手表可用于刷公交、地铁。</string>
+    <string name="select_add_traffic_card_tip">开通交通卡后即可使用手表刷公交、地铁</string>
     <string name="select_add_bank_card_tip">添加银行卡后，手表可用于ATM取款及线下支付。</string>
     <string name="select_add_traffic_card_config_no_ready">网络获取配置失败，请稍后再试</string>
 
@@ -48,14 +48,14 @@
     <string name="charge_card_confirm_button">立即充值</string>
     <string name="wallet_pay_channel_wechat">微信支付</string>
     <string name="wallet_pay_channel_qq">QQ钱包</string>
-    <string name="charge_confirm">确认充值</string>
+    <string name="charge_confirm">确定充值</string>
     <string name="denomination_notice">选择充值金额</string>
     <string name="pay_channel_notile">选择支付方式</string>
     <string name="support">客服支持</string>
     <string name="wallet_amount_nozero">请选择其他金额，保证充值后卡金额大于0</string>
     <string name="wallet_validity_tips">该卡已超过有效日期，无法充值</string>
     <string name="wallet_startdate_tips">该卡未到启用日期，无法充值</string>
-    <string name="wallet_charge_loading">充值中...</string>
+    <string name="wallet_charge_loading">正在充值</string>
     <!-- Wallet Home -->
     <string name="wallet_traffic_card_add">添加交通卡</string>
     <string name="wallet_traffic_card_tip">添加后手表将支持线下刷卡支付</string>
@@ -83,7 +83,7 @@
     <string name="wallet_validity_label">有效期</string>
     <string name="wallet_num_label">卡号</string>
     <string name="wallet_jump_url">你还可以使用 <u>北京一卡通APP</u> 进行充值</string>
-    <string name="wallet_bjt_assist_tips">但还需要在 Pacewear 应用市场下载北京一卡通助手</string>
+    <string name="wallet_bjt_assist_tips">你还可以使用 <u>北京一卡通APP</u> 进行充值，但还需要在 Pacewear 应用市场下载北京一卡通助手</string>
     <!-- Select Default Card -->
     <string name="wallet_select_default_traffic_card_titile">选择默认交通卡</string>
     <string name="wallet_select_default_bank_card_titile">选择默认银行卡</string>
@@ -98,15 +98,17 @@
     <string name="wallet_loading_charge_title">%1$s充值</string>
     <string name="wallet_loading_circle_notice">正在传输资料&#8230;</string>
     <string name="wallet_loading_notice1">开卡过程大致需要 1~5 分钟</string>
-	<string name="wallet_loading_notice2">请保持手机 Pacewear 与手表的连接</string>
-	<string name="wallet_loading_notice3">在开卡完成之前请勿离开本页面</string>
+    <string name="wallet_loading_topup_notice1">充值过程大致需要 1~5 分钟</string>
+    <string name="wallet_loading_notice2">请保持手机 Pacewear 与手表的连接</string>
+    <string name="wallet_loading_notice3">在开卡完成之前请勿离开本页面</string>
+    <string name="wallet_loading_topup_notice3">在充值完成之前请勿离开本页面</string>
     <!-- Payment result -->
     <string name="wallet_payment_result_finish">完成</string>
     <string name="wallet_order_number">订单号</string>
     <string name="wallet_result_retry">重试</string>
     <string name="wallet_operation_result_close">关闭</string>
-    <string name="wallet_operation_failed_tip">请保持手表与手机的正常连接&lt;br&gt;并确保手机网络通畅</string>
-    <string name="wallet_errcode_desc">(%s)，请联系客服处理&lt;a href=&quot;tel:4007058885&quot;&gt;4007058885&lt;/a&gt;</string>
+    <string name="wallet_operation_failed_tip">请保持手表与手机的正常连接，并确保手机网络通畅</string>
+    <string name="wallet_errcode_desc">(%s)，请联系客服处理</string>
     <string name="wallet_operation_current_balance">当前余额%1$.2f元</string>
     <string name="wallet_operation_bind_succeed">绑定成功</string>
     <string name="wallet_operation_bind_failed">绑定成功</string>
@@ -130,8 +132,8 @@
     <string name="wallet_no_order">下单失败，请重新下单</string>
     <string name="wallet_flow_trytimes">重试次数太多，请联系客服</string>
     <string name="wallet_balance_unit">元</string>
-    <string name="wallet_sync_err_network">同步服务器信息失败</string>
-    <string name="wallet_sync_err_watch">同步手表卡片信息失败</string>
+    <string name="wallet_sync_err_network">网络异常</string>
+    <string name="wallet_sync_err_watch">加载失败</string>
     <string name="wallet_flow_charge_amount">超过卡内最大余额上限%1$s元</string>
     <string name="wallet_loading_tips">正在加载</string>
     <string name="wallet_waiting_tips">即将上线，敬请期待。</string>
@@ -164,25 +166,24 @@
     <string name="wallet_transact_consume">消费</string>
     <string name="wallet_transact_empty">无法查询到交易记录</string>
 
-    <!--  开卡协议 -->
+    <!-- 开卡协议 -->
     <string name="wallet_agreement_title">服务协议</string>
     <string name="wallet_cancel">取消</string>
     <string name="wallet_confirm">同意</string>
     <string name="wallet_lnt_agreement_rl">"http://3gimg.qq.com/trom_s/tosWatch/lingnantong_buscard.html"</string>
 
-	<!-- 手机验证 -->
-	<string name="wallet_infoverify">信息验证</string>
-	<string name="wallet_next">下一步</string>
-	<string name="wallet_phonenum">手机号</string>
-	<string name="wallet_verifycode">验证码</string>
-	<string name="wallet_reget_verify">#S</string>
-	<string name="wallet_get_verify">获取验证码</string>
-	<string name="wallet_get_verify_fail">获取验证码失败</string>
-	<string name="wallet_phone_error">请输入正确的手机号码</string>
-	<string name="wallet_verify_confirm_fail">验证失败</string>
-	<string name="wallet_reget_verify_reset">重新获取</string>
-
-	<string name="wallet_login_download_qq">你还没有安装QQ，请安装后再试</string>
+    <!-- 手机验证 -->
+    <string name="wallet_infoverify">信息验证</string>
+    <string name="wallet_next">下一步</string>
+    <string name="wallet_phonenum">手机号</string>
+    <string name="wallet_verifycode">验证码</string>
+    <string name="wallet_reget_verify">#S</string>
+    <string name="wallet_get_verify">获取验证码</string>
+    <string name="wallet_get_verify_fail">获取验证码失败</string>
+    <string name="wallet_phone_error">请输入正确的手机号码</string>
+    <string name="wallet_verify_confirm_fail">验证失败</string>
+    <string name="wallet_reget_verify_reset">重新获取</string>
+    <string name="wallet_login_download_qq">你还没有安装QQ，请安装后再试</string>
     <string name="wallet_login_download_mm">你还没有安装微信，请安装后再试</string>
 
     <!-- 主页 -->
@@ -194,8 +195,18 @@
 
     <!-- 退款 -->
     <string name="wallet_cardlist_refunding">退款中</string>
-    <string name="wallet_title_refunding">申请退款</string>
+    <string name="wallet_title_refunding"><u>申请退款</u></string>
     <!-- 支付 -->
     <string name="wallet_payment">支付</string>
     <string name="wallet_help_qa">常见问题</string>
+	<!-- new 2.0 -->
+	<string name="wallet_issuecard_sucess">可以通过手表使用#了</string>
+	<string name="wallet_refund_click_tip">请等待订单退款成功后尝试</string>
+	<string name="wallet_touch_fresh">轻触屏幕重新加载</string>
+	<string name="wallet_topup_fail_tip">有一笔未完成的充值交易</string>
+	<string name="wallet_issue_fail_tip">开卡失败，点击重试</string>
+	<string name="wallet_pay_now">立即支付</string>
+	<string name="wallet_setdefault_tip">默认卡是手表上的默认支付交通卡，你也可以在手表的交通卡应用中设置默认卡。</string>
+	<string name="wallet_refund_suc">退款申请已提交</string>
+	<string name="wallet_refund_tip">款项将在 5 个工作日之内退还到你的付款账户</string>
 </resources>

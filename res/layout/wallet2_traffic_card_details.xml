@@ -6,17 +6,19 @@
     <RelativeLayout
         android:id="@+id/wallet_traffic_bottom"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
         android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:visibility="visible" >
 
         <Button
             android:id="@+id/wallet_traffic_card_charge"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/wallet_button_blackbord_whitefill"
             android:gravity="center"
             android:text="@string/charge_card_button"
@@ -27,24 +29,11 @@
             android:id="@+id/wallet_bjt_asssit_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="62dp"
-            android:paddingLeft="20dp"
+            android:layout_above="@id/wallet_traffic_card_charge"
+            android:layout_marginBottom="16dp"
             android:text="@string/wallet_bjt_assist_tips"
-            android:textColor="#7FFFFFFF"
-            android:textSize="12sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/wallet_jump_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/wallet_bjt_asssit_tip"
-            android:paddingLeft="20dp"
-            android:text="@string/wallet_jump_url"
-            android:textColor="#7FFFFFFF"
-            android:textSize="12sp"
+            android:textColor="@color/wallet_gray"
+            android:textSize="14sp"
             android:visibility="gone" />
     </RelativeLayout>
 

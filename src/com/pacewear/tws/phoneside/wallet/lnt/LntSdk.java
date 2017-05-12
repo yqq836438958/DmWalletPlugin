@@ -2,158 +2,59 @@
 package com.pacewear.tws.phoneside.wallet.lnt;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
 
 import com.pacewear.httpserver.ServerHandler;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.common.DeviceUtil;
 import com.pacewear.tws.phoneside.wallet.common.PackageUtils;
-import com.pacewear.tws.phoneside.wallet.lnt.ILntVip.ILntVipCallback;
+import com.pacewear.tws.phoneside.wallet.env.EnvManager;
 
 public class LntSdk implements ILntSdk {
+    private static volatile ILntSdk sInstance = null;
 
-    @Override
-    public boolean resume(String content) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean charge() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void complaint() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void complaintQuery() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void destroy() {
-        // TODO Auto-generated method stub
-        
-    }/*
-    private ILntCardPage mCardPage = null;
-    private ILntInvokeCallback mILntInvokeCallback = null;
-    private Context mContext = null;
-    private ILntVip mLntVip = null;
-    private LntSDKState mLntSDKState = null;
-    private Handler mThreadHandler = null;
-
-    public LntSdk(Context context, ILntCardPage cardPage,
-            ILntInvokeCallback callback) {
-        mContext = context;
-        mCardPage = cardPage;
-        mILntInvokeCallback = callback;
-        mLntSDKState = new LntSDKState(this);
-        mThreadHandler = new Handler(Looper.getMainLooper());
-        initVip();
-    }
-
-    private void initVip() {
-        ILntVipCallback callback = new ILntVipCallback() {
-
-            @Override
-            public void onTransfer(String className) {
-                if (mCardPage != null) {
-                    mCardPage.jump(className);
+    public static ILntSdk getInstance() {
+        if (sInstance == null) {
+            synchronized (LntSdk.class) {
+                if (sInstance == null) {
+                    sInstance = new LntSdk();
                 }
             }
+        }
+        return sInstance;
+    }
 
-            @Override
-            public void onSuc(String usrId) {
-                mLntVip.saveId(usrId);
-                mLntSDKState.resume();
-            }
-        };
-        mLntVip = new LntVip(callback);
+    private LntSdk() {
+        // TODO Auto-generated constructor stub
     }
 
     @Override
-    public void destroy() {
+    public void clear() {
         LntLauncher.clear();
-        mLntVip.destroy();
     }
 
     @Override
-    public boolean charge() {
-        mLntSDKState.clear();
-        final String ursId = mLntVip.getId();
-        if (TextUtils.isEmpty(ursId)) {
-            mLntSDKState.pause(0);
-            return true;
-        }
-        mThreadHandler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                LntLauncher.cardTopup(newLntSdkCtx(ursId));
-            }
-        });
+    public boolean charge(Context context, ILntInvokeCallback callback) {
+        LntLauncher.cardTopup(newLntSdkCtx(context, callback));
         return true;
     }
 
     @Override
-    public void complaint() {
-        mLntSDKState.clear();
-        final String ursId = mLntVip.getId();
-        if (TextUtils.isEmpty(ursId)) {
-            mLntSDKState.pause(1);
-            return;
-        }
-        mThreadHandler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                LntLauncher.complaint(newLntSdkCtx(ursId));
-            }
-        });
-
+    public void complaint(Context context) {
+        LntLauncher.complaint(newLntSdkCtx(context, null));
     }
 
     @Override
-    public void complaintQuery() {
-        mLntSDKState.clear();
-        final String ursId = mLntVip.getId();
-        if (TextUtils.isEmpty(ursId)) {
-            mLntSDKState.pause(2);
-            return;
-        }
-        mThreadHandler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                LntLauncher.complaintQuery(newLntSdkCtx(ursId));
-            }
-        });
-
+    public void complaintQuery(Context context) {
+        LntLauncher.complaintQuery(newLntSdkCtx(context, null));
     }
 
-    private LntSdkContext newLntSdkCtx(String usrId) {
+    private LntSdkContext newLntSdkCtx(Context ctx, ILntInvokeCallback callback) {
+        String usrId = EnvManager.getInstanceInner().getUserPhoneNum();
         String macAddr = DeviceUtil.getConnectedDeviceAddr();
-        return LntSdkContextWrapper.newInstance(mContext,
+        return LntSdkContextWrapper.newInstance(ctx,
                 PackageUtils.getHostAppName(), macAddr,
-                mContext.getString(R.string.wallet_default_cardcity), usrId,
-                !ServerHandler.getInstance(mContext).isTestEnv(), mILntInvokeCallback);
+                ctx.getString(R.string.wallet_default_cardcity), usrId,
+                !ServerHandler.getInstance(ctx).isTestEnv(), callback);
     }
 
-    @Override
-    public boolean resume(String content) {
-        if (TextUtils.isDigitsOnly(content)) {
-            mLntVip.saveId(content);
-        }
-        mLntSDKState.resume();
-        return true;
-    }
-
-*/}
+}

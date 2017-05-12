@@ -15,17 +15,23 @@ import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
 import com.pacewear.tws.phoneside.wallet.pay.PayManager;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletHandlerManager;
+import com.pacewear.tws.phoneside.wallet.ui2.widget.CardBusinessLoadingView;
+
+import TRom.E_PAY_SCENE;
+
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.ACTVITY_SCENE;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.MODULE_CALLBACK;
 import com.pacewear.tws.phoneside.wallet.ui.handler.WalletBaseHandler.OnWalletUICallback;
 
 public class BusinessLoadingActivity extends TwsWalletActivity implements OnWalletUICallback {
-    private boolean mIsTopupInvoke = false;
+    private final long DURATION_ISSUE = 4 * 60 * 1000;
+    private final long DURATION_TOPUP = 2 * 60 * 1000;
     private OrderBean mOrderBean = null;
     private boolean mIsFirstIn = true;
     private Handler mUIHandler = null;
     public static final String KEY_ORDER_BEAN = "key_order_bean";
     public static final String KEY_EXE_RESULT = "key_exec_result";
+    private boolean isTopupLoading = false;
     private Runnable mHandleResumeEvent = new Runnable() {
         @Override
         public void run() {
@@ -36,9 +42,15 @@ public class BusinessLoadingActivity extends TwsWalletActivity implements OnWall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wallet2_activity_loading);
+
         mUIHandler = new Handler();
         mOrderBean = (OrderBean) getIntent().getSerializableExtra(KEY_ORDER_BEAN);
+        isTopupLoading = (mOrderBean.getPaySene() == E_PAY_SCENE._EPS_STAT);
+        if (isTopupLoading) {
+            setContentView(R.layout.wallet2_activity_loading_issue);
+        } else {
+            setContentView(R.layout.wallet2_activity_loading_topup);
+        }
         initViews();
         if (!startBusisnessInternal(mOrderBean)) {
             finish();
@@ -53,6 +65,13 @@ public class BusinessLoadingActivity extends TwsWalletActivity implements OnWall
         ImageView cardbg = (ImageView) findViewById(R.id.wallet2_loading_img);
         ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
         cardbg.setImageResource(card.getCardLiteBg());
+//        CardBusinessLoadingView loadingView = (CardBusinessLoadingView) findViewById(
+//                R.id.cardloadingview);
+//        if (isTopupLoading) {
+//            loadingView.attach(DURATION_TOPUP);
+//        } else {
+//            loadingView.attach(DURATION_ISSUE);
+//        }
     }
 
     @Override
@@ -124,13 +143,13 @@ public class BusinessLoadingActivity extends TwsWalletActivity implements OnWall
         if (bean == null) {
             return false;
         }
-        if (!mIsTopupInvoke) {
-            lReqId = OrderManager.getInstance().placeIssueOrder(bean.getCardInstanceId(),
-                    bean.getPaySene(), bean.getPayType(), bean.getIssueFee(), bean.getTopupFee(),
-                    bean.isRetry());
-        } else {
+        if (isTopupLoading) {
             lReqId = OrderManager.getInstance().placeTopupOrder(bean.getCardInstanceId(),
                     bean.getPaySene(), bean.getPayType(), bean.getTopupFee(),
+                    bean.isRetry());
+        } else {
+            lReqId = OrderManager.getInstance().placeIssueOrder(bean.getCardInstanceId(),
+                    bean.getPaySene(), bean.getPayType(), bean.getIssueFee(), bean.getTopupFee(),
                     bean.isRetry());
         }
         return lReqId >= 0;

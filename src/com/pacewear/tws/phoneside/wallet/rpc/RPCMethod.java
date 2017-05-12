@@ -156,4 +156,12 @@ public abstract class RPCMethod<Iterface> implements IRPC<Iterface>, IRPCHandler
         mMethod = method;
         return this;
     }
+
+    public int getIntMethod() {
+        return mMethod;
+    }
+
+    public Iterface getCallback() {
+        return mListener;
+    }
 }

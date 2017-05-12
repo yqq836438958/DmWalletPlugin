@@ -36,9 +36,9 @@ public class TrafficCardView extends BaseCardView {
     }
 
     @Override
-    protected void onUpdate(int scene) {
+    protected void onUpdate(int type) {
         String amount = Utils.getDisplayBalance(((ITrafficCard) mCardAttached).getBalance());
-        if (mTrafficCardBalance != null) {
+        if (mTrafficCardBalance != null || type == BaseViewHandler.ISSUEFAIL) {
             mTrafficCardBalance.setVisibility(TextUtils.isEmpty(amount) ? View.GONE : View.VISIBLE);
             mTrafficCardBalance.setText("￥" + amount);
         }

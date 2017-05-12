@@ -9,19 +9,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pacewear.httpserver.IResponseObserver;
 import com.pacewear.tws.phoneside.wallet.R;
 import com.pacewear.tws.phoneside.wallet.WalletApp;
 import com.pacewear.tws.phoneside.wallet.bean.OrderBean;
 import com.pacewear.tws.phoneside.wallet.card.CardManager;
 import com.pacewear.tws.phoneside.wallet.card.ICard;
+import com.pacewear.tws.phoneside.wallet.common.ClickFilter;
+import com.pacewear.tws.phoneside.wallet.common.Utils;
 import com.pacewear.tws.phoneside.wallet.order.IOrder;
 import com.pacewear.tws.phoneside.wallet.order.OrderManager;
+import com.pacewear.tws.phoneside.wallet.tosservice.RequestRefund;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.BusinessContext;
 import com.pacewear.tws.phoneside.wallet.ui2.activity.BusinessResultHandler.Result;
 import com.pacewear.tws.phoneside.wallet.ui2.toast.WalletErrToast;
+import com.qq.taf.jce.JceStruct;
 import com.tencent.tws.assistant.widget.Toast;
 
 import TRom.E_PAY_SCENE;
+import TRom.OrderRspParam;
+import TRom.RequestRefundRsp;
 import qrom.component.log.QRomLog;
 
 public class BusinessResultActivity extends TwsWalletActivity {
@@ -54,6 +61,64 @@ public class BusinessResultActivity extends TwsWalletActivity {
             onRetryClick();
         }
     };
+    private View.OnClickListener mRefundEvent = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if (ClickFilter.isMultiClick()) {
+                return;
+            }
+            Utils.getWorkerHandler().removeCallbacks(mRefundRequest);
+            Utils.getWorkerHandler().post(mRefundRequest);
+        }
+    };
+    private Runnable mRefundRequest = new Runnable() {
+
+        @Override
+        public void run() {
+            RequestRefund refund = new RequestRefund(getOrderTradeNo());
+            final long reqId = refund.getUniqueSeq();
+            refund.invoke(new IResponseObserver() {
+
+                @Override
+                public void onResponseSucceed(long uniqueSeq, int operType, JceStruct response) {
+                    if (reqId == uniqueSeq) {
+                        RequestRefundRsp rsp = (RequestRefundRsp) response;
+                        showRefundResult(rsp != null && rsp.iRet == 0);
+                    }
+                }
+
+                @Override
+                public void onResponseFailed(long uniqueSeq, int operType, int errorCode,
+                        String description) {
+                    if (reqId == uniqueSeq) {
+                        showRefundResult(false);
+                    }
+                }
+            });
+        }
+    };
+
+    private void showRefundResult(final boolean suc) {
+        this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if (suc) {
+                    getLastOrder().setInRefunding(true);
+                    jumpRefundResultPage();
+                } else {
+                    Toast.makeText(WalletApp.getHostAppContext(), "fail", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void jumpRefundResultPage() {
+        Intent intent = new Intent(BusinessResultActivity.this, RefundResultActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public void finish() {
@@ -68,6 +133,12 @@ public class BusinessResultActivity extends TwsWalletActivity {
         setContentView(R.layout.wallet2_show_operation_result);
         initViews();
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Utils.getWorkerHandler().removeCallbacks(mRefundRequest);
+        super.onDestroy();
     }
 
     private void initViews() {
@@ -91,9 +162,9 @@ public class BusinessResultActivity extends TwsWalletActivity {
         boolean exeSuc = (resultType == RESULT_SUCCESS);
         boolean orderCanRetry = !exeSuc && !isOrderInValid();
         if (exeSuc) {
-            hideActionBar();
+            setActionBar("", new NoTitleNoHideStagy());
         } else {
-            setActionBar("", new LeftCancleRightHelpStagy());
+            setActionBar("", new LeftCancleRightHelpNoTitleStagy());
         }
         mTopupResultIcon.setImageResource(exeSuc ? R.drawable.wallet_operate_success
                 : R.drawable.wallet_operate_failed);
@@ -104,15 +175,17 @@ public class BusinessResultActivity extends TwsWalletActivity {
         ImageView cardbg = (ImageView) findViewById(R.id.wallet_issue_result_ic);
         ICard card = CardManager.getInstance().getCard(mOrderBean.getCardInstanceId());
         cardbg.setImageResource(exeSuc ? card.getCardLiteBg() : card.getCardDisableLiteBg());
-        Result tilteResult = new BusinessResultHandler().invoke(getBusinessContext(resultType));
-        mTitle.setText(tilteResult.getTitleRes());
-        mDesc.setText(R.string.wallet_operation_failed_tip);
+        Result filterResult = new BusinessResultHandler(this)
+                .invoke(getBusinessContext(resultType));
+        mTitle.setText(filterResult.getTitleRes());
+        mDesc.setText(filterResult.getDescRes());
         mButton.setText((orderCanRetry)
                 ? getString(R.string.wallet_result_retry)
                 : getString(R.string.wallet_operation_result_close));
         mButton.setOnClickListener(orderCanRetry ? mRetryEvent : mCloseEvent);
         mRefundTip.setVisibility(orderCanRetry ? View.VISIBLE : View.GONE);
-        int toastRes = tilteResult.getToastRes();
+        mRefundTip.setOnClickListener(mRefundEvent);
+        int toastRes = filterResult.getToastRes();
         if (toastRes != 0) {
             Toast.makeText(WalletApp.getHostAppContext(), getString(toastRes), Toast.LENGTH_LONG)
                     .show();
@@ -134,9 +207,25 @@ public class BusinessResultActivity extends TwsWalletActivity {
     }
 
     private boolean isOrderInValid() {
-        String aid = mOrderBean.getCardInstanceId();
-        IOrder order = OrderManager.getInstance().getLastOrder(aid);
+        IOrder order = getLastOrder();
         return order == null || order.isInValidOrder();
+    }
+
+    private IOrder getLastOrder() {
+        String aid = mOrderBean.getCardInstanceId();
+        return OrderManager.getInstance().getLastOrder(aid);
+    }
+
+    private String getOrderTradeNo() {
+        IOrder order = getLastOrder();
+        if (order == null) {
+            return "";
+        }
+        OrderRspParam param = order.getOrderRspParam();
+        if (param == null) {
+            return "";
+        }
+        return param.getSTradeNo();
     }
 
     private BusinessContext getBusinessContext(int result) {

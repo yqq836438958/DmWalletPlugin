@@ -1,10 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/wallet_overall_background" >
+    android:layout_height="match_parent" >
 
-    <com.pacewear.tws.phoneside.wallet.ui.widget.SimpleCardListItem
+    <com.pacewear.tws.phoneside.wallet.ui2.widget.SimpleCardListItem
         android:id="@+id/lay_default_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -14,24 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/lay_default_city"
-        android:background="#1f1c27"
         android:gravity="center_vertical|start"
         android:paddingEnd="0dp"
         android:paddingStart="20dp"
         android:text="@string/wallet_city_other"
-        android:textColor="#80ffffff"
+        android:textColor="@color/wallet_gray"
         android:textSize="12sp" />
 
     <ListView
         android:id="@+id/lv_citylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_wallet_othercity"
-        android:background="@null"
-        android:cacheColorHint="@null"
-        android:listSelector="#00000000"
-        android:divider="@color/wallet_listview_divider_color"
-        android:dividerHeight="@dimen/wallet_listview_divider_height" />
+        android:layout_below="@id/tv_wallet_othercity" />
 
     <TextView
         android:layout_width="match_parent"
