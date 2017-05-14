@@ -37,7 +37,12 @@ public class CardListErrPage extends CardListFragment {
     }
 
     @Override
-    protected boolean onUpdate() {
+    protected void onUpdate() {
+
+    }
+
+    @Override
+    protected boolean isReady() {
         if (!CardManager.getInstance().isAvaliable()) {
             return true;
         }

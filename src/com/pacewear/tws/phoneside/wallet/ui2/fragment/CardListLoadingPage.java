@@ -23,7 +23,12 @@ public class CardListLoadingPage extends CardListFragment {
     }
 
     @Override
-    protected boolean onUpdate() {
+    protected void onUpdate() {
+
+    }
+
+    @Override
+    protected boolean isReady() {
         return CardManager.getInstance().isInSyncProcess()
                 || OrderManager.getInstance().isInOrderSyncProcess();
     }

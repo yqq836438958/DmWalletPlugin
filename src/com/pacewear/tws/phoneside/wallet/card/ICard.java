@@ -109,6 +109,7 @@ public interface ICard {
      */
     public boolean isAvaliable();
 
+    public boolean isInSyncing();
     /**
      * forceUpdate
      * 

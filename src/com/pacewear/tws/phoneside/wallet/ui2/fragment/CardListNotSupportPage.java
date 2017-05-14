@@ -23,7 +23,11 @@ public class CardListNotSupportPage extends CardListFragment {
     }
 
     @Override
-    protected boolean onUpdate() {
+    protected void onUpdate() {
+    }
+
+    @Override
+    protected boolean isReady() {
         if (!Utils.isWalletMoubleEnable()) {
             return true;
         }

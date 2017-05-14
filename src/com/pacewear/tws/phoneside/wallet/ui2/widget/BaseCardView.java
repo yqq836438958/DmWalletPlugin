@@ -103,6 +103,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardLitedisplay,onHandle,aid:" + mCardAttached.getAID());
             showNormal();
             setOnClickEvent(null);
         }
@@ -122,6 +123,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardIssueFail,onHandle,aid:" + mCardAttached.getAID());
             showNetShadeText(R.string.wallet_issue_fail_tip);
             changeCardBackgroud(false);
             showDefaultCardTag(false);
@@ -142,7 +144,6 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            Log.d("yqq", "mCardTopupFail isConditionReady,aid:" + mCardAttached.getAID());
             return mOrder != null && mOrder.isCardTopFail();
         }
     };
@@ -151,14 +152,14 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardInfSyncFail,onHandle,aid:" + mCardAttached.getAID());
             showLocalShadeText(R.string.wallet_sync_err_watch);
             setOnClickEvent(null);
         }
 
         @Override
         public boolean isConditionReady() {
-            ICardManager cardManager = CardManager.getInstance();
-            return (!cardManager.isReady() && !cardManager.isInSyncProcess());
+            return (!mCardAttached.isReady());
         }
     };
 
@@ -166,6 +167,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mNetErr,onHandle,aid:" + mCardAttached.getAID());
             showNetShadeText(R.string.wallet_sync_err_network);
             setOnClickEvent(jumpDetailPage);
         }
@@ -189,12 +191,11 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public boolean isConditionReady() {
-            boolean isLoading = (CardManager.getInstance().isInSyncProcess()
+            boolean isCardListLoading = (CardManager.getInstance().isInSyncProcess()
                     || OrderManager.getInstance().isInOrderSyncProcess()
                     || !EnvManager.getInstance().isCPLCReady());
-            Log.d("yqq",
-                    "mCardLoading！！！,aid:" + mCardAttached.getAID() + ",isloading..." + isLoading);
-            return isLoading;
+            boolean isCardDetailLoading = mCardAttached.isInSyncing();
+            return isCardListLoading || isCardDetailLoading;
         }
     };
     // 退款中
@@ -202,6 +203,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardTopupRefunding,onHandle,aid:" + mCardAttached.getAID());
             showNetShadeText(R.string.wallet_cardlist_refunding);
             setOnClickEvent(jumpDetailPage);
         }
@@ -214,6 +216,7 @@ public abstract class BaseCardView extends FrameLayout {
     private BaseViewHandler mCardIssueRefunding = new BaseViewHandler(BaseViewHandler.ISSUEFAIL) {
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardIssueRefunding,onHandle,aid:" + mCardAttached.getAID());
             showNetShadeText(R.string.wallet_cardlist_refunding);
             changeCardBackgroud(false);
             showDefaultCardTag(false);
@@ -230,6 +233,7 @@ public abstract class BaseCardView extends FrameLayout {
 
         @Override
         public void onHandle() {
+            Log.d("yqq", "mCardNormal,onHandle,aid:" + mCardAttached.getAID());
             showNormal();
             setOnClickEvent(jumpDetailPage);
         }

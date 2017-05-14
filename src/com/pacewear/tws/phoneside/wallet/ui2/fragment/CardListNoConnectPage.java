@@ -24,7 +24,11 @@ public class CardListNoConnectPage extends CardListFragment {
     }
 
     @Override
-    protected boolean onUpdate() {
+    protected void onUpdate() {
+    }
+
+    @Override
+    protected boolean isReady() {
         return !EnvManager.getInstance().isWatchConnected();
     }
 

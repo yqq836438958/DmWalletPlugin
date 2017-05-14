@@ -463,4 +463,13 @@ public abstract class Card implements ICard, ICardInner {
     public String getCardInfoErrDesc() {
         return mCardInfoErrDesc;
     }
+    @Override
+    public boolean isInSyncing() {
+        STATUS curStatus = mCurrentCardStep.getStatus();
+        COMMON_STEP curStep = mCurrentCardStep.getStep();
+        if (curStep == COMMON_STEP.READY) {
+            return false;
+        }
+        return curStatus != STATUS.KEEP && curStatus != STATUS.QUIT;
+    }
 }

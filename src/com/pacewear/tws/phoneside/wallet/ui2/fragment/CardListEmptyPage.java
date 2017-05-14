@@ -51,7 +51,11 @@ public class CardListEmptyPage extends CardListFragment {
     }
 
     @Override
-    protected boolean onUpdate() {
+    protected void onUpdate() {
+    }
+
+    @Override
+    protected boolean isReady() {
         ICardManager manager = CardManager.getInstance();
         if (!manager.isReady()) {
             return false;

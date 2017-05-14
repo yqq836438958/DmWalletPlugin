@@ -21,76 +21,43 @@ public abstract class CardListFragment extends Fragment {
         mController.update();
     }
 
-    CardListFragment update() {
-        if (onUpdate()) {
-            return this;
-        }
-        if (mNext != null) {
-            return mNext.update();
-        }
-        return null;
-    }
+    protected abstract boolean isReady();
 
-    final void setNext(CardListFragment next) {
-        this.mNext = next;
-    }
-
-    protected abstract boolean onUpdate();
-
-    static class FragmentChain {
-        private List<CardListFragment> mList = new ArrayList<CardListFragment>();
-        private int mSize = 0;
-
-        public final void add(CardListFragment node) {
-            if (node == null) {
-                return;
-            }
-            synchronized (FragmentChain.this) {
-                if (mSize > 0) {
-                    mList.get(mSize - 1).setNext(node);
-                }
-                mList.add(node);
-                mSize++;
-            }
-        }
-
-        public final CardListFragment update() {
-            if (mList == null || mList.size() <= 0) {
-                return null;
-            }
-            return mList.get(0).update();
-        }
-    }
+    protected abstract void onUpdate();
 
     public static class FragmentController {
         private int mLayoutId = 0;
-        private FragmentChain mChain = null;
+        // private FragmentChain mChain = null;
         private FragmentManager mFragmentManager;// fragment管理者
         private List<CardListFragment> mCardListFragments;
+        private int mLastCommitFragmentIndex = -1;
 
         public FragmentController(Activity context, int resLayout, List<CardListFragment> list) {
             mLayoutId = resLayout;
             mFragmentManager = context.getFragmentManager();
-            mChain = new FragmentChain();
+            // mChain = new FragmentChain();
             mCardListFragments = list;
-            FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (CardListFragment fragment : list) {
-                mChain.add(fragment);
+                // mChain.add(fragment);
                 fragment.attachController(this);
-                transaction.add(mLayoutId, fragment);
+                // transaction.add(mLayoutId, fragment);
             }
-            transaction.commitAllowingStateLoss();
         }
 
         public final void update() {
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
-            CardListFragment target = mChain.update();
-            for (CardListFragment fragment : mCardListFragments) {
-                if (!fragment.equals(target)) {
-                    transaction.hide(fragment);
-                } else {
-                    transaction.show(target);
+            CardListFragment target = null;
+            int size = mCardListFragments.size();
+            for (int i = 0; i < size; i++) {
+                target = mCardListFragments.get(i);
+                if (!target.isReady()) {
+                    continue;
                 }
+                if (mLastCommitFragmentIndex != i) {
+                    transaction.replace(mLayoutId, target);
+                }
+                target.onUpdate();
+                mLastCommitFragmentIndex = i;
             }
             transaction.commitAllowingStateLoss();
         }
